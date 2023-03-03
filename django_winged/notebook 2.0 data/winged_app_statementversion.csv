@@ -1,0 +1,670 @@
+id,statement,created_at,parent_item_id,user_id
+14,fix code for saving ItemVersions on item model. and test it bro.,2022-11-21 00:19:02.714814,143,1
+15,test ItemStatementVersions code.,2022-11-21 00:20:20.982659,176,1
+45,was on it container and buttons lost pointer when clicked on act/non-act tab.,2022-11-21 01:34:52.285992,180,1
+46,search bar view not showing container names but tho showing them circles where they should be.,2022-11-21 01:36:11.883722,181,1
+47,make it show data about the number of active ideas.,2022-11-21 01:42:08.924306,68,1
+49,edit ande delete a container from its view too.,2022-11-21 02:24:43.300729,186,1
+52,"after creating and item, go to exactly where I was.",2022-11-21 02:35:03.329095,187,1
+53,"you'd think I was depressed, given that there's no problem to directly point to, but still was feeling blue.",2022-11-21 02:39:52.577557,110,1
+54,basically took me this whole week to recover from bad habits I had a weekend off in sevilla.,2022-11-21 02:40:21.727330,109,1
+55,"and the ones on myself system, the best candidates for the most internalizing.",2022-11-21 02:53:24.718117,198,1
+56,"gotta make a snipet for getting notebook 1.0's data in here, is just too valuable.",2022-11-21 03:03:32.504772,192,1
+57,"learn a little more about rest, I'd probably need it to have divs updated without reloading page like I want.",2022-11-21 03:15:53.444607,150,1
+59,something that transcribes ideas I use the mobile app version of this for recording.,2022-11-21 03:16:46.289871,168,1
+60,the content for my portfolio can be a concrete description of the journey I took toward building the website itself.,2022-11-21 03:18:46.744957,200,1
+64,"then university courses, course competitions and sanke.",2022-11-21 03:36:49.452004,210,1
+65,finish the python console snake game.,2022-11-21 03:38:02.712781,212,1
+66,then tomato timer because of uni and was studying there.,2022-11-21 03:39:06.750808,211,1
+67,third tomato timer because of uni and was studying there.,2022-11-21 03:39:14.895351,211,1
+70,design itemVersions view,2022-11-21 03:42:40.028415,53,1
+74,archive function is only to hide containers in containersView and items in containerDetailView.,2022-11-21 03:50:10.889044,55,1
+75,"what if I crossed out projects and items instead of archiving them, or both?",2022-11-21 03:50:32.746487,69,1
+79,"what could I do with both data about beginning of an idea, and time of completion in terms of activity diagrams?",2022-11-21 04:06:20.118918,127,1
+81,"after creating and item, go exactly to where I was.",2022-11-21 04:13:05.087798,187,1
+83,prefill form with actionable or not when I press 'new item' on containerDetail view.,2022-11-21 04:13:20.672174,21,1
+86,"feel close to a point I can offer some freebies, freelance, and etc. online and networking.",2022-11-21 14:26:02.571986,207,1
+87,"mate is such a trough book, I should approach it with django method.",2022-11-21 14:51:34.101636,88,1
+90,when does she have her period? can make calculations given the whatsapp chat history.,2022-11-21 17:10:26.567196,239,1
+96,"when name is too big, fucks up the navbar.",2022-11-21 21:43:53.056523,249,1
+100,"start investing as many hours as possible, then dial it back as a priority once the habits and the basic knowledge are established.",2022-11-21 21:49:49.225913,250,1
+104,most of these are calls to learn about front end dev.,2022-11-22 00:07:08.246626,252,1
+105,long usernames fucks my whole nav bar up.,2022-11-22 01:16:45.060615,251,1
+113,just pass a ?next query with the previous url to get back to where I was after saving an item.,2022-11-22 02:02:50.126358,234,1
+118,change js's broken onclick events for htmx for proper get methods.,2022-11-22 02:04:55.068976,167,1
+129,some html printout that I can paste on an portfolio website's article.,2022-11-22 04:39:20.135918,226,1
+130,"a ""has inspired"" (tree or directly) attribute that I can quickly check about an idea.",2022-11-22 04:42:05.784924,268,1
+132,something that transcribes ideas that I use the mobile app version of this for recording.,2022-11-22 04:43:15.532109,168,1
+134,love to learn much more about htmx. worked wonderfully for what I wanted to achieve.,2022-11-22 04:44:27.127541,271,1
+135,"apart from sticking task to the top of the window, also a hover or change of background color to know more or less what I was reading last.",2022-11-22 04:45:08.617188,194,1
+138,"steve's idea, but an anki-spaced-repetition algorithm for remembering ideas you studied and shit.",2022-11-22 04:49:09.917999,134,1
+139,can make floating cruds already instead of it redirecting me to links for so with htmx.,2022-11-22 04:50:14.401476,157,1
+140,have many ideas for features that explicitly require frontend dev skills.,2022-11-22 04:51:14.185196,272,1
+141,a way to visualize idea inspiration is chronological order based on the main idea. or the idea that has no parent.,2022-11-22 04:53:03.431273,145,1
+145,"the one course with many instructors on freecodecamp seems to have what I need, more or less.",2022-11-22 13:49:34.480875,274,1
+147,"react.js course with many instructors on freecodecamp seems to have what I need, more or less.",2022-11-22 14:07:05.813415,274,1
+148,"gavin lon doesn't seem to assume I know anything, tho uses many technologies.",2022-11-22 14:15:43.847412,276,1
+155,"so learning node.js might not be the best idea, since its functionality is something I already use django to do with.",2022-11-22 15:13:59.977926,283,1
+156,Kevin Powell's portfolio build is gonna help out when I embark into building my own portfolio. not yet tho I think.,2022-11-22 15:33:54.154468,284,1
+157,Kevin Powell's portfolio build and responsive course are gonna help out when I embark into building my own portfolio. not yet tho I think.,2022-11-22 15:37:54.966874,284,1
+159,denis ivy has a django portfolio project build I can check.,2022-11-22 15:46:00.056907,286,1
+165,db problem I had w/ Tomi Tokko course's notes makes me think if there's a way to recover deleted data on sql dbs.,2022-11-22 17:12:38.735784,292,1
+166,containers inspire creation of their own subcontainers.,2022-11-22 17:14:07.507338,293,1
+167,notebook 2.0 parent container has barely been used since created subcontainers for related items.,2022-11-22 17:17:00.969691,294,1
+168,what if I could group subcontainers by topic or in folders instead of having to add them as subs of other containers I end up barely using?,2022-11-22 17:18:25.072767,295,1
+170,dollarcity metaphor: buying sometimes that enhances a habit you already have vs buying something you'd like to acquire the habit of using.,2022-11-22 17:35:09.491575,297,1
+172,learn how to access different form attributes from django template tags. so I can in more detail modify my forms.,2022-11-22 18:07:56.715446,299,1
+173,"if I learn proper css I could actually make functioning floating crud views with html, css, js and htmx.",2022-11-22 18:10:07.031673,300,1
+174,make all context data return page title appropriate to view.,2022-11-22 19:00:24.287591,301,1
+180,"bugs have forced me to do like, a better job.",2022-11-22 22:00:12.107112,307,1
+181,"a new feature is a smaller instance of the software, in which I have to do the same amount and quality of planning.",2022-11-22 22:02:09.023899,308,1
+186,probably without stopping to advance on Tommi Tokki's course.,2022-11-22 22:37:00.531999,313,1
+195,using git now will be accumulating a lot of online experience.,2022-11-22 22:50:24.931612,322,1
+196,"in case I do re-do the app, open another GitHub repository for it.",2022-11-22 22:51:27.833191,323,1
+198,this can still be a finished/functioning project without the authentication.,2022-11-22 22:57:17.468981,325,1
+199,it was actually the authentication part that screwed everything up.,2022-11-22 22:57:47.184157,326,1
+200,it was actually the authentication part (or my rush to have it) that screwed everything up.,2022-11-22 22:59:23.843185,326,1
+201,rebuild notebook 2.0 up until the authentication part.,2022-11-22 23:00:10.354618,327,1
+204,imagine having ahd github at the time and just having to click a few buttons to be back at before the authentication.,2022-11-22 23:01:36.641042,330,1
+208,those short tasks (done and to-do) review every morning they do is basically like planning phases before every coding session.,2022-11-22 23:05:13.230479,334,1
+209,I should do them myself before any feature.,2022-11-22 23:05:37.469615,335,1
+221,rebuild notebook 2.0 from the database model up until before the authentication part.,2022-11-22 23:23:57.927198,327,1
+223,redesign and rebuild notebook 2.0 from the database model up until before the authentication part.,2022-11-22 23:26:29.227037,327,1
+224,redesign and rebuild notebook 2.0 from the database model's design up until before the authentication part.,2022-11-22 23:27:27.009071,327,1
+225,feels way better when planning phases of plans occur in a controlled manner.,2022-11-22 23:30:17.136979,347,1
+232,the kinds of questions that I'm asking while going through auth views denote how much I rushed into making them.,2022-11-23 02:21:39.376299,354,1
+234,character minimum directly on search form and not other code on searchView for it.,2022-11-23 02:39:43.252518,356,1
+237,while reviewing my views.py I see I implement a lot of stuff I don't have a complete understanding about.,2022-11-23 02:42:25.618413,359,1
+238,"check what in here is about understanding in depth, before changing anything.",2022-11-23 02:49:18.078099,360,1
+239,containersView is where shit about inbox starts to get fishy as fuck.,2022-11-23 02:53:34.868786,361,1
+243,"and self.kwargs is shit passed on link, what comes after the ? queries go into the request.",2022-11-23 03:09:56.745115,365,1
+248,"I have code there that is not used anymore for shit I already created other implementations for, wtf.",2022-11-23 03:38:35.702756,370,1
+251,look for a good solution to just going back to the path view I was. just can't believe there isn't.,2022-11-23 04:01:59.077604,373,1
+252,reviewing what I added and deleted on GitHub is another way of curating for that logic and etc.,2022-11-23 04:03:06.463679,374,1
+257,the django template language is also due to get a hold of a guide in. likely to have a crazy ton of features.,2022-11-23 04:18:50.511616,379,1
+258,could I prepare the success URL with data in the form I just created?,2022-11-23 05:12:54.246199,380,1
+260,"a 'wow'/'ay go', 'jmm' and meh system for the spaced repetition algorithm.",2022-11-23 05:19:43.143545,382,1
+264,review each .html template for errors in logic.,2022-11-23 13:29:55.382884,386,1
+269,"mix the todoist's text recognition feature  and notepad interface to make idea submit faster here. like, just after making a line break.",2022-11-23 15:02:05.463932,391,1
+270,practice form validation solving searchbar's minimun character issue.,2022-11-23 15:56:14.116213,356,1
+272,is even kind of beneficial for making use of spaced reviewing of the code so you see it with less bias each time.,2022-11-23 16:18:09.711507,393,1
+273,"so neurotic I feel like important but not urgent should be blue, and urgent but not important, orange.",2022-11-23 16:30:57.526760,394,1
+278,"still, if I click several times on the save or + button for creation, the current things I'm creating is saved multiple times.",2022-11-23 18:06:40.385888,401,1
+279,check ADHD dieting. saw one reddit user talking about it the other day.,2022-11-23 20:52:07.742273,402,1
+292,what I asked him to do serves as an overview of the final views.,2022-11-24 03:06:26.258020,411,1
+294,get basic information in and then ask for further documents via email. looks more genuine.,2022-11-24 03:07:20.069405,413,1
+298,a form that is trustworthy but at the same time simple and functional to our purposes.,2022-11-24 03:11:43.808386,416,1
+309,don't like getChildren that much although does the job. see if have to correct it.,2022-11-24 04:26:10.082438,424,1
+314,isn't there a way of limiting the scope of the database all over a login instance or something?,2022-11-24 16:05:48.735936,427,1
+316,-> also a way of parsing through any txt file I write this kind of thing in. to get the ideas and their link in the db.,2022-11-24 16:06:47.857257,429,1
+319,change names of getChildren and getItems to better reflect and differentiate what they do.,2022-11-24 16:18:27.710325,432,1
+320,"linked items displayed one after another like on an essay, sorted by created_at but displaying the relationship between and other.",2022-11-24 16:22:13.532034,433,1
+322,get the habit of writing features and even implementations right here instead of going at it to write code.,2022-11-24 16:25:59.977748,435,1
+323,spaced repetition on non-acts tab would help a lot with clarifying the values I later use to group actions like by priority.,2022-11-24 16:28:18.141949,436,1
+325,"get the habit of checking what here is about understanding in depth, before changing anything.",2022-11-24 16:32:59.454357,360,1
+329,"it is not my frog at all, I should rather look at the real actually urgent tasks instead to look it up -Berlitz classes most likely.",2022-11-24 18:48:09.458242,438,1
+331,see if can change get_versions to get_statement_versions by making sure is not called on templates.,2022-11-24 20:25:43.697573,440,1
+332,700 usd saved (free from responsabilities) and a functioning laptop computer and I can leave berlitz.,2022-11-24 20:39:41.113266,441,1
+333,my impeeding neuroticism seems to be temprarily numbed with monica.,2022-11-25 02:41:24.057775,195,1
+334,"she is open enough to experience to have the opportunity to learn a ton about sex, with her.",2022-11-25 02:41:45.048739,89,1
+336,present: buy and read monica's book and highlight what I like.,2022-11-25 02:47:01.612044,231,1
+339,open a a subcontainer her for mate.,2022-11-25 03:02:30.357627,444,1
+354,I think the fact that the htmx on item.html let's you see the csrf on browser inspection is dumb as f.,2022-11-27 19:50:02.056504,457,1
+357,"it seems that you can just send as much information, of the kind that doesn't change state of db, as you want.",2022-11-27 20:01:36.560655,460,1
+359,broke act non-act tab by playing with two same container browser tabs' list at the same time.,2022-11-27 21:42:12.773486,462,1
+362,is better and easier to review change to code I've made from the visual studio code.,2022-11-27 22:00:35.341924,463,1
+369,"learn html, css and javascript with purpose, because of the problems I want to solve.",2022-11-27 23:02:14.316084,78,1
+374,Planing phases before implementation of any feature.,2022-11-27 23:42:57.676602,335,1
+375,spaced repetition sorting feature is potentially more important than rushing to get all data from notebook 1.0 and old txt systems here.,2022-11-27 23:48:00.554512,467,1
+378,thinking of continuing working on notebook app without stopping to advance on Tommi Tokki's course.,2022-11-27 23:54:47.992214,313,1
+379,definitely finish minimum viable product here and then move on to working on portfolio website.,2022-11-27 23:55:13.232452,179,1
+389,"done at attribute, useful for sorting, and other features.",2022-11-28 00:28:58.415740,474,1
+392,denis ivy has a many django portfolio project build I can check.,2022-11-28 00:33:38.167704,286,1
+395,"everything that sends post-shit changes the state of the system, and so should constraints by logged in users and permissions.",2022-11-28 00:42:11.848449,476,1
+397,gotta set other website builds and other people's portfolio websites for basically copying like artists do.,2022-11-28 00:47:46.006093,202,1
+398,that copying like artists do I got from writing on medium.,2022-11-28 00:48:15.118192,203,1
+400,"underestimated how much html, css, and js I knew, so I'm probably either ready to work with frameworks or responsive design in gral.",2022-11-28 17:08:22.635006,478,1
+407,"what about making dairon's Mexican id web app using next knowledge to acquire, which would be a front-end framework like vue or react.",2022-11-29 14:31:50.607781,484,1
+415,is better and easier to review changes to code I've made from the visual studio code.,2022-11-29 14:49:17.968987,463,1
+419,"work here in one important/interesting feature + implementations while I embark into other front-end projects, probably mexican ids.",2022-11-29 15:08:28.914941,487,1
+433,"the future is this being the system, where every conceptual idea on productivity habits keeps being implemented both the app and my life.",2022-11-29 15:22:39.756694,169,1
+436,the possibility of organizing myself enough to go through all the bookmarks I ever saved.,2022-11-29 16:02:45.818440,495,1
+438,the active recall testing here is remembering the context in which the item occurred to be able to understand it.,2022-11-29 16:05:24.923930,497,1
+439,is there another way of making active recall testing possible in here?,2022-11-29 16:05:40.734338,498,1
+443,"is like reading comprehension, and how you can read out loud without paying attention vs actually understand the plot.",2022-11-29 16:09:25.381811,502,1
+445,"what if instead of facts, one used spaced repetition to remember patterns of solutions to problems? or patterns of thinking?",2022-11-29 16:13:36.622741,504,1
+446,"my criteria are not the difficult-to-remember spectrum, they are instead the relevance and priority ones.",2022-11-29 16:18:03.932845,505,1
+447,gotta figure out what my equivalent of the questions/answer duo is for my software.,2022-11-29 16:21:15.866009,506,1
+449,maybe you group by urgent/non-urgent and then sort by important?,2022-11-29 17:03:13.749051,508,1
+452,remembering the idea and is context is tue equivalent of flipping the card.,2022-11-29 17:14:27.375969,511,1
+453,remembering the idea and its context is tue equivalent of flipping the card.,2022-11-29 17:14:40.364680,511,1
+454,an idea with half value could remain in 'learning' or incubating in order to further develop it until it either clicks or becomes too meh.,2022-11-29 17:16:42.667125,512,1
+457,"woah, jmm, mmm, and meh, provide better range for value spectrum I think.",2022-11-29 17:22:41.026778,515,1
+458,if I'm consistent I need less sleep. which means more time during the day. on days before Sevilla noticed I was waking up before the alarm.,2022-11-29 17:59:15.331005,111,1
+459,listening to bad friend podcast the other day made me enjoy the moment and keep my mind off of itself while I was getting sleepy.,2022-11-29 17:59:32.687915,113,1
+462,I feel I was doing better when slept 8 hours.,2022-11-29 18:19:13.427024,518,1
+464,barely drink or eat anything before going to sleep. the former makes me wake up to pee at night so that's a nono.,2022-11-29 18:28:20.454473,520,1
+468,"new, learning, and reviewing cards become new, pondering, and discarded items here.",2022-11-29 18:45:08.060485,524,1
+472,"I'm not concerned with the times of introduction, but with the order in my list.",2022-11-29 21:11:58.509287,527,1
+478,after understanding the idea you can let the algorithm know how present in mind you had it.,2022-11-29 22:31:12.144400,533,1
+479,remembering the idea and its context is the equivalent of flipping the card.,2022-11-29 22:37:15.770792,511,1
+482,just noticed relevance/importance/value of every Anki card is assumed. or just responsibility basically.,2022-11-30 02:27:20.581479,536,1
+485,times of introduction affect an order in my list.,2022-11-30 02:44:35.909772,527,1
+486,updated_at affects an order in my list. and I would like to have the oldest updated on top.,2022-11-30 02:44:47.093116,527,1
+495,"after understanding the idea you can let the program know what kind it is, and tags are kinds, 'important' being one of them.",2022-11-30 03:01:46.690933,533,1
+498,"a view for choosing tags or containers to split into other tags or containers. preferably and for simplicity, two.",2022-11-30 03:09:45.593497,548,1
+499,the active recall testing here is remembering the context in which the item occurred and be able to understand it.,2022-11-30 03:11:40.209855,497,1
+502,an add or replace tag function on the tag updating view.,2022-11-30 03:39:43.026843,551,1
+504,select tags to use on the classification view.,2022-11-30 03:58:11.035781,553,1
+505,buttons to click press the tag to classify idea by don't require confirmation.,2022-11-30 03:58:46.015093,554,1
+506,"can use keyboard shortcuts, numbers to pick a tag, but it requires confirmation with the enter key. and a confirmation prompt.",2022-11-30 03:59:47.767022,555,1
+510,"design and make the site with all places for text and images due to be filled in. text with lorop isum, and images with divs with background",2022-11-30 04:17:47.650921,559,1
+512,be able to select tags to use on the classification view.,2022-11-30 04:20:48.853577,553,1
+514,you should be able to reclassify elements inside a category with categories on same level.,2022-11-30 04:37:02.579102,562,1
+516,same item shouldn't have tags of the same level.,2022-11-30 14:34:03.749027,564,1
+518,I chose what tag/categories to group by on containerDetailView.,2022-11-30 15:18:19.742915,566,1
+520,"inside a grouping, you can suborder again but for tags available, given the tags that elements inside the group have.",2022-11-30 15:23:27.623500,568,1
+521,ultimately I'm liking the user interface for tags that handles everything from the container view.,2022-11-30 15:27:25.630970,569,1
+522,"better to work on blocks than do a lot of shit in between pomodoros, allows flow state better.",2022-11-30 17:15:33.423635,570,1
+523,"exercise, food, meditating, what is it that makes me feel like shit? all of them?",2022-11-30 17:17:10.780592,571,1
+524,"'it' is not my frog at all, I should rather look at the real actually urgent tasks instead to look it up -Berlitz classes most likely.",2022-11-30 17:17:36.225284,438,1
+525,todoist reminds me of straight a student book because the system I'm using is similar to it.,2022-11-30 20:45:09.008370,240,1
+530,is impressive how close to overcoming any kind of neglect the hyperfocus on it related things gets me.,2022-11-30 20:50:22.782076,573,1
+531,"gotta stop insane it-hyperfocus, or at least take care of everything else first, so that efforts doesn't undermine everything.",2022-11-30 20:51:19.671140,574,1
+533,mexican ids is the Christmas hope.,2022-11-30 22:15:55.992129,576,1
+540,include ITEP C2 English level test result on portfolio resumé.,2022-11-30 22:35:51.189794,582,1
+541,"as worked so much into a single app, notebook, showcase the features as if they were different applications.",2022-11-30 22:37:07.460239,583,1
+543,open a subcontainer her for mate.,2022-11-30 22:54:24.063888,444,1
+551,be able to select categories/tags to use in the classification view.,2022-12-01 03:21:10.671586,553,1
+552,"I like it when there are no pressures, and the most urgent can just be any of the most important.",2022-12-01 03:22:25.072994,592,1
+565,and properly querying the database is what is likely going to help me do so.,2022-12-01 04:59:46.109757,606,1
+568,"item statement versions don't work right yet, I'm having duplicates, and a lot of them.",2022-12-01 14:23:38.553512,609,1
+569,"item statement versions don't work right yet, I'm having duplicates.",2022-12-01 14:23:58.062467,609,1
+572,tags that items in the container have: Tag.objects.filter(item__parentContainer_id=container.pk).distinct(),2022-12-01 15:56:30.144363,612,1
+573,how to query for tags that items inside the container have.,2022-12-01 15:57:25.961555,613,1
+575,"why am I not getting myself together first thing in the morning, or one of them?",2022-12-01 16:17:27.913097,615,1
+576,"don't teach her to dance without the motivation to do so, so either take her to la topa to see and want, or show her videos.",2022-12-01 16:27:56.256300,616,1
+582,definitely have not been enough diligent with tue many to many querying docs that potentially have the solution to a lot of this.,2022-12-02 04:44:11.163771,622,1
+591,"foolish to think I'll achive anything with only one query set, I definitely need many in a single containerDetailView.",2022-12-02 04:50:42.461071,632,1
+600,and sliding-bar spectrums with marks on where the tags belong could help prioritize items with more precision.,2022-12-02 16:17:30.998600,641,1
+601,"(title, queryset) tuples are easier for me to render in html.",2022-12-02 22:27:18.317625,642,1
+610,I want to test the shit out of this code before implementing anything because I fear a bigger pain in the ass.,2022-12-03 03:42:30.227901,649,1
+612,"the filter view then just takes the initial queryset: [([], que_ryset_0),] and applies divide_querysets_by_tag with tags the users chooses.",2022-12-03 03:45:44.003462,651,1
+616,I chose what tag/categories to group by on containerDetailView one by one.,2022-12-03 03:52:45.414320,566,1
+617,"simples version of the classification view would be one element at a time, and with the tags it currently has.",2022-12-03 03:55:20.998924,655,1
+626,implement itemVersions view. which is basically an item detail view sorted by '-created_at',2022-12-03 16:56:04.982521,64,1
+631,shouldn't be difficult to return some kind of thought chain form items that inspired others and the times of creation for each.,2022-12-03 16:59:19.999142,205,1
+641,see if can change js's broken onclick events for htmx for proper get methods.,2022-12-03 17:26:56.549126,167,1
+642,see if can change js's broken-looking onclick events for htmx proper get methods.,2022-12-03 17:27:12.218861,167,1
+644,can I generate the success URL with data in the form user just submitted?,2022-12-03 17:29:41.458063,380,1
+650,check vue.js more in detail as a front-end framework.,2022-12-03 17:35:12.768481,661,1
+653,spaced review of the code helps with avoiding the bias from feeling it familiar.,2022-12-03 17:38:16.337125,393,1
+659,"at the moment I'm full, lunch didn't burn and everything has a great taste.",2022-12-03 20:08:16.653114,667,1
+677,Dairon is hella friend.,2022-12-03 20:22:49.378824,685,1
+678,learning the lesson that the way I feel is a consequence of neglecting the systems. because wanted to program only.,2022-12-03 20:25:39.053931,686,1
+683,having another lesson on that I'll die if I'm not conscientious. Conscientiousness or die.,2022-12-03 20:29:27.778910,691,1
+685,take cousin Diego to a hamburger dinner in town.,2022-12-03 20:30:58.288176,693,1
+688,and I guess rest of the house chores I don't do only because don't have the right tools to do a good job anyway.,2022-12-03 20:32:54.197654,696,1
+689,having another lesson on that I'll die if I'm not conscientious. conscientiousness or die.,2022-12-03 20:34:00.095697,691,1
+699,"establish stronger systems for keeping it, meditation, sleep, and food on the q2 instead of q1 quadrant.",2022-12-03 20:59:22.133878,52,1
+702,adjust timespan for planning phases and chores after curating them on todoist (and other recurrent tasks).,2022-12-03 21:01:46.046035,28,1
+703,need to organize todoist for Q2s regarding chores and planning phases of things. so I keep them on that quadrant instead of q1.,2022-12-03 21:02:02.854917,25,1
+704,need to organize todoist for q2s regarding chores and planning phases of things. so I keep them on that quadrant instead of q1.,2022-12-03 21:02:06.986813,25,1
+705,gotta anticipate sevilla trip being so destabilizing and use reflection on this system to get it back on track.,2022-12-03 21:04:13.767978,27,1
+706,it is good to adjust timespan for planning phases and chores after curating them on todoist (and other recurrent tasks).,2022-12-03 21:04:32.726576,28,1
+710,"'it' is not my frog at all, I should rather look at the actually urgent tasks instead-Berlitz classes most likely.",2022-12-03 21:06:48.721817,438,1
+711,"better to work on 2 hour blocks than do a lot of shit in between pomodoros, allows flow state better.",2022-12-03 21:07:14.201183,570,1
+713,"todoist system is gold, I've just failed at the willpower required to maintain tasks up to date, mostly chores but also others.",2022-12-04 00:16:58.752163,706,1
+716,check index of atomic habits book. do a little reading every once in a while that this system is due to check.,2022-12-04 00:21:03.761592,708,1
+718,check index. do a little reading every once in a while that this system is due to check.,2022-12-04 00:45:20.222271,708,1
+722,get used to writing actionable items with implementation intention and the next immediate step then.,2022-12-04 00:56:07.842242,713,1
+723,"already making use of stuff learned on different books, look at that.",2022-12-04 00:56:25.750851,714,1
+724,implementation intention requires time and place. the place is the computer tho maybe a specific window.,2022-12-04 00:57:13.508776,715,1
+726,"I guess the implementation intention takes care of the decision-making of choosing what to do when the moment arises, you just already know.",2022-12-04 00:59:30.298409,717,1
+727,I can plan the 2-hour intervals of it work and then the rest of the activities in google calendar just fine.,2022-12-04 01:00:33.988420,718,1
+733,feel like sticking with this 12:10 to 8:00 schedule for a bit just to verify I've adjusted.,2022-12-04 01:17:20.685668,724,1
+734,currently reading notes from notebook 1.0. have to rescue them.,2022-12-04 01:18:57.024943,197,1
+735,I guess everything that is not an implementation intention at least in terms of place. shouldn't be an actionable item.,2022-12-04 01:19:56.500299,725,1
+737,basically took me this whole week to recover from bad habits I had in a weekend off in sevilla.,2022-12-04 01:20:38.682714,109,1
+739,there is stuff like habits which are distinctive. difficult to categorize in either non or act.,2022-12-04 01:21:52.962424,171,1
+740,consider idas for habits non-actionables since I'm looking to make all actionable have implementation intention and immediate next step.,2022-12-04 01:23:00.736737,726,1
+746,detailed consumption of jp lectures/podcasts is due. at some point have to get it going with the diligence I've worked it out.,2022-12-04 01:29:34.768809,238,1
+754,can probably mix up notebook 3.0 container with notebook 2.0's features container. they are almost one and the same anyway at this point.,2022-12-04 01:48:55.421697,736,1
+755,"setting a day up is an algorithm, the daily routine, and I should probably keep mine up and updated with insight I get from books and stuff.",2022-12-04 01:57:50.763857,737,1
+762,"read fundamentals fully, skip 3.",2022-12-04 02:50:57.746260,743,1
+765,read second law skip 8,2022-12-04 03:18:36.739143,746,1
+782,my impeeding neuroticism seems to be temporarily numbed with monica.,2022-12-04 04:08:57.743017,195,1
+786,consider reviewing she comes first,2022-12-04 04:10:06.638295,85,1
+787,consider reviewing david x book's highlights.,2022-12-04 04:10:12.532912,86,1
+788,consider reviewing models book,2022-12-04 04:10:19.421458,87,1
+792,present: buy and read monica's book and highlight what I like. Birthday present.,2022-12-04 04:31:44.496854,231,1
+793,plan and implement strategies for when everything goes to shit.,2022-12-04 04:32:05.537949,137,1
+796,start thinking about strategies for when everything goes to shit here.,2022-12-04 04:33:24.879780,137,1
+797,"app builds help you see what you need to learn one topic after another, in order.",2022-12-04 05:02:59.347134,79,1
+798,"user-specific data, which is basically authentication views is super important to know.",2022-12-04 05:03:12.730963,174,1
+799,go diligent with Django's authentication docs while reviewing my implementation for notebook 2.0,2022-12-04 05:04:08.148337,754,1
+803,"when discovered htmx, commited deeply to the stackoverflow question that suggested it, kind of like I did w/ dj4e lectures.",2022-12-04 05:06:13.784168,233,1
+804,"when discovered htmx, committed fully to the stackoverflow question that suggested it, kind of like I did w/ dj4e lectures.",2022-12-04 05:06:46.146509,233,1
+805,"barely check the user's question on stackoverflow threads, gotta get the habit of reading other people's code, and understanding it.",2022-12-04 05:09:48.570850,236,1
+810,"underestimated how much html, css, and js I knew I'm likely either ready to work with front-end frameworks or responsive design in general.",2022-12-04 05:18:01.217252,478,1
+811,"if vue and react are for creating UIs, then learning responsive design comes definitely after it.",2022-12-04 05:18:44.015882,757,1
+814,"work for notebook in one important/interesting feature + implementations while I embark into other front-end project, probably mexican ids.",2022-12-04 05:28:56.847415,487,1
+819,finish mvf tag feature and then move your attention fully to Mexican ids and driver licenses website.,2022-12-04 05:36:01.202064,580,1
+822,"can use keyboard shortcuts, numbers to pick a category, but it requires confirmation with the enter key. and a confirmation prompt.",2022-12-04 15:28:54.431999,555,1
+823,you should be able to reclassify elements inside a tag/category with any other tag.,2022-12-04 15:30:20.730081,562,1
+827,to classification view I take a queryset and a spectrum. The latter is the group of tags I'm going to be picking one to assigning each.,2022-12-04 15:37:03.851912,762,1
+828,I choose what tag/categories to group by on containerDetailView one by one.,2022-12-04 15:37:32.853064,566,1
+831,"inside a grouping, you can be suggested to suborder again with tags available, given the tags that elements inside the group have.",2022-12-04 15:41:16.575005,568,1
+842,containerDetailView is not getting the most out of inheriting from generic.ListView. see what can I crop out of it.,2022-12-04 17:08:52.700439,768,1
+844,daily routine is written down on todoist's reminder. that's the place for having it improve everyday and shit.,2022-12-04 18:34:18.369503,770,1
+852,non-actionables tab is the perfect place to use anki algorithm in.,2022-12-05 00:23:17.975920,196,1
+853,"items on myself system, best candidates for the most internalizing with spaced repetition.",2022-12-05 00:23:18.077295,198,1
+862,why not have the contact form just as a div everywhere at the end of the pages + it's own tab?,2022-12-05 01:01:49.929001,776,1
+863,"copy every page from top to bottom from arimé canada, just change contents.",2022-12-05 01:02:49.381530,777,1
+864,start with the models then.,2022-12-05 01:03:31.937931,778,1
+865,extra service would be that we hold the entirety of the user's information if they have any problem with the account or need to withdraw.,2022-12-05 01:07:04.773050,779,1
+866,"on 'wish to accelerate process button', we hit them with the sense of urgency message.",2022-12-05 01:10:56.063770,780,1
+867,check dj4e on how-to images.,2022-12-05 01:11:53.113482,781,1
+875,read django docs on forms.,2022-12-05 02:25:08.191959,787,1
+876,"the meat is the form, the rest is just format technically, so let's pay attention to the mvp version of that, and then we can add the rest.",2022-12-05 02:25:54.553741,788,1
+877,"not committed to her, committed to a process.",2022-12-05 04:15:41.752503,789,1
+879,my belief system ends up being those non-actionables I add the 'ay go' tag to in every container.,2022-12-05 04:28:33.267454,791,1
+880,"what a learning curve with vue, tho I think I wasn't learning what I wanted to learn and that was the problem.",2022-12-05 14:36:59.069554,792,1
+885,mexicanid's web page's form is another place I can use this vue.js stuff in.,2022-12-05 14:43:33.003800,797,1
+890,I don't even know how to differentiate code that is javascript and code that is javascript like.,2022-12-05 15:00:44.729938,799,1
+894,"to be honest, even vue.js here is an overkill. just use html, css, js and django. and even js I'm doubting.",2022-12-05 15:21:04.995984,801,1
+895,db problem I had w/ Tomi Tokko course's notes makes me wonder if there's a way to recover deleted data on sql dbs.,2022-12-05 15:21:53.754901,292,1
+897,"what about making dairon's Mexican id web app using next knowledge to acquire, which would be responsive stuff and Django forms.",2022-12-05 15:32:11.442053,484,1
+902,read django docs on forms and commit to it the usual way.,2022-12-05 15:42:32.860749,787,1
+917,implement the raw form.,2022-12-05 21:00:01.343060,819,1
+919,"prima, vacations, settlement, already worked time. take that into account for calculating if worth resigning now.",2022-12-06 02:46:47.405496,821,1
+920,would have a couple of thousand pesos more because of saving on transportation to the branch.,2022-12-06 02:47:27.315467,822,1
+933,"straight a student, remember there are resources for learning to learn, and so improve on it by 1% or more every iteration.",2022-12-06 03:39:28.669076,834,1
+934,todoist reminds me of straight a student book because the system I'm using is similar to the one there.,2022-12-06 03:39:46.974317,240,1
+935,dollarcity metaphor: buying something that enhances a habit you already have vs buying something you'd like to acquire the habit of using.,2022-12-06 03:40:37.737304,297,1
+937,is impressive how close to ignoring any kind of neglect the hyperfocus on it-related things gets me.,2022-12-06 03:42:18.734355,573,1
+941,"In the beginning, put in as many hours as possible, then dial it back once the habits and the basic knowledge are established.",2022-12-06 03:48:37.191964,250,1
+945,"stop people from repeating info in db, probably with a get or create.",2022-12-06 15:41:04.306306,839,1
+948,remote jobs that prefer a passport as a medium for identification.,2022-12-06 16:46:59.221277,841,1
+949,form files are justified to ask remote jobs that prefer a passport as a medium for identification.,2022-12-06 16:50:00.954330,841,1
+950,'driving licenses facilitate verification processes for jobs where the skill if necessary'.,2022-12-06 16:50:30.722033,842,1
+954,still in need of that dream-like software for organizing my time .,2022-12-06 22:06:30.267551,103,1
+959,form style as simple looking as bancolombia's,2022-12-07 02:32:52.863792,847,1
+960,form prioritizes: (passport or id) or driver's license.,2022-12-07 02:47:31.566159,848,1
+963,"given my income, there should be some +- percentage range of money that is not worth taking worrying too much about where it went.",2022-12-07 16:36:50.339963,851,1
+969,make it required to have either passport or id.,2022-12-07 19:27:26.522078,855,1
+972,a site for mi amortico's business.,2022-12-08 21:51:47.895083,857,1
+992,style the form,2022-12-10 02:04:00.247840,875,1
+1009,"waking up before the alarm is not bad at all, is good.",2022-12-11 23:24:16.689711,883,1
+1022,buying something that enhances a habit you already have vs buying something you'd like to acquire the habit involved in using it.,2022-12-12 12:51:36.678128,297,1
+1026,"I like it when there are no pressures, and the most urgent can just be any of the most important. another reason to leave Berlitz.",2022-12-12 12:54:49.486406,592,1
+1029,"frog can't be the same every day. the most important thing in a day varies, and should do it first thing in the morning despite anything.",2022-12-12 13:03:18.722043,898,1
+1030,I can plan the day by 2-hour intervals in calendar. where every other is it and every other the rest of activities.,2022-12-12 13:04:44.386693,718,1
+1031,"straight a student book, remember there are resources for learning to learn, and so improve on it by 1% or more every iteration.",2022-12-12 13:05:17.630068,834,1
+1034,go through todoist and think out what activity is a real frog to swallow in the morning.,2022-12-12 13:14:30.466064,901,1
+1035,"not after finishing atomic habits, but go through high level abstraction of Stragith A++ student book.",2022-12-12 13:15:50.981430,902,1
+1038,have to implement TWI concepts to all sleeping-related habits.,2022-12-12 13:20:08.928507,905,1
+1043,plateauing makes me desist and subsequently quit I'm noticing. but not anymore.,2022-12-12 13:43:06.120152,910,1
+1044,"beginning a habit, put in as many hours as possible, then dial it back once it and its basic knowledge have been established.",2022-12-12 13:50:32.565429,250,1
+1050,"you can make more than the stupid simple, but keeping in mind that the stupid simple next day is non-negotiable.",2022-12-12 13:59:30.127927,916,1
+1052,definitely need to practice discomfort.,2022-12-12 14:26:38.399786,918,1
+1066,"also look into Deep Work, very popular book too I remember.",2022-12-12 15:29:02.157484,931,1
+1069,"review highlights in look for more insight, and more actionable items for this container.",2022-12-12 17:22:31.403192,935,1
+1073,looking for places to improve 1%s in requires getting used to evaluate the completion of a task after completing it.,2022-12-12 17:46:08.744720,938,1
+1076,get used to writing actionable items with implementation intention and the next immediate step in mind then.,2022-12-12 18:01:18.169259,713,1
+1078,"if in a granpa, parent, child container trio, the grandpa's parent is set as the child, granpa is hidden on containers, and so child.",2022-12-12 19:33:04.942911,942,1
+1079,accroding to openai's chatgpt the getting things done system is alomst exactly what I've naturally been starting to do here.,2022-12-14 04:34:56.732349,943,1
+1085,actionables are not so much done as they are discarded.,2022-12-15 01:02:14.817596,948,1
+1088,can tell again how having a big goal separated into smaller parts and tasks helps with overwhelm,2022-12-15 01:09:38.707552,949,1
+1089,add the shit dairon mentioned for proof of residence docs.,2022-12-15 01:10:35.118353,950,1
+1092,think out and write prompts for users on the form.,2022-12-15 01:15:32.481049,952,1
+1095,change the company's name according to what I decide and the parla we end up using.,2022-12-15 01:17:39.626858,955,1
+1097,I feel like the time I spent going through vue.js guides and tutorials would be wasted if don't embark on some related project right now.,2022-12-15 01:23:59.357799,956,1
+1101,"underestimated how much html, css, and js I knew I'm likely either ready to work with front-end frameworks and responsive design.",2022-12-15 01:27:39.203467,478,1
+1105,I need a real refresher on js syntaxis.,2022-12-15 01:29:23.066612,958,1
+1110,"don't use chatgpt to learn anything, it still makes a lot of mistakes, use it for finding resources rather.",2022-12-15 01:58:57.743679,963,1
+1122,"self.kwargs is shit passed in link, what comes after the '?' queries go into the request.",2022-12-15 02:39:11.183228,365,1
+1123,spaced review of the code helps to avoid the bias from feeling it is familiar.,2022-12-15 02:40:19.320331,393,1
+1126,get just an overview of testing code in django.,2022-12-15 02:45:39.744142,971,1
+1127,research just for an overview of testing code in django.,2022-12-15 02:46:13.679732,971,1
+1135,"creating and completion data is not too useful for making realistic visualizations of task time completion, I need poms data too for that.",2022-12-15 03:19:36.451535,977,1
+1138,show rate of completed-discarded elements to the opposite to keep track of progress.,2022-12-15 03:24:13.144108,980,1
+1141,"lightbulb button gotta be available on the classification view, a lot of ideas come up while you are classifying other ones.",2022-12-15 03:30:43.611726,629,1
+1142,"lightbulb button gotta be available on classification view, a lot of ideas come up while you are classifying other ones.",2022-12-15 03:30:43.837644,629,1
+1146,"given my income, there should be some +- percentage range of money that is not worth worrying too much about where it went.",2022-12-15 03:59:30.975670,851,1
+1156,frog to swallow in the morning can't be the same everyday.,2022-12-15 04:21:19.999280,898,1
+1176,add 'driving licenses facilitate verification processes for jobs where the skill if necessary' prompt.,2022-12-16 14:28:21.061618,842,1
+1177,gotta separate the code from that of mysite,2022-12-16 14:59:09.850416,1003,1
+1178,fix them your process views so they are responsive.,2022-12-16 19:04:57.857675,1008,1
+1179,change the company's name according to what I decided and the parla we will end up using.,2022-12-16 19:31:41.735667,955,1
+1180,"second university courses, course competitions, and sanke.",2022-12-16 22:58:23.758460,210,1
+1181,relevant contact information easily accessible.,2022-12-16 23:52:06.399290,1013,1
+1182,https://www.piratekingdom.com/curriculum/software-development,2022-12-17 00:04:51.077182,1019,1
+1183,most important thing about him appears featured.,2022-12-17 02:45:10.483192,1021,1
+1184,use high-to-low-level principles I learned with django docs in order to allow for zero bs but still depth and wealth of content.,2022-12-17 02:45:43.591903,1014,1
+1185,currently see myself thinking of so many features that already figure out will have to start chopping them down in look of a mvp.,2022-12-17 02:59:59.540178,1030,1
+1186,love de little related icons: https://namanhkapur.super.site/,2022-12-17 03:02:30.371137,1031,1
+1187,"obviously, my projects, some of which I'd have to refurbish, recover, enhance, and light up in order to showcase them.",2022-12-17 03:19:02.799261,1012,1
+1188,all these people's sites I'm planing to copy make me realize I haven't put that much content out in the world.,2022-12-17 03:34:55.481684,1020,1
+1189,maybe together with timelines and reviews of prerequisites. and the methods I used for finding all of that.,2022-12-17 03:39:40.064689,1029,1
+1190,"the deeper the details about me, the burnt the yellow.",2022-12-17 03:41:55.386955,1033,1
+1191,"I don't have experience with companies yet, at least related to the industry. but can add achievements on personal projects.",2022-12-17 03:49:12.154025,1036,1
+1192,let my timeline be a Gantt chart with freaking descriptions of what I did.,2022-12-17 03:49:29.884702,1037,1
+1193,"start thinking about the design of the summarized first layer of high-level information about me, basically, my summary.",2022-12-17 03:51:43.834750,1039,1
+1194,the effective way of showcasing my projects that chatgpt talks about is probably the high-to-low level approach I'm thinking.,2022-12-17 04:29:13.982242,1043,1
+1195,think about the layers in which I'll be showing my projects.,2022-12-17 04:38:20.597338,1046,1
+1196,last layer is probably access to the code (github) first one is something visual and a summary.,2022-12-17 04:40:23.429829,1051,1
+1197,look for the one burned yellow color I like and see fi can implement it.,2022-12-17 14:51:46.548473,1024,1
+1198,the content for my portfolio can be a concrete description of the journey I took toward building the website itself. since before uni.,2022-12-17 14:54:26.448477,200,1
+1199,love de little related icons and the general simplicity: https://namanhkapur.super.site/,2022-12-17 14:56:39.479926,1031,1
+1200,list and curate for state of every project I've ever worked in and work on those worth it to show them in portfolio.,2022-12-17 17:54:39.953165,1042,1
+1201,"as worked so much into a single app, notebook, showcase the features on portfolio as if they were different applications.",2022-12-17 17:56:20.027285,583,1
+1202,"at the end, each one of the proficiencies acquired represents its own gantt chart as if it was a project.",2022-12-18 03:13:34.059712,1073,1
+1203,my relevant work experience to showcase a particular skill is the most-recurrent type-practice teachings.,2022-12-18 03:15:53.271161,1075,1
+1204,a zero bullshit resumé seems to be very important too.,2022-12-18 03:21:13.373948,1025,1
+1205,"working on the side by layers is like working from the mvp-up, and so can focus on getting something working now.",2022-12-18 03:24:05.614795,1038,1
+1206,"at the end, each one of the proficiencies acquired represents its own gantt chart as if it was a microsoft project.",2022-12-18 03:27:51.156059,1073,1
+1207,learn enough to be satisfied with color theory and design. then design the views.,2022-12-18 05:00:21.536512,1091,1
+1208,learn enough to be satisfied with color theory and design. then design the mvp views.,2022-12-18 05:00:39.803744,1091,1
+1209,"most likely have to generate mvp version of portfolio, worrying more about front-end look to continue in milestone pace.",2022-12-18 14:18:29.841971,1088,1
+1210,"no need for cruds for model, can hand filter through the admin for now.",2022-12-18 14:18:47.868165,1089,1
+1211,"a proficiency is formed by other proficiencies. like you working w/ django auths, django forms, django models and views for 'django'.",2022-12-19 02:14:38.577058,1096,1
+1212,"can filter by proficiencies without a parent to get to the core of the main techs I use, and still record resources for subareas I work on.",2022-12-19 02:16:07.377358,1097,1
+1213,as worked so much into a single app (notebook) showcase the features on portfolio as if they were different applications.,2022-12-19 02:26:30.613503,583,1
+1214,as worked so much into a single app (notebook) do a more detailed showcase.,2022-12-19 02:28:09.434342,583,1
+1215,can generalize categories/topics and similarities to filter by just by implementing tags.,2022-12-19 03:06:29.393060,1102,1
+1216,predecessors of a lesson are the lessons that allowed its completion.,2022-12-19 03:10:48.770300,1108,1
+1217,last layer is probably access to the code (github) first one is something visual and a summary of use case and technologies.,2022-12-19 03:13:33.173108,1051,1
+1218,"at the end, each one of the proficiencies acquired represents its own Gantt chart as if it were a microsoft project.",2022-12-19 03:15:52.576067,1073,1
+1219,projects like tomatotimer thought so much core principles that bringing it to life is a really good showcase of the core principles I know.,2022-12-19 03:18:15.502934,1083,1
+1220,"a proficiency is formed by other proficiencies. like you working w/ django auths, django forms, django models and views under 'django'.",2022-12-19 03:20:16.971614,1096,1
+1221,"filter by proficiencies without parent to get main techs I use, and still record resources for subareas I work on for gantt chart timelines.",2022-12-19 03:21:53.387794,1097,1
+1222,be nice to learn color theory and implement it on my site.,2022-12-19 03:26:01.377117,1054,1
+1223,my relevant work experience to showcase a particular skill is the teaching of the practice type with the most appearances.,2022-12-19 03:26:56.520434,1075,1
+1224,generate a time period from a schedule from a certain amount of time.,2022-12-19 03:45:53.236636,1074,1
+1225,"last layer can be project readme on GitHub repository, great opportunity to learn GitHub.",2022-12-19 03:46:10.602023,1080,1
+1226,at the end can make optimal use of my time and people's attention and just make long posts on topics that the timeline shows that matter.,2022-12-19 03:46:46.875227,1081,1
+1227,a second version for notebook that actually has content so people use it. that freezes once that session is closed.,2022-12-19 03:48:20.140068,1101,1
+1228,consider ideas for habits non-actionables since I'm looking to make all actionable have implementation intention and immediate next step.,2022-12-19 13:33:10.610132,726,1
+1229,definitely need to practice choosing discomfort.,2022-12-19 13:54:58.864679,918,1
+1230,definitely need to practice more choosing discomfort.,2022-12-19 14:22:45.488590,918,1
+1231,definitely need to practice choosing discomfort more .,2022-12-19 14:22:59.509639,918,1
+1232,kick a habit up a notch only after having established it through stupid simple consistency.,2022-12-19 14:24:19.231008,250,1
+1235,don't hesitate to make food.,2022-12-20 17:11:47.187755,1146,1
+1236,"wash main wardrobe by hand, so at least presentable.",2022-12-20 17:13:11.573998,1150,1
+1237,"obviously: show my projects, some of which I'd have to refurbish, recover, document, enhance, and light up in order to showcase.",2022-12-20 19:12:31.965475,1012,1
+1239,"timeline definitely has the wait, that's a future feature.",2022-12-20 19:17:15.578320,1087,1
+1240,"the lowest complexity layer comes to play when I give details about teachings of both types, mostly practice teachings tho.",2022-12-20 19:18:33.213930,1106,1
+1241,skills can have subskills and parent skills and shit.,2022-12-22 03:34:18.897473,1185,1
+1242,db would be hella useful for the newsletter.,2022-12-22 19:32:55.123730,1204,1
+1243,"buy groceries, money equivalent to your usual month expense at home for the days you are going to be there.",2022-12-23 04:39:14.319850,1147,1
+1244,Avoid exceptions to habits that undermine your goals. Recognize past behavior to gauge if an exception is worth it to not feel deprived.,2022-12-26 06:13:16.423115,1212,1
+1245,avoid exceptions to habits that undermine goals. recognize the state of the habit to gauge if an exception is ok to not feel deprived.,2022-12-26 06:24:35.715676,1212,1
+1246,would have much more clarity of what comes after what if had the documented previous processes like mexicanids website and notebooks.,2022-12-26 22:54:03.789012,1086,1
+1247,was can think out what habit to establish from scratch after establishing day planing one.,2022-12-27 15:58:44.366397,1138,1
+1248,Life is a system with goals. and requires planning phases too.,2022-12-30 19:33:27.259961,1209,1
+1249,pareto chart generator based on habit influence relationships.,2023-01-04 15:12:59.342255,1258,1
+1250,gotta focus on developing a flexible system for balancing time available for several habits. then I can take on new habits per ser.,2023-01-04 15:22:22.457998,734,1
+1251,"berlitz has helped with expanding my personality a lot though, so at some point have to get that kind of challenge from another source again",2023-01-04 15:22:37.166071,836,1
+1252,strive to live life according to the golden mean.,2023-01-04 15:25:43.854733,1264,1
+1253,strive to live life according to aristotle's golden mean.,2023-01-04 15:37:21.219407,1264,1
+1254,review willpower failure habit is too ambiguous.,2023-01-04 15:39:59.989833,1261,1
+1255,"todoist system is gold, I've just failed at the willpower required to maintain tasks up to date, mostly chores but also the rest.",2023-01-04 15:42:19.290055,706,1
+1256,ms project really helps with setting clear goals and headlines.,2023-01-04 15:51:58.660122,1121,1
+1257,"the frog is the highest-impact task of the day, regardless of if I like it or not.",2023-01-04 15:52:43.461086,1126,1
+1258,"need a rule of thumb, or a better sense, for when habits are established, and so can spend resources in enhancing them.",2023-01-04 16:26:39.757865,904,1
+1259,what about plugin the chatgpt to my ideas here and see what it has to say abou it?,2023-01-04 16:27:43.128257,947,1
+1260,I might just have to include all my goals into ms project systems. that sounds cool as fuck.,2023-01-04 16:30:09.947640,1122,1
+1261,"planning phases in between minimum viable consistency ones, and updating the challenge at the end of the latter w/ insight from the former.",2023-01-04 16:33:54.077234,1135,1
+1262,be crazy to have an activity diagram with stretches of time like I'm imagining and adjust according to conclusions on my planning phases.,2023-01-04 16:39:10.098657,208,1
+1263,"planning phases in between minimum viable implementation, and updating the challenge at the end of the latter w/ insight from the former.",2023-01-05 01:14:30.416505,1135,1
+1264,"derive todo's from untagged items first, before adding tags to those items.",2023-01-05 01:16:16.306775,1202,1
+1265,a nofap tracker that has more functionality.,2023-01-05 01:20:08.458165,1226,1
+1266,"""what are the stupid things that I'm doing on a regular basis to screw up my life"".",2023-01-05 01:44:22.916921,1219,1
+1267,if you make your criteria for success razor-sharp then you know everytime you've screwed up,2023-01-05 01:44:48.727612,1222,1
+1268,"most evident pattern in my strongest current habit, it, is that I keep improving and have milestones and goals. how to replicate elsewhere?",2023-01-05 01:47:09.766968,1134,1
+1269,how can I remind myself constantly of the golden mean.,2023-01-05 01:49:14.892545,1281,1
+1270,"open nofap system, and start working on definitely eradicating such problem from my life.",2023-01-05 01:49:24.436079,1280,1
+1271,"when the flood comes, you want to be the person who built the damn ark",2023-01-05 03:29:44.260880,1223,1
+1272,with contents from r/getdisciplined and stuff to wash his brain.,2023-01-05 03:35:10.796455,1217,1
+1273,"open nofap system, and start working on definitely erradicating such problem from my life.",2023-01-05 03:42:02.389670,1280,1
+1274,"think how to go about crating a media container for movies, music, podcasts, series, etc that I might get entertained by watching.",2023-01-05 03:43:26.938970,1293,1
+1275,awwwards for learning and getting ideas on webdesign be could.,2023-01-06 01:04:39.973559,1094,1
+1276,"I might now know enough, or pretty much anything, about handling python exceptions whooops.",2023-01-06 01:05:10.102075,1117,1
+1277,"app builds give you an overview of what you need to learn one topic after another, in order.",2023-01-06 01:05:43.501472,79,1
+1278,"you lear a whole bunch from web app builds, and generally watching other people code, and their code, I'm noticing.",2023-01-06 01:08:27.274051,755,1
+1279,generate times period for lessons on a skill from a schedule I had during a certain amount of time.,2023-01-06 01:48:54.885833,1074,1
+1280,"first, wanting to be a hacker and getting to know python on think python.",2023-01-06 15:24:31.803314,209,1
+1281,"second, university courses, course competitions, and sanke.",2023-01-06 15:24:42.408711,210,1
+1282,third tomato timer because of uni study.,2023-01-06 15:30:00.511093,211,1
+1283,projects like tomatotimer taught so much core principles that bringing it to life is a really good showcase of the core principles I know.,2023-01-06 15:34:33.075240,1083,1
+1284,ask Mónica for feedback as soon as I have something going.,2023-01-06 15:38:25.256483,1061,1
+1285,my complexity layers describe the hyperlinked logic of the website from the main view. website divisions gotta be different.,2023-01-06 15:38:50.252896,1070,1
+1286,"might tag proficiencies too so I can more easily filter them by topics, and not mix psychology up with it or be able to pick what want show.",2023-01-06 15:40:33.475017,1078,1
+1287,review implementation of current site before css styling.,2023-01-06 15:49:59.980853,1321,1
+1289,begin doing a little research into what a LinkedIn profile should have.,2023-01-06 15:51:43.820516,1040,1
+1290,list and curate for state of every project I've ever worked in and work on those worth showing in portfolio.,2023-01-06 15:53:26.700593,1042,1
+1291,list and curate for state of every project I've ever worked in.,2023-01-06 15:53:40.410070,1042,1
+1292,begin applying latest views visual design to website.,2023-01-06 16:03:37.146876,1328,1
+1293,begin applying latest views' visual design to website.,2023-01-06 16:04:15.601301,1328,1
+1294,"contact links are anchor tags, add them and later worry about icons.",2023-01-06 16:11:53.520299,1165,1
+1295,"'learn more' button next to 'check it out' that takes you to markup, walkthrough, gifs, visuals",2023-01-06 16:12:08.777266,1164,1
+1296,also need to use tags to filter relevant things to show in portfolio.,2023-01-06 16:12:31.867818,1180,1
+1297,"'learn more' button next to 'check it out' that takes you to markup, walkthrough, gifs, visuals.",2023-01-07 02:13:23.377948,1164,1
+1298,"'learn more' button next to 'check it out' that takes you to markup, walkthrough, gifs, or visuals.",2023-01-07 02:13:38.935819,1164,1
+1299,pagination so the scroll down is not long.,2023-01-07 02:14:01.855218,1163,1
+1300,need to use tags to filter relevant things to show in portfolio.,2023-01-07 02:16:16.372466,1180,1
+1301,and pagination should be with the purpose of keeping the divs (and the background colors) looking like I wanted in design.,2023-01-07 02:16:35.845264,1181,1
+1302,gotta improve the pitch on some of these skills,2023-01-07 02:17:51.632161,1171,1
+1303,"gotta fix the set of links that I have for projects, and in the future probably make full detail views for the 20% most important.",2023-01-07 02:19:49.049006,1199,1
+1304,"won't get a flow of form messages that would merit creating a db for them, but maybe in the future.",2023-01-07 02:21:28.051413,1203,1
+1305,"oh and do ab testing with the newsletter database, it would be great lol.",2023-01-07 02:22:36.999094,1205,1
+1306,"update percentages for html, django, htmx, css and js. probably only augment the first one.",2023-01-07 02:23:03.594161,1312,1
+1307,".maybe onhover descriptions of what active, working with, and etc means.",2023-01-07 02:23:37.256936,1315,1
+1308,".review descriptions, links and names for projects.",2023-01-07 02:23:54.830550,1316,1
+1309,.humanize dates.,2023-01-07 02:24:11.939279,1317,1
+1310,copy brice for contact info.,2023-01-07 02:33:30.950003,1182,1
+1311,won't get a high flow of messages from users that would merit creating a db for them just yet.,2023-01-07 02:34:07.188272,1203,1
+1312,"review descriptions, links, and names for projects.",2023-01-07 02:35:32.200117,1316,1
+1313,add hyperlinks to send email and make call on contact section.,2023-01-07 02:36:09.667472,1189,1
+1314,think out a proper footer.,2023-01-07 02:36:37.256828,1192,1
+1315,.change the is_in_use function to be able to pluralize statement.,2023-01-07 02:38:11.291860,1314,1
+1316,.think something to say under a skill instead of 'active projects' like 'used in active projects'.,2023-01-07 02:38:28.199031,1313,1
+1317,"update percentages for html, django, htmx, css and js. probably only augment the first one, rest reduce.",2023-01-07 19:48:42.808495,1312,1
+1318,talk with monica about nofap. that I'm thinking about only orgasming with her.,2023-01-08 03:03:19.330470,1231,1
+1319,"if I'm saving you between us both drowning and you drowning, it's you drowning.",2023-01-08 03:06:04.132277,1331,1
+1320,don't have that span of attention or availability to attack this and financial at the same time. solve second first.,2023-01-08 03:21:20.030315,1336,1
+1321,"review descriptions, links, and names of projects.",2023-01-09 00:55:01.240140,1316,1
+1322,begin fixing links for projects.,2023-01-09 01:40:23.240725,1362,1
+1323,thinking out ways of burning the ships for sleeping.,2023-01-09 15:00:33.999272,917,1
+1324,back to 11:00 to 7:30 schedule then.,2023-01-09 15:07:09.036102,882,1
+1325,"the stupid simple for this is going to sleep at 11 no matter what, and doing other thing if after a while feel like can't sleep.",2023-01-09 15:07:54.448915,911,1
+1326,valerian root,2023-01-09 15:12:01.162752,1370,1
+1327,"going to bed, is always the harder and more discomforting thing, at least when the autonomous part of my body is asking me otherwise.",2023-01-09 15:12:42.044510,1374,1
+1328,how can I burn the ships to sleep at an appropiate fuckin time.,2023-01-09 15:29:36.352525,917,1
+1329,tinte iris pa pintar pantalones y saco.,2023-01-10 15:59:55.508082,1385,1
+1330,the minimum viable goal for a day working on it. taking related Gantt chart into account.,2023-01-11 14:37:16.857783,1407,1
+1331,"prima, vacations, settlement, already worked time, money saved. take that into account for calculating December pay.",2023-01-12 02:37:50.032396,821,1
+1332,"I made an application of my own, and I continue improving on it.",2023-01-12 16:04:56.305127,668,1
+1333,"I seem to be ready, and even over prepared for improving my offense working in the it industry.",2023-01-12 16:05:54.364662,669,1
+1334,december expenses are covered for sure.,2023-01-12 16:06:09.043950,670,1
+1335,I'm not and haven't been suffocated by heat.,2023-01-12 16:07:44.544356,673,1
+1336,found a better way of transporting to berlitz,2023-01-12 16:08:06.004810,674,1
+1337,"Mónica is great, actually.",2023-01-12 16:13:41.230293,680,1
+1338,"I have systems for improving on everything, the willpower to endure on tasks and the software to optimize related decision-making.",2023-01-12 16:15:04.944259,681,1
+1339,I'm just lying in bed being grateful while probably half the world's population is working including my friend.,2023-01-12 16:16:05.628874,682,1
+1340,Steve is hella friend.,2023-01-12 16:17:13.403807,683,1
+1341,Castro is hella friend.,2023-01-12 16:17:25.809088,684,1
+1342,"again, I have the systems for taking care of myself established better than ever.",2023-01-12 16:18:01.838453,688,1
+1343,potentially designing the most efficient system + software for optimally consuming all content I've ever wanted.,2023-01-12 16:22:30.018064,698,1
+1344,have two pillows that I sew together myself. and someone that likes me what kind enough to gift to me.,2023-01-12 16:23:51.885155,700,1
+1345,a computer that the company assigned to me and allowed me to work constantly toward a single objective.,2023-01-12 16:25:21.380776,702,1
+1346,next time review and classify items here.,2023-01-12 16:26:04.072770,704,1
+1347,"there was a time I had to pay for a bike I had the fault of having crashed into, and didn't even now how the fuck I was going to.",2023-01-12 16:26:38.507637,867,1
+1348,all the information I have access to as a bilingual.,2023-01-12 21:59:33.972089,1238,1
+1349,I don't have to go to the habanero pepper plantation anymore.,2023-01-12 22:00:07.627880,1266,1
+1350,"I'm learning the equilibrium of work, most recently to dial it down in that activity wich you want to do the most of.",2023-01-12 22:03:34.047387,1429,1
+1351,I don't have to physically suffer from habanero pepper burns anymore.,2023-01-12 22:04:40.660679,1435,1
+1352,"technology used tags can look as sophisticated as in use tags.
+change home image's size.",2023-01-13 19:46:33.941162,1445,1
+1353,"when a non-actionable is done = true, could mean is discarded, meh, solved, internalized or just not relevant.",2023-01-14 01:48:28.388304,974,1
+1354,frog highest-impact task of the day that I don't want to do.,2023-01-14 01:53:15.799775,1126,1
+1355,some resource for learning ms project.,2023-01-14 01:54:02.481141,1120,1
+1356,and so the 'it' hyperfocus ended up destroying itself with how much I neglected my physiology these days.,2023-01-14 01:56:08.951874,895,1
+1357,classifying new items on systems and a little overview of what is already classified is fundamental to working on a container/system.,2023-01-14 01:58:33.986867,739,1
+1358,"mind is severally clouded right know, and it's due to not taking care of the most important things.",2023-01-14 01:59:28.628839,572,1
+1359,think about how to know when a habit is established,2023-01-14 02:03:46.479844,1136,1
+1360,"the long term consequences of not taking care of the most important things, for my long term goals, is just unacceptable.",2023-01-14 02:04:46.633894,1127,1
+1361,'it' hyperfocus ends up destroying itself with how much physiology neglect .,2023-01-14 02:07:14.130380,895,1
+1362,the possibility of organizing myself enough to go through all the things I always wanted to learn.,2023-01-14 02:10:07.729034,495,1
+1363,"the size of non-actionables vs actionables here show how I'm more planing than implementing-oriented, that shit gotta change.",2023-01-14 02:11:49.182523,1268,1
+1364,"the gantt charts, use them as north stars.",2023-01-14 02:12:14.478065,1233,1
+1365,it is easy to rationalize against ambiguous goals.,2023-01-14 02:12:30.212668,1227,1
+1366,it is easy to rationalize acting against ambiguous goals.,2023-01-14 02:13:00.038858,1227,1
+1367,"when the flood comes, you want to be the person who built the damn ark.",2023-01-14 02:13:29.916239,1223,1
+1368,plateauing makes me desist and subsequently quit I'm noticing. so need to keep improving particularly in most important things.,2023-01-14 02:16:41.925235,910,1
+1369,I should probably confront the discomfort of stopping or interrupting a flow state (or hyperfocus) inducing activity.,2023-01-14 02:36:44.629160,1452,1
+1370,"benefits of exercise are quickly perceptible after it, tho during it is hell, particularly after having lost habit.",2023-01-14 02:37:41.725448,1450,1
+1371,updating availability for the rest of the month so can solve that money issue for sure before the month ends.,2023-01-14 02:38:05.480492,1449,1
+1372,neurology related topics have given more answer recently.,2023-01-14 02:38:17.430753,1448,1
+1373,"David Goggins' ""it was me who did that"" has a gratitude vibe that fuels current motivation. just being reminded that you have been before.",2023-01-14 02:39:33.167324,1421,1
+1374,"set ms goals from the high-level down, so starting from life and long term. all the way down to systems, then specific projects.",2023-01-14 02:41:26.959107,1274,1
+1375,"golden mean for working on everything, including it.",2023-01-14 02:41:46.368169,1272,1
+1376,there is a connection between physical movement and focus capacity really worth looking into.,2023-01-14 02:45:17.206470,929,1
+1377,I'm in a better position for talking with daniel if I have the portfolio project working and up.,2023-01-14 05:46:29.321544,1473,1
+1378,Berlitz starting to sound like a waste of time at least for the rest of the month.,2023-01-14 05:54:54.460092,1467,1
+1379,continue to go to Berlitz would be a waste of my time.,2023-01-14 05:55:27.081525,1470,1
+1380,ask Mónica for feedback as soon as I have something visual going.,2023-01-14 06:19:17.105937,1061,1
+1381,missing footer links.,2023-01-14 06:29:32.112282,1443,1
+1382,"make my English look more proficient than my Spanish, that shit pro.",2023-01-14 06:31:27.615859,584,1
+1383,"sorted skill-set denotes weaknesses more than anything, change it to random assortment which conveys variety.",2023-01-14 06:33:50.464142,1383,1
+1384,"tinte iris, pa calzoncillos, pa saco sevilla, pa camiseta koaj.",2023-01-16 05:33:53.241382,1406,1
+1386,I'm in a way better position for talking with daniel and getting clients if I have the portfolio project working and up.,2023-01-18 22:15:16.076663,1473,1
+1387,"tag skills so I can more easily filter by related topics, and not mix psychology up with it or be able to pick what I want to show.",2023-01-19 18:37:59.948427,1078,1
+1389,I recorded something about this on phone recording machine.,2023-01-20 07:25:12.008783,1505,1
+1390,technology used tags can look as sophisticated as in use tags.,2023-01-20 17:57:06.051358,1445,1
+1391,the predecessors of a lesson are the lessons that contributed to its completion.,2023-01-20 17:58:10.097508,1108,1
+1392,I can later associate time periods with recorded poms and those with a particular teaching on a source ayayai.,2023-01-20 18:01:36.203635,1072,1
+1393,gotta get notebook 1.0 and 2.0 working and on same website for potential clients to see.,2023-01-20 18:07:22.002370,1366,1
+1394,about me longer description of myself and what I do.,2023-01-20 18:12:53.472466,1444,1
+1395,site is not responsive at all just yet.,2023-01-20 18:13:29.832623,1441,1
+1396,"on-mouse-over descriptions of what active, working with, etc mean.",2023-01-20 18:13:45.635532,1315,1
+1397,"goes to account/profile when I log in, so through 404 what",2023-01-21 00:03:19.741016,1515,1
+1398,fix sanke up as a readily accesible app.,2023-01-21 03:33:30.050507,1508,1
+1399,necessary to test for every app to go well when new user tries to log in and or use it.,2023-01-21 05:18:52.605473,1516,1
+1400,will probably have to curate a little for the content I share on github in order to be ok with linking my portfolio to there.,2023-01-21 05:20:01.911012,1518,1
+1401,just noticed how a really deep belief about doing what you like vs what you don't changed inside of me after ah dopamine podcast.,2023-01-21 21:42:38.926414,1533,1
+1402,should get meditation going again. for willpower and for sleep.,2023-01-21 21:50:09.187636,522,1
+1403,"currently going to sleep at 11:00 pm and waking up no later than 8:00 am, if naturally before, good. non-negotiable.",2023-01-21 21:51:15.351522,882,1
+1404,barely drink or eat anything before going to sleep. the former makes me wake up to pee.,2023-01-21 21:51:31.017914,520,1
+1405,been noticing how a really deep belief about doing what you like vs what you don't changed inside of me after ah dopamine podcast.,2023-01-21 21:53:31.603225,1533,1
+1406,"I'd love to be back at reading a book, but I just don't know how to juggle between all the interests that I have.",2023-01-21 21:53:50.862224,1532,1
+1407,"once I make the most out of the time I spend awake and need more time in the day, I can start experimenting with sleep phases.",2023-01-21 21:54:40.838200,1527,1
+1408,put all efforts into going to sleep and waking up at the same time everyday.,2023-01-21 22:02:51.528455,517,1
+1409,the stupid simple for this is going to sleep at the agreed time no matter what.,2023-01-21 22:07:10.768791,911,1
+1410,the autonomous nervous system is the one that at times makes me dread some sleep and in others crave it.,2023-01-21 22:15:08.118344,1536,1
+1411,atomic habits to strengthen the super-ego surrounding the sleep discipline.,2023-01-21 23:00:21.029771,885,1
+1412,the autonomous nervous system is the one that at times makes me dread sleep and at other times crave it.,2023-01-21 23:41:41.688844,1536,1
+1413,think is from atomic habits that thinking how you are going to go about doing something makes you more likely to do it.,2023-01-22 00:18:09.831773,1531,1
+1414,being well myself is another responsibility to others.,2023-01-22 00:19:50.474832,886,1
+1415,if consistent I'd need less sleep. which means more time during the day. on days before Sevilla noticed I was waking up before the alarm.,2023-01-22 00:20:30.086580,111,1
+1416,"an important habit I haven't established is important and urgent, once established is only important, and so on.",2023-01-22 00:23:11.031632,1555,1
+1417,"the notebook is my own bible, and the planing phases study sessions to reinforce and internalize believes. like jews studying their books.",2023-01-22 00:23:52.646021,1561,1
+1418,OA plan the wind-down routine for a day.,2023-01-22 00:26:32.155743,1554,1
+1419,Apply O and A for all tasks here.,2023-01-22 00:30:06.135006,1560,1
+1420,"how about going to sleep at 11:00 pm and waking up no later than 8:00 am, if naturally before, good. non-negotiable.",2023-01-22 00:30:55.901203,882,1
+1421,'O' and 'A' plan wind-down routine for a day.,2023-01-22 00:33:47.562876,1554,1
+1422,include the set of relaxing and away-from-screen activities that promote relaxation into a windown routine.,2023-01-22 00:33:59.742600,1551,1
+1423,how can I burn the ships to sleep at an appropiate fuckin time?,2023-01-22 00:34:30.373690,917,1
+1424,I should be capable of going through the window routine even if not sleepy. I just have to do it.,2023-01-22 00:37:35.288105,1567,1
+1425,phone alarm reminder for the wind-down routine to start.,2023-01-22 00:45:49.781085,1566,1
+1426,how can I burn the ships to sleep at agreed time?,2023-01-22 00:53:10.461019,917,1
+1427,how do I deal with not sleeping right away in a way that doesn't undermine the habit?,2023-01-22 00:55:13.514049,1534,1
+1428,reddit subs look and sound like a good place to start looking to apply in.,2023-01-22 07:43:55.167420,1605,1
+1429,thinking of seducing ñañé into financing me another month.,2023-01-23 01:45:21.755907,1469,1
+1430,"make chatgpt simulate a real test of my django knowledge, and grade my results, with feedback and shit. can use two scups of django index f",2023-01-23 01:46:35.543763,1622,1
+1431,reduce the amount of times that I show myself not to be dependable.,2023-01-23 01:49:55.643492,1610,1
+1432,"get away from the automatic monster, linkedin, and etc processes and get more personal by researching the shit out of everyone.",2023-01-23 01:51:34.168794,1601,1
+1433,remember leetcode for coding interview prep.,2023-01-23 01:52:27.698534,1597,1
+1434,remember to ignore the job listings out there.,2023-01-23 01:53:56.119035,1591,1
+1435,"what about doubling on berlitz time while I continue improving my portfolio, programming skills and eveything.",2023-01-23 01:54:50.062421,1587,1
+1436,probably also add linkedin profile and include it on resumé.,2023-01-23 02:11:20.761212,1604,1
+1437,wtf is a cover letter tho,2023-01-23 02:22:25.023968,1600,1
+1438,how am I gonna go about documenting my process again?,2023-01-23 02:24:49.939497,1640,1
+1439,add link to projects on resumé. maybe to the part on portfolio website that shows them tho.,2023-01-23 02:26:15.004644,1635,1
+1440,make some considerations on what kind of programming job is worth accepting to leave berlitz.,2023-01-23 02:26:40.486458,1634,1
+1441,"1,112.75/month United States Dollar salary.",2023-01-23 16:46:34.008599,1647,1
+1442,.do I place links on about me or not?,2023-01-24 02:24:20.057207,1656,1
+1443,add a general interest with a specific detail.,2023-01-24 02:37:35.613526,1694,1
+1444,consider your salary aspiration for the job listings that I take into account.,2023-01-24 02:37:57.348784,1691,1
+1445,consider salary aspiration for the job listings that I take into account.,2023-01-24 02:38:47.955272,1691,1
+1446,chatgpt can help with all of this,2023-01-24 02:39:01.404581,1688,1
+1447,need quantifiable results.,2023-01-24 02:39:16.459794,1686,1
+1448,what measurable metrics can I implement.,2023-01-24 02:41:35.528326,1679,1
+1449,"nothing has to look broken, so the importance of deploying well-rounded, tested, and implementation-corrected software.",2023-01-24 02:42:49.605545,1697,1
+1450,metrics for extracurriculars and internships looks like a crossed-out SMART goal in reported speech.,2023-01-24 02:54:32.329335,1676,1
+1451,list 5 or more skills. use a word could generator to generate skills mentioned on selected job offers (can make an app for that).,2023-01-24 02:55:30.005808,1670,1
+1452,".connect with people I know personally first, then people in the field I'm interested in.",2023-01-24 02:57:17.618292,1654,1
+1453,"casual programmer-like photo, looking front, background is taken out replaced for white.",2023-01-24 02:57:50.933534,1651,1
+1454,"casual programmer-like photo, looking front, background is taken out replaced for a white, white shirt, black t-shirt under.",2023-01-24 02:58:02.517465,1651,1
+1455,superhero cafe and bar exercise for the joblistings I find myself drawn to.,2023-01-24 03:00:45.655176,1690,1
+1456,"get chatgpt to delete buzzwords and clichés from my resumé, portfolio, and LinkedIn descriptions.",2023-01-24 03:13:27.973115,1689,1
+1457,what top softskills are applicable to me? and include them on linkedin and resumé.,2023-01-24 03:14:10.906010,1685,1
+1458,"create about me, pretentious, experience, and what did I do it with.",2023-01-24 03:24:43.749299,1703,1
+1459,"create about me, pretentious, experience, and what did I do it with. what do I want to build.",2023-01-24 03:24:59.362535,1703,1
+1460,must use word cloud tools based on job listings. brilliant.,2023-01-24 03:31:28.428725,1683,1
+1461,review most important non-actionables here after having created linkeding about me.,2023-01-24 03:40:08.278258,1708,1
+1462,what extracurricular and internship metrics do I genuinely have?,2023-01-24 03:40:42.997019,1705,1
+1463,add pick,2023-01-24 15:31:47.996187,1713,1
+1464,add bullet points in a-x-z format that chatgpt helped me create.,2023-01-24 18:24:21.305703,1714,1
+1465,"a full time month salary at berlitz would be ~ 4'189,090 colombian pesos, if it where possible.",2023-01-24 19:28:00.915530,1716,1
+1466,add bulled points in experience for berlitz that are related to python deving.,2023-01-24 20:28:15.542397,1726,1
+1467,add bulled points in experience for berlitz that are related to python deving on linkeding.,2023-01-24 20:37:56.562199,1726,1
+1468,mention python work and experience around one of the work history bullet points.,2023-01-24 20:38:14.068662,1725,1
+1469,create profile in torre from link daniel send me on linkeding.,2023-01-24 20:38:40.794412,1720,1
+1471,medium has everything for making there the kinds of post about documenting my process that I need.,2023-01-25 02:54:45.804841,1648,1
+1472,'code with an accompanying journal'. so definitely have to work on portfolio website doing a way better job than now at showcasing journey.,2023-01-25 02:56:53.862508,1589,1
+1473,"a good rule is, 20% less. so $3'351,272 (USD ~736) for a full-time job in the industry is good enough, to begin with.",2023-01-25 03:00:27.118188,1719,1
+1474,"if go back to medium, every article I create is offense.",2023-01-25 03:02:07.304224,1668,1
+1475,questions are actionables because the command is look for an answer to it.,2023-01-25 07:00:20.458315,499,1
+1476,look for opportunities to work on features and implementations with vue.js.,2023-01-25 07:01:14.318104,966,1
+1477,get_object_or_404 is the way of handling querying,2023-01-25 07:04:40.271013,464,1
+1478,find more DRY implementations alternatives of user specific data. confirm or debunk that current is best approach.,2023-01-25 07:17:50.051078,972,1
+1479,having parentContainer and parentItem as attribute names is also dumb as fuck.,2023-01-25 07:19:26.856937,563,1
+1480,see if get_or_404 method/function is a good way of handling the 'object doesn't exist' exception.,2023-01-25 07:20:09.919438,448,1
+1481,-> isn't there a way of limiting the scope of the database all over a login instance or something?,2023-01-25 07:21:00.231196,427,1
+1482,"item statement versions don't work right yet, I'm having duplicates on creation.",2023-01-25 07:23:22.810760,609,1
+1483,can I do something about restricting foreign-keying between object instances that don't have the same owner (user).,2023-01-25 07:27:47.776163,366,1
+1484,show rate of completed/discarded items to uncompleted/active ones to keep track of progress.,2023-01-25 07:36:30.020474,980,1
+1485,"spectrums have tags, and the same item shouldn't have more than one tag of the same spectrum.",2023-01-25 07:57:20.564517,640,1
+1486,in paper preparation of features gives you time to think how stupid the idea actually might be.,2023-01-25 07:58:20.656584,494,1
+1487,what if I crossed out projects and items instead of archiving them?,2023-01-25 08:02:16.792479,69,1
+1488,use a CSS framework for the design so the app actually makes sense and is usable.,2023-01-25 08:04:16.234098,1771,1
+1489,swiper.js for notebook app's responsive design.,2023-01-25 08:04:37.132066,1760,1
+1490,for links on item statement field can have another field for links and use front end javascript to understand and fill them out.,2023-01-25 08:10:33.986797,610,1
+1491,be able to split a container into other containers.,2023-01-25 08:11:33.965865,590,1
+1492,sicky actionable + pomodoro timers that register work on it.,2023-01-25 08:12:23.261887,488,1
+1493,itemStatementVersion view can highlight changes to statements kind of like GitHub does with commits.,2023-01-25 08:16:44.112205,199,1
+1494,a hover or change of background color to know more or less where/what I was reading last.,2023-01-25 08:17:04.394660,194,1
+1495,explore: https://en.wikipedia.org/wiki/Comparison_of_note-taking_software,2023-01-25 08:29:24.622978,1776,1
+1496,"filters, like showing done items or not, specific to containers.",2023-01-25 08:30:04.846582,1311,1
+1497,"drag and drop for connecting ideas together, and commands and shit. I don't know. think about it.",2023-01-25 08:30:55.921485,987,1
+1498,be able to link images to items to quickly see them on over or something. this for when I buy clothes.,2023-01-25 08:32:27.736785,656,1
+1499,"mix the todoist's text recognition feature and notepad interface to make idea submition faster here. like, just after making a line break.",2023-01-25 15:53:41.587984,391,1
+1500,what if I could group subcontainers instead of having to add them as subs of other containers I end up barely using?,2023-01-25 16:04:08.960871,295,1
+1501,think about using commands to access an item's crud+ functions from the notepad-like interface.,2023-01-25 16:05:40.554502,987,1
+1502,learn testing to set up tests for the api.,2023-01-25 16:41:23.263211,1800,1
+1503,create django rest framework api for winged.,2023-01-25 16:41:40.005644,1799,1
+1504,get that project setup going.,2023-01-25 16:41:56.030440,1797,1
+1505,floating cruds instead of it redirecting me to links for so with htmx.,2023-01-25 16:42:11.739973,157,1
+1506,gotta watch that mvp development source.,2023-01-25 16:43:07.938665,1804,1
+1507,swiper.js as part of the app's responsive design.,2023-01-25 16:43:25.693511,1760,1
+1508,some responsive framework source for the site to look cool.,2023-01-25 16:45:20.364758,1803,1
+1509,maybe some vue.js for the front end source.,2023-01-25 16:45:59.239012,1802,1
+1510,squaredpad: the notepad-like interface I can see possible with vue.js alone.,2023-01-25 16:48:40.489160,1780,1
+1511,how can the api play along with a pomodoros application in the future?😀,2023-01-25 16:53:08.843431,1818,1
+1512,might need to separate what pertains to the front-end from what is back-end related here.,2023-01-25 17:21:22.742748,1821,1
+1513,check each item's model field so can think out the respective functionality.,2023-01-25 17:24:01.668335,1793,1
+1514,explore front end ideas and alternatives later.,2023-01-25 17:37:46.432513,1801,1
+1515,what if I could group subcontainers on categories instead of having to add them as subs of other containers I end up barely using?,2023-01-26 03:12:43.279044,295,1
+1516,have floating cruds instead of it redirecting me to links for so with htmx.,2023-01-26 03:17:33.097169,157,1

@@ -1,0 +1,35 @@
+id,name,description,created_at,updated_at,last_opened_at,is_on_actionables_tab,user_id,is_collapsed,parent_container_id
+1,inbox,description,2022-11-16 05:25:09.118269,2023-01-25 21:35:06.761472,2023-01-25 21:35:06.394099,1,1,1,
+12,notebook 2.0,first portfolio project that I am to make a full mvp to deploy online and shit.,2022-11-16 14:25:57.394586,2023-02-12 02:54:12.861679,2023-01-25 07:02:13.052461,1,1,0,26
+13,notebook 2.0 features,for stuff that needs to get done.,2022-11-16 14:26:09.899569,2023-02-12 02:54:18.289221,2023-01-25 16:25:21.141090,0,1,0,12
+14,myself,regarding the personality that I'm expanding. the care that I'm taking. and the goals I'm pursuing.,2022-11-16 19:34:28.494857,2023-02-02 18:41:08.247884,2023-02-02 18:41:07.631041,0,1,0,
+15,system,a place for constantly improving the algorithm to always be doing what I'm supposed to be doing.,2022-11-16 19:35:18.941018,2023-02-12 02:57:05.841559,2023-02-02 16:17:41.950081,0,1,0,14
+16,it,Information technology offense.,2022-11-16 19:41:02.298233,2023-02-12 02:54:08.030346,2023-01-29 02:38:32.273983,0,1,0,
+20,game,"inner game, outer game, emotional stability, lack of dependance, rel with Mónica.",2022-11-16 20:08:01.408356,2023-01-25 20:42:32.684288,2023-01-08 03:27:12.386453,0,1,0,14
+21,frontend learning,"because webapps, at least by users, are judged by their cover.",2022-11-17 13:53:06.981743,2023-02-12 02:29:50.686384,2022-12-22 04:06:06.713565,1,1,0,16
+26,softwaredev,stuff I could make with the knowledge I have.,2022-11-17 15:49:23.107933,2023-02-12 02:30:02.388592,2023-01-25 06:58:11.664221,1,1,0,16
+30,sleep,because it is a keystone habit crucial to keep the system going.,2022-11-19 01:33:12.823827,2023-02-02 19:10:25.595340,2023-02-02 19:10:20.450725,0,1,1,14
+32,notebook 2.0 implementations,"for tasks that are neither cunjunctural nor features, but regarding code implementation.",2022-11-20 19:45:23.529842,2023-01-26 16:30:23.470151,2023-01-26 16:30:19.279058,0,1,0,12
+33,portfolio website,my face (and the shit it sells) on the internet.,2022-11-21 03:19:46.298783,2023-02-12 02:55:10.134503,2023-01-21 05:16:02.168006,1,1,0,26
+54,THE BUG,"when realized the app wouldn't definitely work for steve to use, due to my poor planning and rushed implementations.",2022-11-22 22:34:41.895738,2023-01-21 00:05:12.187318,2023-01-21 00:05:08.004747,0,1,1,67
+60,berlitz,for stuff I can improve on it whatever.,2022-11-24 00:20:19.149856,2023-01-30 02:35:29.641928,2023-01-30 02:35:29.219850,1,1,1,
+64,mexicanids,the project we enduring with dairon.,2022-11-24 03:02:10.513354,2022-12-23 19:14:22.916050,2022-12-23 19:14:03.205552,0,1,1,21
+67,archive,curated containers I'm probably not going to have anything to do with in a while.,2022-11-27 23:46:30.887302,2023-02-12 02:54:22.966784,2022-12-07 02:25:20.039652,1,1,0,
+81,tags feature,"originally in notebook 3.0 (features). For curation, sorting, organization, classification, and probably spaced repetition and learning.",2022-11-29 16:04:48.643357,2023-02-12 02:54:20.032286,2022-12-04 15:26:53.055067,0,1,0,13
+82,concept,commentary on what I'm currently imaginning,2022-11-30 03:55:19.934602,2022-12-04 16:07:03.673792,2022-12-04 16:00:36.783540,1,1,1,81
+83,implementation,for the code I'll be using and the logic I'll be following.,2022-12-01 15:24:44.231960,2022-12-04 17:25:28.516013,2022-12-04 17:25:12.621653,1,1,1,81
+84,grateful for,gratefulness exercise bois,2022-12-03 19:50:20.947122,2023-02-02 14:57:08.362893,2023-02-02 14:57:07.882911,1,1,1,14
+85,atomic habits book,"for notes I get from it, and tasks that occur to do with it.",2022-12-04 00:22:26.969616,2022-12-21 14:13:27.591527,2022-12-21 14:13:26.933832,1,1,1,15
+86,mate,"the most thorough book on the inner game for seduction ever, or so it has appeared to me.",2022-12-04 04:25:24.527154,2022-12-04 04:49:25.525167,2022-12-04 04:49:23.664828,1,1,1,20
+107,hometown trip,a way of remembering what I have to do to keep conscientiousness up front.,2022-12-20 17:10:56.220543,2023-01-03 02:09:54.453879,2023-01-03 02:09:01.976572,0,1,1,
+108,portfolio implementation,"once I've written some code, is time to take note of what has to be added and corrected dwag.",2022-12-22 00:29:16.844806,2023-01-21 21:28:03.516779,2023-01-21 21:28:02.991419,1,1,1,33
+110,planned purchases,defense strategy of only having planned purchases,2023-01-03 07:53:31.718327,2023-01-27 16:29:51.665945,2023-01-27 16:29:51.294344,1,1,1,
+111,nofap,"normal mode, getting rid of pm-ing for good.",2023-01-05 03:31:36.805225,2023-01-05 03:31:36.830066,2023-01-05 03:31:36.787606,1,1,1,14
+112,entertainment,consuming media for pleasure is a thing I enjoyed as a kid.,2023-01-05 03:45:31.601160,2023-01-14 02:52:51.022717,2023-01-14 02:52:50.570403,1,1,1,14
+113,portfolio features,for stuff I won't bother adding on mvp version.,2023-01-06 15:21:48.140725,2023-01-20 18:17:32.266421,2023-01-20 18:17:09.990620,1,1,1,33
+114,exercise,"for the neurological, psychological, and aesthetic benefits.",2023-01-10 13:24:03.086631,2023-01-10 15:35:40.675400,2023-01-10 15:35:07.646352,0,1,1,14
+115,offense,because 'it' is too education-centered and berlitz I'm leaving behind.,2023-01-14 05:40:47.397753,2023-02-12 02:54:14.449152,2023-02-07 20:06:27.423145,0,1,0,
+116,resumé,resumé ideas.,2023-01-19 06:36:15.614444,2023-01-19 06:36:15.638416,2023-01-19 06:36:15.598595,1,1,1,33
+118,linkedin profile.,to make it and keep it tidy up.,2023-01-24 02:13:03.525706,2023-01-25 02:41:24.788010,2023-01-25 02:41:24.193964,1,1,1,115
+119,winged back-end,kicking it up a notch on productivity.,2023-01-25 15:20:50.364521,2023-01-31 04:28:12.675315,2023-01-31 04:28:12.203414,1,1,1,26
+120,winged front-end,for what comes a bit later.,2023-01-25 17:30:05.383476,2023-01-30 14:58:40.062874,2023-01-30 14:58:39.501826,1,1,1,26
