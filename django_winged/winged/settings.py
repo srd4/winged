@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'winged_app',
     'corsheaders',
     'rest_framework.authtoken',
+    'django_extensions',
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True

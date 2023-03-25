@@ -69,34 +69,35 @@
                     <li class="options option"
                     v-on:mouseover="overOption"
                     v-on:mouseleave="leaveOption"
-                    v-on:click="changeActionable($event, item);toggleDropdown(index);"
-                    >move to</li>
+                    >
+                    <select v-model="containerToMoveTo" id="spectrums" name="spectrumsList" v-on:change="moveToContainer($event, item);toggleDropdown(index);">
+                        <option :value="null">move to</option>
+                        <option v-for="container in containers" :value="container.id">{{container.name}}</option>
+                    </select>
+                    </li>
 
                     <li class="options option"
                     v-on:mouseover="overOption"
                     v-on:mouseleave="leaveOption"
-                    v-on:click="deleteItem(item);changeActionable($event, item);toggleDropdown(index);"
-                    >delete</li>
+                    v-on:click="archiveItem(item);changeActionable($event, item);toggleDropdown(index);"
+                    >archive</li>
 
                     <li class="options option"
                     v-on:mouseover="overOption"
                     v-on:mouseleave="leaveOption"
                     v-on:click="newSpectrumOptionsVisible === index? newSpectrumOptionsVisible = null: newSpectrumOptionsVisible = index"
-                    >add spectrum
-                    </li>
+                    >add spectrum </li>
 
                     <li class="options option"
                     v-on:mouseover="overOption"
                     v-on:mouseleave="leaveOption"
                     v-on:click="spectrumRangesVisible === index? spectrumRangesVisible = null: spectrumRangesVisible = index"
-                    >spectrum ranges
-                    </li>
-                    <div :class="'dropdown options ranges'"
-                    v-show="true">
-                        <!--v-show="item.spectrum_values && item.spectrum_values.length > 0 && spectrumRangesVisible === index">-->
+                    >spectrum ranges</li>
 
+                        <div :class="'dropdown options ranges'"
+                        v-show="true">
+                            <!--v-show="item.spectrum_values && item.spectrum_values.length > 0 && spectrumRangesVisible === index">-->
                             <ul class="dropdown options ranges">
-
                                 <li class="options option"
                                 v-for="spectrum_value in item.spectrum_values">
 
@@ -112,9 +113,7 @@
                                     v-on:input="spectrum_value.value = $event.target.value"
                                     :value="spectrum_value.value"
                                     @focusout="updateSpectrum(spectrum_value)">
-
                                 </li>
-
                             </ul>
                         </div>
 
@@ -143,7 +142,7 @@ import axiosInstance  from '../axiosInstance';
 export default {
     name:'Items',
     props:{
-        container : null
+        container : null,
     },
     data(){
         return {
@@ -164,6 +163,8 @@ export default {
             newSpectrumOptionsVisible: null,
             spectrumRangesVisible: null,
             spectrumToAdd: null,
+            containerToMoveTo: null,
+            containers: [],
         }
     },
     watch: {
@@ -173,13 +174,26 @@ export default {
             this.container_spectrums = this.container.spectrum_types;
             this.available_spectrums = this.getSpectrumTypes()
             this.filterItems()
-
+            this.getAllContainers()
         },
     },
     computed : {
         notSeeing(){return this.seeActionables? 'non-actionable':'actionable'},
     },
     methods : {
+        moveToContainer(event, item){
+            if (this.containerToMoveTo){
+                this.updateItem(item, {parent_container: this.containerToMoveTo})
+                this.containerToMoveTo = null;
+            }
+        },
+        getAllContainers(){
+            axiosInstance
+                .get('/containers/')
+                .then(response => {
+                this.containers  = response.data
+                })
+        },
         addSpectrumToContainerItems(spectrum_type){
             for(let i = 0; i < this.item_list.length; i++){
                 this.createSpectrumValue(this.item_list[i], spectrum_type);
@@ -296,7 +310,7 @@ export default {
             }
             
         },
-        deleteItem(item){
+        archiveItem(item){
             item.archived = !item.archived;
             this.updateItem(item, item);
         },

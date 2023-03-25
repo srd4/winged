@@ -37,8 +37,7 @@ export default {
       this.activeContainer = container;
     },
     getContainers(){
-      axiosInstance
-        .get('http://127.0.0.1:8000/containerTrees/')
+      axiosInstance.get('/containerTrees/')
         .then(response => {
           this.container_list = response.data
         })

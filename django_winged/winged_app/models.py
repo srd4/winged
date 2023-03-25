@@ -27,7 +27,7 @@ class ContainerGroup(models.Model):
 class Container(models.Model):
     name = models.CharField(max_length=2**6)
     description = models.TextField(max_length=2**7)
-    parent_container = models.ForeignKey('self', null=True, on_delete=models.SET_NULL)
+    parent_container = models.ForeignKey('self', blank=True, null=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -56,7 +56,7 @@ class Item(models.Model):
     done = models.BooleanField(default=False, null=False)
     statement = models.TextField(max_length=2**7)
     statement_updated_at = models.DateTimeField(default=timezone.now)
-    parent_container = models.ForeignKey(Container, null=True, on_delete=models.SET_NULL)
+    parent_container = models.ForeignKey(Container, null=True, on_delete=models.CASCADE)
     parent_item = models.ForeignKey('self', null=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
