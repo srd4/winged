@@ -5,6 +5,9 @@ from rest_framework import serializers
 class ownerValidation(serializers.ModelSerializer):
     """def validate(self, data):
         user = self.context['request'].user
+        print(self.context['request'].user)
+
+        print(data)
 
         # validates user as field on create/update matches logged-in user.
         if user != data['user']:
@@ -16,7 +19,7 @@ class ownerValidation(serializers.ModelSerializer):
             if hasattr(data[field], 'user'):
                 if data[field].user != user:
                     raise serializers.ValidationError(f"{field} is not yours.")
-                    
+
         return data"""
     
     def validate(self, data):
@@ -101,13 +104,12 @@ class SpectrumTypeSerializer(ownerValidation):
 
 
 
-
 class SpectrumValueSerializer(ownerValidation):
     label = serializers.SerializerMethodField()
 
     class Meta:
         model = SpectrumValue
-        fields = ['id', 'value', 'spectrum_type', 'label', 'parent_item']
+        fields = ['id', 'value', 'spectrum_type', 'label', 'parent_item', 'gpt_curated']
 
     def get_label(self, spectrumvalue):
         return spectrumvalue.spectrum_type.name
@@ -116,3 +118,9 @@ class SpectrumValueSerializer(ownerValidation):
         # set the user_id to the authenticated user
         validated_data['user_id'] = self.context['request'].user.id
         return super().create(validated_data)
+    
+    def update(self, instance, validated_data):
+        # set the user_id to the authenticated user
+        validated_data['user_id'] = self.context['request'].user.id
+        validated_data['gpt_curated'] = False
+        return super().update(instance, validated_data)

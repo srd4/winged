@@ -13,6 +13,8 @@
                 <option v-if="container_spectrums" v-for="spectrum in container_spectrums" :value="spectrum.id">{{spectrum.name}}</option>
             </select>
 
+            <button v-on:click="gptCurate();">gpt-curate</button>
+
             <input v-model="searchQuery" placeholder="Search...">
 
             <button v-on:click="filterItems();updateContainer(container);getContainerItems()">filter</button>
@@ -103,6 +105,7 @@
 
                                     <label
                                     style="display: block;"
+                                    :style="{color: spectrum_value.gpt_curated ? 'gray' : '' }"
                                     for="range">
                                     
                                         {{spectrum_value.label}}: {{spectrum_value.value}}
@@ -473,6 +476,17 @@ export default {
                 console.error('Error updating container:', error)
                 })
             }
+        },
+        gptCurate(){
+            //sends post to create new element.
+            let link = '/containers/'+ String(this.container.id) + "/run-script/spectrumtypes/" + String(this.spectrumId) + "/" 
+            axiosInstance.get(link)
+                .then(response => {
+                console.log(response.message);
+                })
+                .catch(error => {
+                console.error('Error gpt-curating', error)
+                })
         },
     },
 

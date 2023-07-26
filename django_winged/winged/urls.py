@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework import routers
-from winged_app.views import ContainerItemListAPIView, ContainerTreeView, ContainerViewSet, ItemViewSet, StatementVersionViewSet, UserViewSet, SpectrumValueViewSet, SpectrumTypeViewSet
+from winged_app.views import ContainerItemListAPIView, ContainerTreeView, ContainerViewSet, ItemViewSet, StatementVersionViewSet, UserViewSet, SpectrumValueViewSet, SpectrumTypeViewSet, RunScriptAPIView
 from django.contrib import admin
 
 router = routers.DefaultRouter()
@@ -20,4 +20,7 @@ urlpatterns = [
     path('', include(router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('containers/<int:pk>/items/', ContainerItemListAPIView.as_view(), name='container-items'),
-]   
+    path('containers/<int:pk>/items/', ContainerItemListAPIView.as_view(), name='container-items'),
+
+    path("containers/<int:container_id>/run-script/spectrumtypes/<int:spectrumtype_id>/", RunScriptAPIView.as_view()),
+]

@@ -89,11 +89,17 @@ class Item(models.Model):
         return self.statement
 
     def get_parent_container(self):
-        """returns parent_container object as currently in db"""
+        """
+        returns parent_container object as currently in db
+        matters for when dealing with items not yet saved on db
+        """
         return get_object_or_404(Container, pk=self.parent_container.pk, user=self.user)
     
     def get_parent_item(self):
-        """returns parent_item object as currently in db"""
+        """
+        returns parent_item object as currently in db
+        matters for when dealing with items not yet saved on db
+        """
         return get_object_or_404(Item, pk=self.parent_item.pk, user=self.user)
 
     def get_versions(self):
@@ -125,7 +131,7 @@ class StatementVersion(models.Model):
 
 class SpectrumType(models.Model):
     name = models.CharField(max_length=2**6)
-    description = models.TextField(max_length=2**7)
+    description = models.TextField(max_length=2**9)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -141,6 +147,7 @@ class SpectrumValue(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    gpt_curated = models.BooleanField(default=False)
 
     class Meta:
         unique_together = ('spectrum_type', 'parent_item')
