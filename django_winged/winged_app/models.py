@@ -31,7 +31,7 @@ class Container(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    last_opened_at = models.DateTimeField(default=timezone.now)
+    last_opened_at = models.DateTimeField(null=True, default=None)
     is_on_actionables_tab = models.BooleanField(default=True)
     is_collapsed = models.BooleanField(default=True)
 
@@ -55,7 +55,7 @@ class Item(models.Model):
     actionable = models.BooleanField(default=False, null=False)
     done = models.BooleanField(default=False, null=False)
     statement = models.TextField(max_length=2**7)
-    statement_updated_at = models.DateTimeField(default=timezone.now)
+    statement_updated_at = models.DateTimeField(auto_now_add=True)
     parent_container = models.ForeignKey(Container, null=True, on_delete=models.CASCADE)
     parent_item = models.ForeignKey('self', null=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -68,18 +68,27 @@ class Item(models.Model):
         ordering = ['created_at']
 
     def save(self, *args, **kwargs):
-        """Creates StatementVersion object before saving"""
-        # If the Item object already exists in the database, check if the statement field has been changed.
+        """
+        Creates StatementVersion object before saving
+        """
+
+        # If the Item object already exists on db...
         if self.pk is not None:
             current_statement = Item.objects.get(pk=self.pk).statement
+            # ...check if the statement field has been changed.
             if current_statement != self.statement:
-                # If the statement field has been changed, create a StatementVersion object with the current statement and the statement_updated_at field as the value for the created_at field.
+                # If the statement field has been changed, create a StatementVersion object with
+                # the statement on db.
                 StatementVersion.objects.get_or_create(
                     statement=current_statement, 
-                    defaults={"created_at": self.statement_updated_at, "parent_item": self, "user": self.user}
+                    defaults={
+                        "created_at": self.statement_updated_at,
+                        "parent_item": self,
+                        "user": self.user
+                        }
                 )
 
-                # Set the statement_updated_at field to the current time.
+                # Set statement_updated_at attribute to the current time.
                 self.statement_updated_at = timezone.now()
 
         return super().save(*args, **kwargs)
@@ -91,14 +100,14 @@ class Item(models.Model):
     def get_parent_container(self):
         """
         returns parent_container object as currently in db
-        matters for when dealing with items not yet saved on db
+        matters when dealing with items modified but not saved on db yet.
         """
         return get_object_or_404(Container, pk=self.parent_container.pk, user=self.user)
     
     def get_parent_item(self):
         """
         returns parent_item object as currently in db
-        matters for when dealing with items not yet saved on db
+        matters when dealing with items modified but not saved on db yet.
         """
         return get_object_or_404(Item, pk=self.parent_item.pk, user=self.user)
 
@@ -111,6 +120,7 @@ class Item(models.Model):
         """
         self.done = not self.done
         self.completed_at = timezone.now() if self.done else None
+
         self.save()
         return self.done
 
@@ -153,5 +163,5 @@ class SpectrumValue(models.Model):
         unique_together = ('spectrum_type', 'parent_item')
 
     def __str__(self) -> str:
-        five_words = " ".join(i for i in self.parent_item.statement.split(" ")[0:5])
-        return f'{self.spectrum_type}: {self.value}. {five_words}, {self.parent_item.parent_container}.'
+        first_five_words = " ".join(word for word in self.parent_item.statement.split(" ")[:5])
+        return f'{self.spectrum_type}: {self.value}. {first_five_words}... {self.parent_item.parent_container}.'
