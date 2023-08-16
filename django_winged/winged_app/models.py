@@ -49,7 +49,7 @@ class Container(models.Model):
         self.save()
 
         return self.is_on_actionables_tab
-    
+
 
 class Item(models.Model):
     actionable = models.BooleanField(default=False, null=False)
