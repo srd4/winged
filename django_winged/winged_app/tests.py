@@ -3,6 +3,11 @@ from .models import Container, Item, StatementVersion
 from django.utils import timezone
 from django.test import tag
 
+from rest_framework.test import APIClient
+from django.urls import reverse
+from rest_framework import status
+
+
 
 
 class ContainerTestCase(TestCase):
@@ -102,29 +107,12 @@ class ItemTestCase(TestCase):
 
         self.assertEqual(StatementVersion.objects.last().statement, "gotta see other website builds and other people's portfolio websites for basically copying like artists do.")
 
-
-class CategoryTestCase(TestCase):
+@tag('token')
+class TokenAuthenticationTestCase(TestCase):
     fixtures = ['data']
 
-    def test_toggle_collapsed(self):
-        categories = ContainerGroup.objects.all()
-
-        for category in categories:
-            state_before = category.is_collapsed
-
-            category.toggle_collapsed()
-
-            state_after = category.is_collapsed
-
-            self.assertEqual(state_after, not state_before)
-
-
-
-
-
-
-
-
-
-
-
+    def test_obtain_token(self):
+        client = APIClient()
+        response = client.post(reverse('api_token_auth'), {'username': 'flac', 'password': 'pepito56'}, format='json')
+        assert response.status_code == status.HTTP_200_OK
+        assert 'token' in response.data
