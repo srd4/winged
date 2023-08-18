@@ -1,6 +1,5 @@
 import os
 import openai
-import json
 import Levenshtein
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
@@ -29,7 +28,7 @@ def gpt_compare(criteria, item_1, item_2):
 
     chosen_item = response['choices'][0]['message']['content'].strip()
 
-    # Compute the Levenshtein distance between the chosen item and the two options
+    # Compute the Levenshtein distance between the chosen item and the two options.
     dist1 = Levenshtein.distance(chosen_item, item_1)
     dist2 = Levenshtein.distance(chosen_item, item_2)
 

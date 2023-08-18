@@ -25,6 +25,8 @@ class ownerValidation(serializers.ModelSerializer):
     def validate(self, data):
         return data
 
+
+
 class ContainerChildrenListSerializer(ownerValidation):
     children = serializers.SerializerMethodField()
     spectrum_types = serializers.SerializerMethodField()
@@ -37,7 +39,7 @@ class ContainerChildrenListSerializer(ownerValidation):
         children = container.container_set.exclude(parent_container=None)
         serializer = self.__class__(children, many=True)
         return serializer.data
-    
+
     def get_spectrum_types(self, container):
         spectrum_types = SpectrumType.objects.filter(spectrumvalue__parent_item__parent_container=container).distinct()
         serializer = SpectrumTypeSerializer(spectrum_types, many=True)
@@ -64,6 +66,7 @@ class ItemSerializer(ownerValidation):
         spectrum_values = item.spectrumvalue_set.all()
         serializer = SpectrumValueSerializer(spectrum_values, many=True)
         return serializer.data
+
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -94,7 +97,6 @@ class StatementVersionSerializer(ownerValidation):
     class Meta:
         model = StatementVersion
         fields = '__all__'
-
 
 
 class SpectrumTypeSerializer(ownerValidation):

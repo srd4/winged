@@ -13,3 +13,7 @@ dist/
 /tmp
 .DS_Store
 Thumbs.db
+*.bat
+*.pyc
+__pycache__
+fixtures
