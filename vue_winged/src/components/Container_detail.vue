@@ -18,6 +18,8 @@
             <input v-model="searchQuery" placeholder="Search...">
 
             <button v-on:click="filterItems();updateContainer(container);getContainerItems()">filter</button>
+
+            <a @click="logout">Logout</a>
     </div>
 
     <div class="actions">
@@ -140,6 +142,7 @@
 </template>
   
 <script>
+import axiosAuthentication from '../axiosAuthentication';
 import axiosInstance  from '../axiosInstance';
 
 export default {
@@ -184,6 +187,10 @@ export default {
         notSeeing(){return this.seeActionables? 'non-actionable':'actionable'},
     },
     methods : {
+        logout(event, item) {
+            axiosAuthentication.logout();
+            window.location.reload();
+        },
         moveToContainer(event, item){
             if (this.containerToMoveTo){
                 this.updateItem(item, {parent_container: this.containerToMoveTo})

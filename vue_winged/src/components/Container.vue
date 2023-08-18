@@ -2,12 +2,15 @@
       <button v-if="container.children.length > 0"
         class="collapse-triangle"
         v-on:click="toggleChildrenContainers">
-        {{ collapsed }}</button>
+        {{ collapsed }}
+      </button>
+
       <span v-else class="dot">•</span>
 
       <a v-on:click="$emit('new-active', container)"
         v-bind:class="{ active: activeContainer === container }">
-        {{container.name}}</a>
+        {{container.name}}
+      </a>
 
         <ul v-if="container.children.length > 0" :class="['children-list', container.id, { 'collapsed': container.is_collapsed }]">
           <li v-for="children_container in container.children">
