@@ -140,11 +140,10 @@ class ContainerItemListAPIView(ListAPIView):
 
     def get_queryset(self):
         container_id = self.kwargs.get('pk')
-        return Item.objects.filter(parent_container=container_id)
+        return Item.objects.filter(parent_container=container_id).filter(user=self.request.user)
 
 
 class ContainerTreeView(viewsets.ViewSet):
-    #queryset = Container.objects.filter(parent_container=None, user=self.request.user)
     queryset = Container.objects.filter(parent_container=None)
     authentication_classes = [TokenAuthentication]
     serializer_class = ContainerChildrenListSerializer
@@ -153,9 +152,12 @@ class ContainerTreeView(viewsets.ViewSet):
 
     def list(self, request, *args, **kwargs):
         # Your list view logic here
-        queryset = Container.objects.filter(parent_container=None)
+        queryset = Container.objects.filter(parent_container=None, user=self.request.user)
         serializer = self.serializer_class(queryset, many=True, context={"request": request})
         return Response(serializer.data)
+    
+    def get_queryset(self):
+        return self.queryset.filter(user=self.request.user)
 
 
 class SpectrumValueViewSet(viewsets.ModelViewSet):
