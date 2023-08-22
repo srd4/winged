@@ -20,5 +20,4 @@ export const refreshAxiosToken = () => {
   axiosInstance.defaults.headers['Authorization'] = `Token ${token}`;
 }
 
-
 export default axiosInstance
