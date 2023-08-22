@@ -1,15 +1,24 @@
 import axios from 'axios'
 
-localStorage.setItem('token', '8e257f25b53e9414e80f4730bda75ff57c2434e3')
-
-const token = localStorage.getItem('token')
-
 const axiosInstance = axios.create({
   baseURL: 'http://localhost:8000',
   headers: {
-    'Authorization': `Token ${token}`,
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',  }
+});
+
+// Add a request interceptor to set the token header dynamically
+axiosInstance.interceptors.request.use(config => {
+  const token = localStorage.getItem('token');
+  if (token) {
+    config.headers['Authorization'] = `Token ${token}`;
   }
-})
+  return config;
+});
+
+export const refreshAxiosToken = () => {
+  const token = localStorage.getItem('token') || '';
+  axiosInstance.defaults.headers['Authorization'] = `Token ${token}`;
+}
+
 
 export default axiosInstance

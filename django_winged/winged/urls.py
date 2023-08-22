@@ -2,6 +2,7 @@ from django.urls import path, include
 from rest_framework import routers
 from winged_app.views import ContainerItemListAPIView, ContainerTreeView, ContainerViewSet, ItemViewSet, StatementVersionViewSet, UserViewSet, SpectrumValueViewSet, SpectrumTypeViewSet, RunScriptAPIView
 from django.contrib import admin
+from rest_framework.authtoken.views import obtain_auth_token
 
 router = routers.DefaultRouter()
 
@@ -16,6 +17,7 @@ router.register(r'spectrum_value', SpectrumValueViewSet)
 
 
 urlpatterns = [
+    path('api/token/', obtain_auth_token, name='token_obtain_pair'),
     path('admin/', admin.site.urls),
     path('', include(router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),

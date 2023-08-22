@@ -15,7 +15,5 @@ dist/
 Thumbs.db
 *.bat
 *.pyc
-__pycache__
-fixtures
 /__pycache__
 /node_modules
