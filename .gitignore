@@ -2,8 +2,6 @@ venv
 migrations
 notebook 2.0 data
 *.sqlite3
-# .gitignore
-node_modules
 dist/
 .env
 .env.local
@@ -15,5 +13,5 @@ dist/
 Thumbs.db
 *.bat
 *.pyc
-/__pycache__
-/node_modules
+__pycache__
+node_modules
