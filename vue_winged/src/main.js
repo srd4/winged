@@ -2,6 +2,7 @@ import App from './App.vue'
 import { createRouter, createWebHistory } from 'vue-router';
 import LoginComponent from './components/LoginComponent.vue';
 import DashboardComponent from './components/DashboardComponent.vue';
+import { createApp } from 'vue';
 
 const routes = [
   { path: '/login', component: LoginComponent },
