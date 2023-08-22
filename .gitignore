@@ -17,3 +17,5 @@ Thumbs.db
 *.pyc
 __pycache__
 fixtures
+/__pycache__
+/node_modules
