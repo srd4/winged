@@ -13,11 +13,17 @@ import scripts.openai_compare as openai_compare
 from random import shuffle
 from rest_framework.authentication import TokenAuthentication
 
+
+def user_input_compare(criteria, element1, element2):
+    response = input(f"\n1. {element1} \nvs\n2. {element2}\n(Enter 1/2): ")
+    return response != "1"
+
+
 class RunScriptAPIView(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
-    def get(self, request, container_id, spectrumtype_id, format=None):
+    def get(self, request, container_id, spectrumtype_id, comparison_mode, format=None):
         container = Container.objects.get(id=container_id)
         spectrumtype = SpectrumType.objects.get(id=spectrumtype_id)
 
@@ -118,9 +124,14 @@ class RunScriptAPIView(APIView):
             sorted_items = [i for i in scored_items.distinct()]
             sorted_items.sort(key=lambda x: x.spectrumvalue_set.get(spectrum_type=spectrumtype).value, reverse=True)
 
+            if comparison_mode == "openai":
+                comparison_function = openai_compare.gpt_compare
+            else:
+                comparison_function = user_input_compare
+
             result = binary_insert_sort(spectrumtype.description,
                                [i for i in non_sorted_items.distinct()],
-                               openai_compare.gpt_compare,
+                               comparison_function,
                                sorted_list=sorted_items)
             
             print("finished")

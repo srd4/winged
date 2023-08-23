@@ -13,7 +13,10 @@
                 <option v-if="container_spectrums" v-for="spectrum in container_spectrums" :value="spectrum.id">{{spectrum.name}}</option>
             </select>
 
-            <button v-on:click="gptCurate();">gpt-curate</button>
+            <button v-on:click="gptCurate('openai');">GPT-Curate</button>
+
+            <button v-on:click="gptCurate('user_input');">User-Curate</button>
+
 
             <input v-model="searchQuery" placeholder="Search...">
 
@@ -484,16 +487,15 @@ export default {
                 })
             }
         },
-        gptCurate(){
-            //sends post to create new element.
-            let link = '/containers/'+ String(this.container.id) + "/run-script/spectrumtypes/" + String(this.spectrumId) + "/" 
+        gptCurate(comparisonMode){
+            let link = '/containers/' + String(this.container.id) + "/run-script/spectrumtypes/" + String(this.spectrumId) + "/" + comparisonMode + "/";
             axiosInstance.get(link)
                 .then(response => {
-                console.log(response.message);
+                    console.log(response.data.message);
                 })
                 .catch(error => {
-                console.error('Error gpt-curating', error)
-                })
+                    console.error('Error gpt-curating', error);
+                });
         },
     },
 

@@ -24,5 +24,5 @@ urlpatterns = [
     path('containers/<int:pk>/items/', ContainerItemListAPIView.as_view(), name='container-items'),
     path('containers/<int:pk>/items/', ContainerItemListAPIView.as_view(), name='container-items'),
 
-    path("containers/<int:container_id>/run-script/spectrumtypes/<int:spectrumtype_id>/", RunScriptAPIView.as_view()),
+    path("containers/<int:container_id>/run-script/spectrumtypes/<int:spectrumtype_id>/<str:comparison_mode>/", RunScriptAPIView.as_view(), name="run-script")
 ]

@@ -1,5 +1,5 @@
 from django.test import TestCase
-from .models import Container, Item, StatementVersion
+from ..models import Container, Item, StatementVersion
 from django.utils import timezone
 from django.test import tag
 
