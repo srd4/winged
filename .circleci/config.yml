@@ -34,6 +34,16 @@ jobs:
             cd vue_winged
             npm install
             npx jest
+  deploy_to_local:
+    machine: true
+    steps:
+      - run:
+          name: SSH and Update User Repo
+          command: |
+            ssh your_username@your_local_machine_ip "cd C:/Users/.flac/Documents/GitHub/django_projects/winged_personal/winged && git pull pull C:/Users/.flac/Documents/GitHub/winged main"
+      - add_ssh_keys:
+          fingerprints: - "d4:41:ec:1b:5a:6d:23:49:e3:52:a8:fa:dd:28:19:89"
+
 workflows:
   version: 2
   build_and_test:
