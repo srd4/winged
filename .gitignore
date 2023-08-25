@@ -13,6 +13,7 @@ dist/
 Thumbs.db
 *.bat
 *.pyc
+/__pycache__
+/node_modules
 __pycache__
 node_modules
-
