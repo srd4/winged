@@ -4,6 +4,8 @@ executors:
   python-executor:
     docker:
       - image: python:3.11.4
+       environtment:
+          DJANGO_SETTINGS_MODULE: winged.settings
   node-executor:
     docker:
       - image: node:14
@@ -18,7 +20,9 @@ jobs:
           command: |
             pip install -r requirements.txt
             cd django_winged
-            python manage.py test 
+            python manage.py makemigrations
+            python manage.py migrate
+            python manage.py test
 
   build_and_test_vue:
     executor: node-executor
