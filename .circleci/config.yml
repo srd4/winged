@@ -3,7 +3,6 @@ version: 2.1
 executors:
   python-executor:
     docker:
-    docker:
       - image: python:3.11.4
         environment:
           DJANGO_SETTINGS_MODULE: winged.settings
