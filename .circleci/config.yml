@@ -31,7 +31,6 @@ jobs:
       - run:
           name: Setup and Test Vue
           command: |
-            npm install
             cd vue_winged
             npm install
             npx jest
