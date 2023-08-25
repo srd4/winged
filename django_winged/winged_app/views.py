@@ -13,6 +13,20 @@ import scripts.openai_compare as openai_compare
 from random import shuffle
 from rest_framework.authentication import TokenAuthentication
 
+class IsOwner(permissions.BasePermission):
+    """
+    Custom permission to only allow owners of an object to edit it.
+    """
+
+    def has_object_permission(self, request, view, obj):
+        # Read permissions are allowed to any request,
+        # so we'll always allow GET, HEAD, or OPTIONS requests.
+        if request.method in permissions.SAFE_METHODS:
+            return True
+
+        # Write permissions are only allowed to the owner of the object.
+        return obj.user == request.user
+
 
 def user_input_compare(criteria, element1, element2):
     response = input(f"\n1. {element1} \nvs\n2. {element2}\n(Enter 1/2): ")
@@ -24,15 +38,15 @@ class RunScriptAPIView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request, container_id, spectrumtype_id, comparison_mode, format=None):
-        container = Container.objects.get(id=container_id)
-        spectrumtype = SpectrumType.objects.get(id=spectrumtype_id)
+        container = Container.objects.get(id=container_id, user=self.request.user)
+        spectrumtype = SpectrumType.objects.get(id=spectrumtype_id, user=self.request.user)
 
         print("container: {}".format(container))
         print("spectrumtype: {}".format(spectrumtype))
         print("container.is_on_actionables_tab: {}".format(container.is_on_actionables_tab))
 
         #all spectrum values for this spectrum type.
-        spectrum_values = SpectrumValue.objects.filter(spectrum_type=spectrumtype)
+        spectrum_values = SpectrumValue.objects.filter(spectrum_type=spectrumtype, user=self.request.user)
         #all spectrum values for this spectrum type that are not zero.
         non_zero_spectrum_values = spectrum_values.exclude(value=0)
         #all spectrum values for this spectrum type that are zero.
@@ -42,7 +56,8 @@ class RunScriptAPIView(APIView):
         item_list = Item.objects.filter(actionable=container.is_on_actionables_tab,
                                     archived=False,
                                     done=False,
-                                    parent_container=container
+                                    parent_container=container,
+                                    user=self.request.user
                                     )
 
         #all items in this container that have a spectrum value for this spectrum type that is not zero.
@@ -151,15 +166,13 @@ class ContainerItemListAPIView(ListAPIView):
 
     def get_queryset(self):
         container_id = self.kwargs.get('pk')
-        return Item.objects.filter(parent_container=container_id).filter(user=self.request.user)
+        return Item.objects.filter(parent_container=container_id, user=self.request.user)
 
 
 class ContainerTreeView(viewsets.ViewSet):
-    queryset = Container.objects.filter(parent_container=None)
     authentication_classes = [TokenAuthentication]
     serializer_class = ContainerChildrenListSerializer
     permission_classes = [permissions.IsAuthenticated]
-
 
     def list(self, request, *args, **kwargs):
         # Your list view logic here
@@ -174,7 +187,7 @@ class ContainerTreeView(viewsets.ViewSet):
 class SpectrumValueViewSet(viewsets.ModelViewSet):
     queryset = SpectrumValue.objects.all()
     serializer_class = SpectrumValueSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, IsOwner]
     authentication_classes = [TokenAuthentication]
 
     def get_queryset(self):
@@ -184,7 +197,7 @@ class SpectrumValueViewSet(viewsets.ModelViewSet):
 class SpectrumTypeViewSet(viewsets.ModelViewSet):
     queryset = SpectrumType.objects.all()
     serializer_class = SpectrumTypeSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, IsOwner]
     authentication_classes = [TokenAuthentication]
 
     def get_queryset(self):
@@ -194,7 +207,7 @@ class SpectrumTypeViewSet(viewsets.ModelViewSet):
 class ContainerViewSet(viewsets.ModelViewSet):
     queryset = Container.objects.all()
     serializer_class = ContainerSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, IsOwner]
     authentication_classes = [TokenAuthentication]
 
     def get_queryset(self):
@@ -204,7 +217,7 @@ class ContainerViewSet(viewsets.ModelViewSet):
 class ItemViewSet(viewsets.ModelViewSet):
     queryset = Item.objects.all()
     serializer_class = ItemSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, IsOwner]
     authentication_classes = [TokenAuthentication]
 
     def get_queryset(self):
@@ -214,7 +227,7 @@ class ItemViewSet(viewsets.ModelViewSet):
 class StatementVersionViewSet(viewsets.ModelViewSet):
     queryset = StatementVersion.objects.all()
     serializer_class = StatementVersionSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, IsOwner]
     authentication_classes = [TokenAuthentication]
 
     def get_queryset(self):
@@ -226,4 +239,3 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticated]
     authentication_classes = [TokenAuthentication]
-

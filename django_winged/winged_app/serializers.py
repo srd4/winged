@@ -2,32 +2,8 @@ from django.contrib.auth.models import User
 from winged_app.models import Container, Item, StatementVersion, SpectrumValue, SpectrumType
 from rest_framework import serializers
 
-class ownerValidation(serializers.ModelSerializer):
-    """def validate(self, data):
-        user = self.context['request'].user
-        print(self.context['request'].user)
 
-        print(data)
-
-        # validates user as field on create/update matches logged-in user.
-        if user != data['user']:
-            raise serializers.ValidationError("That's not you")
-
-        # validates no relation is made with an object the user doesn't own.
-        for field in data:
-            print(field, data[field])
-            if hasattr(data[field], 'user'):
-                if data[field].user != user:
-                    raise serializers.ValidationError(f"{field} is not yours.")
-
-        return data"""
-    
-    def validate(self, data):
-        return data
-
-
-
-class ContainerChildrenListSerializer(ownerValidation):
+class ContainerChildrenListSerializer(serializers.ModelSerializer):
     children = serializers.SerializerMethodField()
     spectrum_types = serializers.SerializerMethodField()
 
@@ -46,7 +22,7 @@ class ContainerChildrenListSerializer(ownerValidation):
         return serializer.data
 
 
-class ItemSerializer(ownerValidation):
+class ItemSerializer(serializers.ModelSerializer):
     spectrum_values = serializers.SerializerMethodField()
 
     class Meta:
@@ -76,7 +52,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 
-class ContainerSerializer(ownerValidation):
+class ContainerSerializer(serializers.ModelSerializer):
     spectrum_types = serializers.SerializerMethodField()
 
     class Meta:
@@ -93,20 +69,20 @@ class ContainerSerializer(ownerValidation):
         return serializer.data
 
 
-class StatementVersionSerializer(ownerValidation):
+class StatementVersionSerializer(serializers.ModelSerializer):
     class Meta:
         model = StatementVersion
         fields = '__all__'
 
 
-class SpectrumTypeSerializer(ownerValidation):
+class SpectrumTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = SpectrumType
         fields = '__all__'
 
 
 
-class SpectrumValueSerializer(ownerValidation):
+class SpectrumValueSerializer(serializers.ModelSerializer):
     label = serializers.SerializerMethodField()
 
     class Meta:
