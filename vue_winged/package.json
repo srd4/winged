@@ -13,7 +13,10 @@
     "vue-axios": "^3.5.2"
   },
   "devDependencies": {
+    "@babel/core": "^7.22.11",
+    "@babel/preset-env": "^7.22.10",
     "@vitejs/plugin-vue": "^4.0.0",
+    "axios-mock-adapter": "^1.21.5",
     "vite": "^4.0.0"
   }
 }
