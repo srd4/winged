@@ -3,7 +3,7 @@ version: 2.1
 executors:
   python-executor:
     docker:
-      - image: python:3.x
+      - image: python:3.11.4
   node-executor:
     docker:
       - image: node:14
