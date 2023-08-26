@@ -1,6 +1,14 @@
 import os
 import openai
 import Levenshtein
+import re
+import logging
+from winged_app.models import ItemVsTwoCriteriaAIComparison, Item
+import time
+
+
+from .sentence_transform import embedding_compare
+
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
@@ -32,6 +40,8 @@ def gpt_compare(criteria, item_1, item_2):
     dist1 = Levenshtein.distance(chosen_item, item_1)
     dist2 = Levenshtein.distance(chosen_item, item_2)
 
+    
+
     if dist1 < dist2:
         # item_1 is closer to criteria
         return False
@@ -43,10 +53,61 @@ def gpt_compare(criteria, item_1, item_2):
         return False # default to keeping item_1 before item_2
 
 
-if __name__ == "__main__":
-    criteria = "a book"
 
-    item_1 = "atomic habits"
-    item_2 = "kanye west donda album"
+default_system_prompt = """Choose one of two criteria based on a specified item. Your goal is to select the
+                           criterion that best aligns with the provided item. Justify your answer succinctly
+                           (tryna save tokens here). Place choosen criteria between brackets NO MATTER WHAT
+                           -> {Criteria x: criteria statement here}"""
 
-    print(gpt_compare(criteria, item_1, item_2))
+
+def compute_comparison(criteria_1, criteria_2, model, messages):
+    response = openai.ChatCompletion.create(
+        model=model,
+        messages=messages,
+        temperature=0,
+    )
+
+    answer = response['choices'][0]['message']['content'].strip()
+
+    matches = re.findall(r'\{(.*?)\}', answer)
+
+    print("choosen:", matches[0])
+
+    dist1 = Levenshtein.distance(matches[0], "criteria 1"+ criteria_1)
+    dist2 = Levenshtein.distance(matches[0], "criteria 2" + criteria_2)
+    
+    if dist1 < dist2:
+        chose_criteria_1 = True
+    elif dist1 > dist2:
+        chose_criteria_1 = False
+    else:
+        chose_criteria_1 = False
+
+    return response, chose_criteria_1
+
+
+def item_vs_criteria(item, criteria_1, criteria_2, model, system_prompt=default_system_prompt, force_recompute=False):
+    comparison, created = ItemVsTwoCriteriaAIComparison.objects.get_or_create(
+        ai_model=model,
+        system_prompt=system_prompt,
+        criteria_1=criteria_1,
+        criteria_2=criteria_2,
+        item_compared=item,
+    )
+
+    if not created and not force_recompute:
+        return comparison.criteria_choice
+
+    messages=[
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": f"Item: '{item.statement}'\n\n1. Criteria_1: '{criteria_1}'\n2. Criteria_2: '{criteria_2}'"}
+            ]
+
+    start_time = time.time()
+    comparison.response, comparison.criteria_choice = compute_comparison(criteria_1, criteria_2, model, messages)
+    end_time = time.time()
+
+    comparison.execution_in_seconds = int(end_time - start_time)
+    comparison.save()
+
+    return comparison.criteria_choice
