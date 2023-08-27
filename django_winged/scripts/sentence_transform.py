@@ -4,7 +4,7 @@ import torch
 import time
 from winged_app.models import ItemVsTwoCriteriaAIComparison
 
-model_name = 'sentence-transformers/paraphrase-mpnet-base-v2'
+model_name = 'sentence-transformers/paraphrase-multilingual-mpnet-base-v2'
 
 model = SentenceTransformer(model_name)
 
