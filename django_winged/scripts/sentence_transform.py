@@ -4,7 +4,9 @@ import torch
 import time
 from winged_app.models import ItemVsTwoCriteriaAIComparison
 
-model = SentenceTransformer('sentence-transformers/paraphrase-multilingual-mpnet-base-v2')
+model_name = 'sentence-transformers/paraphrase-mpnet-base-v2'
+
+model = SentenceTransformer(model_name)
 
 def compute_embedding_comparison(target, string_1, string_2):
     # Convert criteria and items to embeddings
@@ -21,9 +23,9 @@ def compute_embedding_comparison(target, string_1, string_2):
     return similarity_with_string_2 < similarity_with_string_1
 
 
-def item_vs_criteria(item, criteria_1, criteria_2, model_name, force_recompute=False):
+def item_vs_criteria(item, criteria_1, criteria_2, force_recompute=False):
     comparison, created = ItemVsTwoCriteriaAIComparison.objects.get_or_create(
-        ai_model=str(model_name),
+        ai_model=model_name,
         criteria_1=criteria_1,
         criteria_2=criteria_2,
         item_compared=item,
