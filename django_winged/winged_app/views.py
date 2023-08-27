@@ -193,7 +193,7 @@ class ReclassifyContainerItemsAPIView(APIView):
             for item in items:
                 for _ in range(3):  # Retry up to 3 times
                     try:
-                        result = st.item_vs_criteria(item.statement, container_1.description, container_2.description, "SentenceTransformer")
+                        result = st.item_vs_criteria(item, container_1.description, container_2.description)
                         break  # If successful, exit the loop
                     except Exception as e:
                         print(f"An error occurred: {e}")
@@ -238,7 +238,7 @@ class ReEvaluateActionableItemsAPIView(APIView):
             for item in items:
                 for _ in range(3):  # Retry up to 3 times
                     try:
-                        result = st.item_vs_criteria(item, actionable, non_actionable, "SentenceTransformer")
+                        result = st.item_vs_criteria(item, actionable, non_actionable)
                         break  # If successful, exit the loop
                     except Exception as e:
                         print(f"An error occurred: {e}")
