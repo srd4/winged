@@ -4,7 +4,7 @@ import torch
 import time
 from winged_app.models import ItemVsTwoCriteriaAIComparison
 
-model = SentenceTransformer('sentence-transformers/all-mpnet-base-v2')
+model = SentenceTransformer('sentence-transformers/paraphrase-multilingual-mpnet-base-v2')
 
 def compute_embedding_comparison(target, string_1, string_2):
     # Convert criteria and items to embeddings
