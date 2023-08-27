@@ -4,7 +4,10 @@ import torch
 import time
 from winged_app.models import ItemVsTwoCriteriaAIComparison
 
-model = SentenceTransformer('sentence-transformers/all-mpnet-base-v2')
+
+model_name = "sentence-transformers/paraphrase-mpnet-base-v2"
+
+model = SentenceTransformer(model_name)
 
 def embedding_compare(criteria, item_1, item_2):
     # Convert criteria and items to embeddings
@@ -22,7 +25,7 @@ def embedding_compare(criteria, item_1, item_2):
 
 
 
-def compute_embedding_comparison(item, criteria_1, criteria_2, model):
+def compute_embedding_comparison(item, criteria_1, criteria_2):
     # Convert criteria and items to embeddings
     embeddings = model.encode([item, criteria_1, criteria_2])
 
@@ -40,9 +43,9 @@ def compute_embedding_comparison(item, criteria_1, criteria_2, model):
 
 
 
-def item_vs_criteria(item, criteria_1, criteria_2, model=model, force_recompute=False):
+def item_vs_criteria(item, criteria_1, criteria_2, force_recompute=False):
     comparison, created = ItemVsTwoCriteriaAIComparison.objects.get_or_create(
-        ai_model=str(model),
+        ai_model=model_name,
         criteria_1=criteria_1,
         criteria_2=criteria_2,
         item_compared=item,
@@ -52,7 +55,7 @@ def item_vs_criteria(item, criteria_1, criteria_2, model=model, force_recompute=
         return comparison.criteria_choice
 
     start_time = time.time()
-    comparison.criteria_choice = compute_embedding_comparison(item, criteria_1, criteria_2, model)
+    comparison.criteria_choice = compute_embedding_comparison(item, criteria_1, criteria_2)
     end_time = time.time()
 
     comparison.execution_in_seconds = int(end_time - start_time)

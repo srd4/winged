@@ -206,7 +206,7 @@ class ReEvaluateActionableItemsAPIView(APIView):
             for item in items:
                 for _ in range(5):  # Retry up to 3 times
                     try:
-                        result = st.item_vs_criteria(item, actionable, non_actionable, "SentenceTransformer")
+                        result = st.item_vs_criteria(item, actionable, non_actionable)
                         break  # If successful, exit the loop
                     except Exception as e:
                         print(f"An error occurred: {e}")
