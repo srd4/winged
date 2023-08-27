@@ -1,17 +1,26 @@
-from django.contrib.auth.models import User
-from winged_app.models import Container, Item, StatementVersion, SpectrumValue, SpectrumType
-from rest_framework import viewsets
-from rest_framework import permissions
-from .serializers import ContainerSerializer, ContainerChildrenListSerializer, ItemSerializer, StatementVersionSerializer, UserSerializer, SpectrumTypeSerializer, SpectrumValueSerializer
-from django.shortcuts import get_object_or_404
-from rest_framework.response import Response
-from rest_framework.generics import ListAPIView
-from rest_framework.views import APIView
 import threading
 import time
-import scripts.openai_compare as openai_compare
 from random import shuffle
+
+from rest_framework import permissions, viewsets
 from rest_framework.authentication import TokenAuthentication
+from rest_framework.generics import ListAPIView
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework.status import HTTP_202_ACCEPTED, HTTP_404_NOT_FOUND
+from django.contrib.auth.models import User
+from django.shortcuts import get_object_or_404
+
+from .serializers import (
+    ContainerSerializer, ContainerChildrenListSerializer, ItemSerializer,
+    StatementVersionSerializer, UserSerializer, SpectrumTypeSerializer, 
+    SpectrumValueSerializer
+)
+
+import scripts.sentence_transform as st
+from winged_app.models import Container, Item, StatementVersion, SpectrumValue, SpectrumType
+
+
 
 class IsOwner(permissions.BasePermission):
     """
@@ -140,7 +149,7 @@ class RunScriptAPIView(APIView):
             sorted_items.sort(key=lambda x: x.spectrumvalue_set.get(spectrum_type=spectrumtype).value, reverse=True)
 
             if comparison_mode == "openai":
-                comparison_function = openai_compare.gpt_compare
+                comparison_function = st.compute_embedding_comparison
             else:
                 comparison_function = user_input_compare
 
@@ -156,6 +165,97 @@ class RunScriptAPIView(APIView):
         thread.start()
 
         return Response({"message": "Script execution started on items in container {} with spectrum type {}.".format(container_id, spectrumtype_id)})
+
+
+class ReclassifyContainerItemsAPIView(APIView):
+    authentication_classes = [TokenAuthentication]
+    # Only auth needed because isowner slows it down. We're filtering objects by user anyway.
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, source_container_id, container_1_id, container_2_id, format=None):
+        try:
+            source_container = Container.objects.get(id=source_container_id, user=self.request.user)
+
+            container_1 = Container.objects.get(id=container_1_id, user=self.request.user)
+            container_2 = Container.objects.get(id=container_2_id, user=self.request.user)
+
+            items = Item.objects.filter(parent_container=source_container, done=False, archived=False,  user=self.request.user)
+
+        except Container.DoesNotExist:
+            return Response({"error": "Container not found"}, status=HTTP_404_NOT_FOUND)
+
+
+        def reclassify_items(): # does this function need to be here?
+            # Variables to print progress inside loop.
+            total_items = len(items)
+            classified_items = 0
+
+            for item in items:
+                for _ in range(3):  # Retry up to 3 times
+                    try:
+                        result = st.item_vs_criteria(item.statement, container_1.description, container_2.description, "SentenceTransformer")
+                        break  # If successful, exit the loop
+                    except Exception as e:
+                        print(f"An error occurred: {e}")
+                        continue  # Continue to the next iteration
+                else:
+                    print("Failed after 3 attempts.")
+                target_container = container_1 if result else container_2
+                item.parent_container = target_container
+                item.save()
+                classified_items += 1
+                print(f"{classified_items}/{total_items}.{item} \n sent to {target_container}")
+                
+
+        # Start a new thread to run the script
+        thread = threading.Thread(target=reclassify_items)
+        thread.start()
+
+        return Response({"message": f"Script execution started to reclassify items in {source_container_id}."}, status=HTTP_202_ACCEPTED)
+
+
+
+class ReEvaluateActionableItemsAPIView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, source_container_id, format=None):
+        # If have these on a db both 1. avoid being hardcoded and 2. get closer to sophisticated implementation of feature I intended.
+        actionable = "Actionable: Tasks directly affecting external output. Example: 'Code Django feature.'"
+        non_actionable = "Non-Actionable: Tasks mainly affecting internal thought processes. Example: 'Watch lecture for insight.'"
+
+        try:
+            source_container = Container.objects.get(id=source_container_id, user=self.request.user)
+
+            items = Item.objects.filter(parent_container=source_container, done=False, archived=False, user=self.request.user)
+
+        except Container.DoesNotExist:
+            return Response({"message":f"Script execution started to reclassify items in {source_container_id}."}, status=HTTP_404_NOT_FOUND)
+
+        def reclassify_items():
+            total = len(items)
+            count = 0
+            for item in items:
+                for _ in range(3):  # Retry up to 3 times
+                    try:
+                        result = st.item_vs_criteria(item, actionable, non_actionable, "SentenceTransformer")
+                        break  # If successful, exit the loop
+                    except Exception as e:
+                        print(f"An error occurred: {e}")
+                        continue  # Continue to the next iteration
+                else:
+                    print("Failed after 3 attempts.")
+
+                item.actionable = result
+                item.save()
+                count += 1
+                print(f"{count}/{total}.{item} \n sent to {'actionable' if result else 'non-actionable'}")
+
+        # Start a new thread to run the script
+        thread = threading.Thread(target=reclassify_items)
+        thread.start()
+
+        return Response({"message": f"Script execution started to reclassify items in {source_container_id}."}, status=HTTP_202_ACCEPTED)
 
 
 
