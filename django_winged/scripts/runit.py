@@ -5,7 +5,7 @@ import time
 from winged_app.models import ItemVsTwoCriteriaAIComparison, Container, Item
 
 def run():
-    suggested_models = [
+    """suggested_models = [
         "sentence-transformers/msmarco-MiniLM-L12-cos-v5",
         "sentence-transformers/msmarco-distilbert-multilingual-en-de-v2-tmp-trained-scratch",
         "sentence-transformers/msmarco-distilroberta-base-v2",
@@ -38,6 +38,22 @@ def run():
         "sentence-transformers/msmarco-roberta-base-v2",
         "sentence-transformers/msmarco-roberta-base-v3",
         "sentence-transformers/msmarco-bert-base-dot-v5",
+    ]"""
+
+    suggested_models = [
+        "sentence-transformers/all-mpnet-base-v2",
+        "sentence-transformers/all-distilroberta-v1",
+        "sentence-transformers/all-MiniLM-L12-v2",
+        "sentence-transformers/all-MiniLM-L6-v2",
+        "sentence-transformers/multi-qa-mpnet-base-dot-v1",
+        "sentence-transformers/multi-qa-distilbert-cos-v1",
+        "sentence-transformers/paraphrase-multilingual-mpnet-base-v2",
+        "sentence-transformers/paraphrase-albert-small-v2",
+        "sentence-transformers/multi-qa-MiniLM-L6-cos-v1",
+        "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+        "sentence-transformers/paraphrase-MiniLM-L3-v2",
+        "sentence-transformers/distiluse-base-multilingual-cased-v1",
+        "sentence-transformers/distiluse-base-multilingual-cased-v2",
     ]
 
     for model_name in suggested_models:

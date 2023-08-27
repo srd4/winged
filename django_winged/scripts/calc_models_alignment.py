@@ -57,7 +57,7 @@ def run():
     actionable = "Actionable: Tasks directly affecting external output. Example: 'Code Django feature.'"
     non_actionable = "Non-Actionable: Tasks mainly affecting internal thought processes. Example: 'Watch lecture for insight.'"
 
-    models = [
+    """models = [
         "sentence-transformers/msmarco-MiniLM-L12-cos-v5",
         "sentence-transformers/msmarco-distilbert-multilingual-en-de-v2-tmp-trained-scratch",
         "sentence-transformers/msmarco-distilroberta-base-v2",
@@ -90,6 +90,22 @@ def run():
         "sentence-transformers/msmarco-roberta-base-v2",
         "sentence-transformers/msmarco-roberta-base-v3",
         "sentence-transformers/msmarco-bert-base-dot-v5",
+    ]"""
+
+    models = [
+        "sentence-transformers/all-mpnet-base-v2",
+        "sentence-transformers/all-distilroberta-v1",
+        "sentence-transformers/all-MiniLM-L12-v2",
+        "sentence-transformers/all-MiniLM-L6-v2",
+        "sentence-transformers/multi-qa-mpnet-base-dot-v1",
+        "sentence-transformers/multi-qa-distilbert-cos-v1",
+        "sentence-transformers/paraphrase-multilingual-mpnet-base-v2",
+        "sentence-transformers/paraphrase-albert-small-v2",
+        "sentence-transformers/multi-qa-MiniLM-L6-cos-v1",
+        "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+        "sentence-transformers/paraphrase-MiniLM-L3-v2",
+        "sentence-transformers/distiluse-base-multilingual-cased-v1",
+        "sentence-transformers/distiluse-base-multilingual-cased-v2",
     ]
     
     for i in models:
@@ -145,5 +161,22 @@ The alignment score of gpt-3.5-turbo with sentence-transformers/msmarco-bert-bas
 The alignment score of gpt-3.5-turbo with sentence-transformers/multi-qa-MiniLM-L6-cos-v1 is:  65.625
 The alignment score of gpt-3.5-turbo with sentence-transformers/multi-qa-mpnet-base-dot-v1 is:  70.0
 The alignment score of gpt-3.5-turbo with sentence-transformers/distiluse-base-multilingual-cased-v2 is:  64.375
+
+
+
+The alignment score of 'gpt-4' with sentence-transformers/all-mpnet-base-v2 is:  78.75
+The alignment score of 'gpt-4' with sentence-transformers/all-distilroberta-v1 is:  76.875
+The alignment score of 'gpt-4' with sentence-transformers/all-MiniLM-L12-v2 is:  78.75
+The alignment score of 'gpt-4' with sentence-transformers/all-MiniLM-L6-v2 is:  79.375
+The alignment score of 'gpt-4' with sentence-transformers/multi-qa-mpnet-base-dot-v1 is:  79.375
+The alignment score of 'gpt-4' with sentence-transformers/multi-qa-distilbert-cos-v1 is:  76.25
+The alignment score of 'gpt-4' with sentence-transformers/paraphrase-multilingual-mpnet-base-v2 is:  81.875
+The alignment score of 'gpt-4' with sentence-transformers/paraphrase-albert-small-v2 is:  75.625
+The alignment score of 'gpt-4' with sentence-transformers/multi-qa-MiniLM-L6-cos-v1 is:  70.0
+The alignment score of 'gpt-4' with sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2 is:  74.375
+The alignment score of 'gpt-4' with sentence-transformers/paraphrase-MiniLM-L3-v2 is:  71.875
+The alignment score of 'gpt-4' with sentence-transformers/distiluse-base-multilingual-cased-v1 is:  69.375
+The alignment score of 'gpt-4' with sentence-transformers/distiluse-base-multilingual-cased-v2 is:  70.0
+
 """
 
