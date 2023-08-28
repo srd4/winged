@@ -26,7 +26,7 @@ class ContainerGroup(models.Model):
 
 class Container(models.Model):
     name = models.CharField(max_length=2**6)
-    description = models.TextField(max_length=2**10)
+    description = models.TextField(max_length=2**7)
     parent_container = models.ForeignKey('self', blank=True, null=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -165,30 +165,3 @@ class SpectrumValue(models.Model):
     def __str__(self) -> str:
         first_five_words = " ".join(word for word in self.parent_item.statement.split(" ")[:5])
         return f'{self.spectrum_type}: {self.value}. {first_five_words}... {self.parent_item.parent_container}.'
-
-
-class ItemVsTwoCriteriaAIComparison(models.Model):
-    CHOICES = [
-        (True, 'Criteria 1'),
-        (False, 'Criteria 2'),
-    ]
-    ai_model = models.CharField(max_length=2**7, db_index=True)
-    system_prompt = models.CharField(max_length=2**10)
-    criteria_1 = models.CharField(max_length=2**10)
-    criteria_2 = models.CharField(max_length=2**10)
-    item_compared = models.ForeignKey(Item, on_delete=models.CASCADE, db_index=True)
-    criteria_choice = models.BooleanField(choices=CHOICES, null=False, default=False, db_index=True)
-    response = models.TextField()
-    execution_in_seconds = models.DecimalField(max_digits=10, decimal_places=2, null=True, default=None)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return f"{self.item_compared.statement} - {self.ai_model}"
-
-
-
-
-
-
-
