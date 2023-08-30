@@ -22,7 +22,31 @@
 
             <button v-on:click="filterItems();updateContainer(container);getContainerItems()">filter</button>
 
+            
             <a @click="logout">Logout</a>
+    </div>
+
+    <div>
+        <!--Selectors for pair of containers to reclasiffy items in.-->
+        <label for="container1">Container 1</label>
+            <select v-model="firstContainerId" id="container1" name="container1List">
+                <option :value="null">Select Container 1</option>
+                <option v-if="containers" v-for="container in containers" :value="container.id">{{ container.name }}</option>
+            </select>
+
+            <label for="container2">Container 2</label>
+            <select v-model="secondContainerId" id="container2" name="container2List">
+                <option :value="null">Select Container 2</option>
+                <option v-if="containers" v-for="container in containers" :value="container.id">{{ container.name }}</option>
+            </select>
+            <!--Button to run startReclassify() on selected containers (firstContainerId, secondContainerId).-->
+            <button v-on:click="startReclassify()">Start Reclassify</button>
+            
+    </div>
+
+    <div>
+        <!--Button to run startReclassify() on this.container.-->
+        <button v-on:click="startReclassifyActionables()">Reclassify if actionables</button>
     </div>
 
     <div class="actions">
@@ -174,6 +198,8 @@ export default {
             spectrumToAdd: null,
             containerToMoveTo: null,
             containers: [],
+            firstContainerId: null,
+            secondContainerId: null,
         }
     },
     watch: {
@@ -497,6 +523,33 @@ export default {
                     console.error('Error gpt-curating', error);
                 });
         },
+        startReclassify() {
+            if (!this.firstContainerId || !this.secondContainerId) {
+                console.error("Both containers must be selected");
+                return;
+            }
+
+            let link = `/containers/${String(this.container.id)}/reclassify/${String(this.firstContainerId)}/${String(this.secondContainerId)}/`;
+
+            axiosInstance.get(link)
+                .then(response => {
+                    console.log(response.data.message); // Handle your response here
+                })
+                .catch(error => {
+                    console.error('Error initiating reclassification:', error);
+                });
+        },
+        startReclassifyActionables() {
+            let link = `/containers/${String(this.container.id)}/reclassify-actionable/`;
+
+            axiosInstance.get(link)
+                .then(response => {
+                    console.log(response.data.message);
+                })
+                .catch(error => {
+                    console.error('Error initiating reclassification:', error);
+                });
+        }
     },
 
 }
