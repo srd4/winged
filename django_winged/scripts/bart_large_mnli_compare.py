@@ -21,14 +21,14 @@ def compute_zero_shot_comparison(item, criteria_1, criteria_2):
             response = requests.post(API_URL, headers=headers, json=data)
             response.raise_for_status()  # Raise HTTPError for bad responses (4xx and 5xx)
 
-            # Check for a loading model and retry.
-            while 'estimated_time' in response.json():
-                for i in range(int(response.json()['estimated_time'])):
-                    time.sleep(1)
-                    print("model is loading", i / response.json()['estimated_time'])
-                response = requests.post(API_URL, headers=headers, json=data)
-
             response_json = response.json()
+
+            # Check for a loading model and retry and wait the time.
+            while 'estimated_time' in response_json:
+                for i in range(int(response_json['estimated_time'])):#wait seconds it says it takes to load.                    
+                    print("model is loading", i / response.json()['estimated_time'])
+                    time.sleep(1)
+                response = requests.post(API_URL, headers=headers, json=data)
 
             # Validate that 'labels' exists in the response
             if 'labels' not in response_json:
@@ -37,11 +37,11 @@ def compute_zero_shot_comparison(item, criteria_1, criteria_2):
             return response_json, response_json['labels'][0] == criteria_1
         
         except requests.RequestException as e:
-            print(f"API call failed due to a network issue: {e}")
+            print(f"API call failed due to a network issue (requests.RequestException): {e}")
             print(f"Retry {retry_count + 1}: {e}")
             time.sleep(5)
         except Exception as e:
-            print(f"Retry {retry_count + 1}: {e}")
+            print(f"Failed for some unknown Exception\nRetry {retry_count + 1}: {e}")
             time.sleep(5)
             
 
