@@ -1,5 +1,6 @@
 import time
-from winged_app.models import Item
+from winged_app.models import Item, Criteria
+from bart_large_mnli_compare import item_vs_criteria
 
 PERCENTAGE_CHUNK = 20  # 10% of total items as a chunk
 
@@ -30,4 +31,10 @@ def reclassify_items(items, criteria_1, criteria_2, comparison_function):
     if updated_items:
         Item.objects.bulk_update(updated_items, ['actionable'])
 
-        
+
+def run():
+    items = Item.objects.all()
+    actionable = Criteria.objects.get(name="actionable")
+    non_actionable = Criteria.objects.get(name="non-actionable")
+
+    reclassify_items(items, actionable, non_actionable, item_vs_criteria)
