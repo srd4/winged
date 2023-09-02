@@ -10,12 +10,18 @@ executors:
         environment:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: pepito56
+  node-executor:
+    docker:
+      - image: node:14
 
 jobs:
   build_and_test_django:
-    executor: python-postgres-executor
+    executor: python-executor
     steps:
       - checkout
+      - run:
+          name: Start PostgreSQL
+          command: service postgresql start
       - run:
           name: Wait for PostgreSQL to start
           command: while ! nc -z localhost 5432; do sleep 1; done
@@ -27,7 +33,6 @@ jobs:
             python manage.py makemigrations
             python manage.py migrate
             python manage.py test
-
 
   build_and_test_vue:
     executor: node-executor
