@@ -77,6 +77,7 @@ def item_vs_criteria(item, criteria_1, criteria_2, force_recompute=False):
     comparison.execution_in_seconds = int(end_time - start_time)
 
     if response:
+        print(response)
         comparison.save()
 
     return comparison.criteria_choice
