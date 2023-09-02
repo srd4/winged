@@ -1,6 +1,6 @@
 import time
 from winged_app.models import Item, Criteria
-from bart_large_mnli_compare import item_vs_criteria
+from scripts.bart_large_mnli_compare import item_vs_criteria
 
 PERCENTAGE_CHUNK = 20  # 10% of total items as a chunk
 
