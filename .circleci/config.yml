@@ -8,8 +8,8 @@ executors:
           DJANGO_SETTINGS_MODULE: winged.settings
       - image: circleci/postgres:12
         environment:
-          POSTGRES_USER: user
-          POSTGRES_PASSWORD: password
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: pepito56
   node-executor:
     docker:
       - image: node:14
