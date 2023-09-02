@@ -173,12 +173,12 @@ class ItemVsTwoCriteriaAIComparison(models.Model):
         (False, 'Criteria 2'),
     ]
     ai_model = models.CharField(max_length=2**7, db_index=True)
-    system_prompt = models.CharField(max_length=2**10)
-    criteria_1 = models.CharField(max_length=2**10)
-    criteria_2 = models.CharField(max_length=2**10)
+    system_prompt = models.ForeignKey('SystemPrompt', on_delete=models.SET_NULL, null=True)
+    criteria_1 = models.ForeignKey('CriteriaStatementVersion', null=True, related_name='criteria_1', on_delete=models.SET_NULL, db_index=True) #if criterias are statement versions I can have access to parent Criteria on second level reference.
+    criteria_2 = models.ForeignKey('CriteriaStatementVersion', null=True, related_name='criteria_2', on_delete=models.SET_NULL, db_index=True)
     item_compared = models.ForeignKey(Item, on_delete=models.CASCADE, db_index=True)
     criteria_choice = models.BooleanField(choices=CHOICES, null=False, default=False, db_index=True)
-    response = models.TextField()
+    response = models.JSONField(null=True, default=None)
     execution_in_seconds = models.DecimalField(max_digits=10, decimal_places=2, null=True, default=None)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -187,8 +187,49 @@ class ItemVsTwoCriteriaAIComparison(models.Model):
         return f"{self.item_compared.statement} - {self.ai_model}"
 
 
+class Criteria(models.Model):
+    name = models.CharField(max_length=2**6)
+    statement_version = models.ForeignKey('CriteriaStatementVersion', on_delete=models.SET_NULL, null=True)
+    statement_updated_at = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE) # so users can modify even default actiona vs actionable criteria statements.
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
 
 
+class CriteriaStatementVersion(models.Model):
+    statement = models.CharField(max_length=2**10)
+    parent_criteria = models.ForeignKey(Criteria, null=True, on_delete=models.SET_NULL)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE) # so users can modify even default actiona vs actionable criteria statements.
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.statement
+    
+
+class SystemPrompt(models.Model):
+    name = models.CharField(max_length=2**6, unique=True)
+    prompt_text = models.ForeignKey('SystemPromptTextVersion', null=True, on_delete=models.SET_NULL)
+    ai_model = models.CharField(max_length=2**7)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.name} - {self.ai_model}"
 
 
+class SystemPromptTextVersion(models.Model):
+    prompt_text = models.CharField(max_length=2**10)
+    created_at = models.DateTimeField(auto_now_add=True)
+    parent_prompt = models.ForeignKey(SystemPrompt, null=True, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.prompt_text

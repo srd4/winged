@@ -542,7 +542,7 @@ export default {
         startReclassifyActionables() {
             let link = `/containers/${String(this.container.id)}/reclassify-actionable/`;
 
-            axiosInstance.get(link)
+            axiosInstance.post(link)
                 .then(response => {
                     console.log(response.data.message);
                 })
