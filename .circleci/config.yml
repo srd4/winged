@@ -20,8 +20,8 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Install netcat
-          command: apt-get update && apt-get install -y netcat
+          name: Install netcat-openbsd
+          command: apt-get update && apt-get install -y netcat-openbsd
       - run:
           name: Wait for PostgreSQL to start
           command: while ! nc -z localhost 5432; do sleep 1; done
