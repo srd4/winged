@@ -47,12 +47,22 @@ def compute_zero_shot_comparison(item, criteria_1, criteria_2):
 
 
 def item_vs_criteria(item, criteria_1, criteria_2, force_recompute=False):
-    comparison, created = ItemVsTwoCriteriaAIComparison.objects.get_or_create(
-        ai_model="bart-large-mnli",
-        criteria_1=criteria_1.statement_version,
-        criteria_2=criteria_2.statement_version,
-        item_compared=item,
-    )
+    created = False
+    try:
+        comparison = ItemVsTwoCriteriaAIComparison.objects.get(
+            ai_model="bart-large-mnli",
+            criteria_1=criteria_1.statement_version,
+            criteria_2=criteria_2.statement_version,
+            item_compared=item)
+        
+    except ItemVsTwoCriteriaAIComparison.DoesNotExist:
+        created = True
+        comparison = ItemVsTwoCriteriaAIComparison(
+            ai_model="bart-large-mnli",
+            criteria_1=criteria_1.statement_version,
+            criteria_2=criteria_2.statement_version,
+            item_compared=item
+            )
 
     if not created and not force_recompute:
         return comparison.criteria_choice
@@ -65,8 +75,8 @@ def item_vs_criteria(item, criteria_1, criteria_2, force_recompute=False):
     )
     end_time = time.time()
     comparison.execution_in_seconds = int(end_time - start_time)
-    comparison.save()
 
-    time.sleep(10)
+    if response:
+        comparison.save()
 
     return comparison.criteria_choice
