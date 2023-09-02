@@ -31,7 +31,7 @@ jobs:
       - run:
           name: Create database
           command: |
-            psql -U postgres -h localhost -c "create database postgres_winged_db;"
+            psql -U postgres -h localhost -c "create database postgres_winged_personal_db;"
       - run:
           name: Setup and Test Django
           command: |
