@@ -63,16 +63,9 @@ def item_vs_criteria(item, criteria_1, criteria_2, force_recompute=False):
         criteria_1.statement_version.statement,
         criteria_2.statement_version.statement
     )
-
-
     end_time = time.time()
     comparison.execution_in_seconds = int(end_time - start_time)
-    
-    if response:
-        comparison.response
-        comparison.save()
-    else:
-        raise ValueError("Null response indicates comparison error, no comparison was saved.")
+    comparison.save()
 
     time.sleep(10)
 
