@@ -18,8 +18,6 @@ jobs:
       - run:
           name: Setup and Test Django
           command: |
-            pip freeze | grep psycopg2
-            pip install psycopg2
             pip install -r requirements.txt
             cd django_winged
             python manage.py makemigrations
