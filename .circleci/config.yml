@@ -16,6 +16,12 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Start PostgreSQL
+          command: service postgresql start
+      - run:
+          name: Wait for PostgreSQL to start
+          command: while ! nc -z localhost 5432; do sleep 1; done
+      - run:
           name: Setup and Test Django
           command: |
             pip install -r requirements.txt
