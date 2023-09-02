@@ -1,15 +1,11 @@
 version: 2.1
 
 executors:
-  python-postgres-executor:
+  python-executor:
     docker:
       - image: python:3.11.4
         environment:
           DJANGO_SETTINGS_MODULE: winged.settings
-      - image: circleci/postgres:10
-        environment:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: pepito56
   node-executor:
     docker:
       - image: node:14
@@ -19,12 +15,6 @@ jobs:
     executor: python-executor
     steps:
       - checkout
-      - run:
-          name: Start PostgreSQL
-          command: service postgresql start
-      - run:
-          name: Wait for PostgreSQL to start
-          command: while ! nc -z localhost 5432; do sleep 1; done
       - run:
           name: Setup and Test Django
           command: |
