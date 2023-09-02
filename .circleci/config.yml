@@ -20,6 +20,9 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Install netcat
+          command: apt-get update && apt-get install -y netcat
+      - run:
           name: Wait for PostgreSQL to start
           command: while ! nc -z localhost 5432; do sleep 1; done
       - run:
