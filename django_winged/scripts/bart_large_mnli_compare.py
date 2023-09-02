@@ -37,7 +37,9 @@ def compute_zero_shot_comparison(item, criteria_1, criteria_2):
             return response_json, response_json['labels'][0] == criteria_1
         
         except requests.RequestException as e:
-            raise ValueError(f"API call failed due to a network issue: {e}")
+            print(f"API call failed due to a network issue: {e}")
+            print(f"Retry {retry_count + 1}: {e}")
+            time.sleep(5)
         except Exception as e:
             print(f"Retry {retry_count + 1}: {e}")
             time.sleep(5)
@@ -56,7 +58,7 @@ def item_vs_criteria(item, criteria_1, criteria_2, force_recompute=False):
         return comparison.criteria_choice
 
     start_time = time.time()
-    comparison.response, comparison.criteria_choice = compute_zero_shot_comparison(
+    response, comparison.criteria_choice = compute_zero_shot_comparison(
         item,
         criteria_1.statement_version.statement,
         criteria_2.statement_version.statement
@@ -66,7 +68,8 @@ def item_vs_criteria(item, criteria_1, criteria_2, force_recompute=False):
     end_time = time.time()
     comparison.execution_in_seconds = int(end_time - start_time)
     
-    if comparison.response != None:
+    if response:
+        comparison.response
         comparison.save()
     else:
         raise ValueError("Null response indicates comparison error, no comparison was saved.")
