@@ -26,6 +26,11 @@ jobs:
           name: Wait for PostgreSQL to start
           command: while ! nc -z localhost 5432; do sleep 1; done
       - run:
+          name: Create database
+          command: |
+            psql -U postgres -h localhost -c "create database postgres_winged_db;"
+
+      - run:
           name: Setup and Test Django
           command: |
             pip install -r requirements.txt
