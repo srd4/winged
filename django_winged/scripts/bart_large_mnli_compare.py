@@ -61,9 +61,13 @@ def item_vs_criteria(item, criteria_1, criteria_2, force_recompute=False):
         criteria_1.statement_version.statement,
         criteria_2.statement_version.statement
     )
+
+
     end_time = time.time()
     comparison.execution_in_seconds = int(end_time - start_time)
-    comparison.save()
+    
+    if comparison.response != None:
+        comparison.save()
 
     time.sleep(10)
 

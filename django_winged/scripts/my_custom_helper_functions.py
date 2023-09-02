@@ -15,7 +15,7 @@ def reclassify_items(items, criteria_1, criteria_2, comparison_function):
         except Exception as e:
             print(f"An error occurred classifying item {item.pk}: {e}")
             continue
-
+        
         item.actionable = result
         updated_items.append(item)
         count += 1
