@@ -23,13 +23,15 @@ jobs:
           name: Install netcat-openbsd
           command: apt-get update && apt-get install -y netcat-openbsd
       - run:
+          name: Install PostgreSQL client
+          command: apt-get update && apt-get install -y postgresql-client
+      - run:
           name: Wait for PostgreSQL to start
           command: while ! nc -z localhost 5432; do sleep 1; done
       - run:
           name: Create database
           command: |
             psql -U postgres -h localhost -c "create database postgres_winged_db;"
-
       - run:
           name: Setup and Test Django
           command: |
