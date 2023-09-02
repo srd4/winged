@@ -43,7 +43,7 @@ def compute_zero_shot_comparison(item, criteria_1, criteria_2, sleep_time):
             return response_json, response_json['labels'][0] == criteria_1, sleep_time
         
         except requests.RequestException as e:
-            if response.status_code == 503:
+            if response.status_code == 503 or response.status_code == 429:
                 print(f"Hit rate limit. Sleeping for a bit longer.")
                 time.sleep(sleep_time * 2)  # Exponential backoff
             print(f"API call failed due to a network issue (requests.RequestException): {e}")
