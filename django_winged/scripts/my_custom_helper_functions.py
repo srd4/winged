@@ -5,6 +5,7 @@ from scripts.bart_large_mnli_compare import item_vs_criteria
 PERCENTAGE_CHUNK = 20  # 10% of total items as a chunk
 
 def reclassify_items(items, criteria_1, criteria_2, comparison_function):
+    sleep_time = 2.0
     total = len(items)
     chunk_size = max(1, (total * PERCENTAGE_CHUNK) // 100)  # At least one item per chunk
     count = 0
@@ -12,7 +13,7 @@ def reclassify_items(items, criteria_1, criteria_2, comparison_function):
     
     for item in items:
         try:
-            result = comparison_function(item, criteria_1, criteria_2)
+            result, sleep_time = comparison_function(item, criteria_1, criteria_2, sleep_time)
         except Exception as e:
             print(f"An error occurred classifying item {item.pk}: {e}")
             continue
