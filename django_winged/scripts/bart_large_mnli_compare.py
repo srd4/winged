@@ -68,6 +68,8 @@ def item_vs_criteria(item, criteria_1, criteria_2, force_recompute=False):
     
     if comparison.response != None:
         comparison.save()
+    else:
+        raise ValueError("Null response indicates comparison error, no comparison was saved.")
 
     time.sleep(10)
 
