@@ -10,7 +10,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.status import HTTP_202_ACCEPTED, HTTP_404_NOT_FOUND
 from django.contrib.auth.models import User
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, get_list_or_404
 
 from .serializers import (
     ContainerSerializer, ContainerChildrenListSerializer, ItemSerializer,
@@ -181,16 +181,14 @@ class ReEvaluateActionableItemsAPIView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, source_container_id, format=None):
-        # These should be fetched from db.
-        actionable = Criteria.objects.get(name="actionable")
-        non_actionable = Criteria.objects.get(name="non-actionable")
-
-        try:
-            source_container = Container.objects.get(id=source_container_id, user=self.request.user)
-            items = Item.objects.filter(parent_container=source_container, done=False, archived=False, user=self.request.user)
-
-        except Container.DoesNotExist:
-            return Response({"message":f"Failed to reclassify items in container {source_container_id}."}, status=HTTP_404_NOT_FOUND)
+        actionable = get_object_or_404(Criteria, name="actionable", user=self.request.user)
+        non_actionable = get_object_or_404(Criteria, name="non-actionable", user=self.request.user)
+        source_container = get_object_or_404(Container, id=source_container_id, user=self.request.user)
+        
+        items = get_list_or_404(
+                Item, parent_container=source_container,
+                done=False, archived=False, user=self.request.user
+                )
 
         # Start a new thread to run the script
         thread = threading.Thread(
