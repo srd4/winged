@@ -19,7 +19,7 @@ from .serializers import (
     )
 
 import scripts.openai_compare as openai_compare
-from scripts.bart_large_mnli_compare import item_vs_criteria
+from scripts.bart_large_mnli_compare import ItemReclassifier
 
 from scripts.my_custom_helper_functions import reclassify_items
 
@@ -185,6 +185,8 @@ class ReEvaluateActionableItemsAPIView(APIView):
         actionable = Criteria.objects.get(name="actionable")
         non_actionable = Criteria.objects.get(name="non-actionable")
 
+        clasiffier = ItemReclassifier()
+
         try:
             source_container = Container.objects.get(id=source_container_id, user=self.request.user)
             items = Item.objects.filter(parent_container=source_container, done=False, archived=False, user=self.request.user)
@@ -194,8 +196,8 @@ class ReEvaluateActionableItemsAPIView(APIView):
 
         # Start a new thread to run the script
         thread = threading.Thread(
-            target=reclassify_items,
-            args=[items, actionable, non_actionable, item_vs_criteria]
+            target=clasiffier.reclassify_items,
+            args=[items, actionable, non_actionable, clasiffier.item_vs_criteria]
             )
         
         thread.start()
