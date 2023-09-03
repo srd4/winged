@@ -1,10 +1,12 @@
 import os
 import openai
 import Levenshtein
+import time
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 def gpt_compare(criteria, item_1, item_2):
+    time.sleep(1)
     messages=[
             {"role": "system", "content": """Choose one item from a given 
             set of two items based on a statement of values. Your output should be ONLY the string of the 
