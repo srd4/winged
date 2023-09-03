@@ -1,63 +1,70 @@
-import requests
-import json
 import time
-from winged_app.models import ItemVsTwoCriteriaAIComparison
+import requests
 import os
+
+from requests.exceptions import Timeout, RequestException
+from json.decoder import JSONDecodeError
+
+from winged_app.models import ItemVsTwoCriteriaAIComparison
+
+
 
 HUGGINGFACE_API_KEY = os.getenv("HUGGINGFACE_API_KEY")
 API_URL = "https://api-inference.huggingface.co/models/facebook/bart-large-mnli"
 
-INCREMENT = 0.1  # Decrease sleep time by this much with each success
-MIN_SLEEP = 0.5  # Don't go below this
 
-def compute_zero_shot_comparison(item, criteria_1, criteria_2, sleep_time):
+def compute_zero_shot_comparison(item_statement, criteria_1_statement, criteria_2_statement):
+    remaining_attempts = 5
+    sleep_time = 5
 
     headers = {"Authorization": f"Bearer {HUGGINGFACE_API_KEY}"}
-    data = {
-        "inputs": item.statement,
-        "parameters": {"candidate_labels": [criteria_1, criteria_2]}
-    }
+    data = {"inputs": item_statement, "parameters": {"candidate_labels": [criteria_1_statement, criteria_2_statement]}}
 
-    MAX_RETRIES = 3
-    for retry_count in range(MAX_RETRIES):
+    while remaining_attempts > 0:
         try:
             time.sleep(sleep_time)
-            response = requests.post(API_URL, headers=headers, json=data)
-            response.raise_for_status()  # Raise HTTPError for bad responses (4xx and 5xx)
-
-            sleep_time = max(MIN_SLEEP, sleep_time - INCREMENT)
-
-            response_json = response.json()
-
-            # Check for a loading model and retry and wait the time.
-            while 'estimated_time' in response_json:
-                for i in range(int(response_json['estimated_time'])):#wait seconds it says it takes to load.                    
-                    print("model is loading", i / response.json()['estimated_time'])
-                    time.sleep(1)
-                response = requests.post(API_URL, headers=headers, json=data)
-
-            # Validate that 'labels' exists in the response
-            if 'labels' not in response_json:
-                raise ValueError("Invalid response: 'labels' key missing")
-
-            return response_json, response_json['labels'][0] == criteria_1, sleep_time
-        
-        except requests.RequestException as e:
-            if response.status_code == 503 or response.status_code == 429:
-                print(f"Hit rate limit. Sleeping for a bit longer.")
-                time.sleep(sleep_time * 2)  # Exponential backoff
-            print(f"API call failed due to a network issue (requests.RequestException): {e}")
-            print(f"Retry {retry_count + 1}: {e}")
-            time.sleep(5)
-        except Exception as e:
-            print(f"Failed for some unknown Exception\nRetry {retry_count + 1}: {e}")
-            time.sleep(5)
+            response = requests.post(API_URL, headers=headers, json=data, timeout=10)
+            response.raise_for_status()
             
+        except Timeout:
+            print("Timeout occurred.")
+            remaining_attempts -= 1
+            continue
+        
+        except RequestException as e:
+            if 'response' in locals() and response.status_code == 429:  # Rate-limited
+                print(f"Hit rate limit. Trying again in {sleep_time * 2} seconds...")
+                sleep_time *= 2
+            elif 'response' in locals() and response.status_code == 503:  # Service unavailable
+                print("Service unavailable. Trying again...")
+            remaining_attempts -= 1
+            continue
+        
+        try:
+            response_json = response.json()
+            if 'labels' not in response_json:
+                raise ValueError("Invalid response: 'labels' missing") from None
+            return response_json, response_json['labels'][0] == criteria_1_statement
+        
+        except JSONDecodeError as e:
+            print(f"JSON decode error occurred: {e}")
+            remaining_attempts -= 1
+            continue
+        except Exception as e:
+            remaining_attempts -= 1
+            print(f"An unknown error occurred: {e}")
+            continue
+
+    raise ValueError("Coudln't bring choice to a valid value.")
+
+        
 
 
-def item_vs_criteria(item, criteria_1, criteria_2, sleep_time, force_recompute=False):
-    created = False
+def item_vs_criteria(item, criteria_1, criteria_2, force_recompute=False):
+    created_here = False
+
     try:
+        # Get comparison if already made to avoid re-computing it.
         comparison = ItemVsTwoCriteriaAIComparison.objects.get(
             ai_model="bart-large-mnli",
             criteria_1=criteria_1.statement_version,
@@ -65,7 +72,8 @@ def item_vs_criteria(item, criteria_1, criteria_2, sleep_time, force_recompute=F
             item_compared=item)
         
     except ItemVsTwoCriteriaAIComparison.DoesNotExist:
-        created = True
+        # Create comparison if not already made.
+        created_here = True
         comparison = ItemVsTwoCriteriaAIComparison(
             ai_model="bart-large-mnli",
             criteria_1=criteria_1.statement_version,
@@ -73,21 +81,25 @@ def item_vs_criteria(item, criteria_1, criteria_2, sleep_time, force_recompute=F
             item_compared=item
             )
 
-    if not created and not force_recompute:
-        return comparison.criteria_choice, sleep_time
+    
+    if not created_here and not force_recompute:
+        # Return already computed choice if comparison already exists and computation is not being forced.
+        return comparison.criteria_choice
+    
 
     start_time = time.time()
-    response, comparison.criteria_choice, sleep_time = compute_zero_shot_comparison(
-        item,
-        criteria_1.statement_version.statement,
-        criteria_2.statement_version.statement,
-        sleep_time
-    )
-    end_time = time.time()
-    comparison.execution_in_seconds = int(end_time - start_time)
 
-    if response:
-        comparison.response = response
+    comparison.response, comparison.criteria_choice,  = compute_zero_shot_comparison(
+        item.statement,
+        criteria_1.statement_version.statement, # sent strint
+        criteria_2.statement_version.statement,
+    )
+
+    end_time = time.time()
+
+
+    if comparison.response:
+        comparison.execution_in_seconds = int(end_time - start_time)
         comparison.save()
 
-    return comparison.criteria_choice, sleep_time
+    return comparison.criteria_choice # boolen representing result -> True = criteria_1
