@@ -13,7 +13,7 @@
                 <option v-if="container_spectrums" v-for="spectrum in container_spectrums" :value="spectrum.id">{{spectrum.name}}</option>
             </select>
 
-            <button v-on:click="gptCurate('openai');">GPT-Curate</button>
+            <button v-on:click="gptCurate('ai-model');">AI-Curate</button>
 
             <button v-on:click="gptCurate('user_input');">User-Curate</button>
 

@@ -41,12 +41,3 @@ def gpt_compare(criteria, item_1, item_2):
     else:
         print("Tie, returning item 1.")
         return False # default to keeping item_1 before item_2
-
-
-if __name__ == "__main__":
-    criteria = "a book"
-
-    item_1 = "atomic habits"
-    item_2 = "kanye west donda album"
-
-    print(gpt_compare(criteria, item_1, item_2))
