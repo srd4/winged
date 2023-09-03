@@ -27,7 +27,7 @@ def compute_zero_shot_comparison(item_statement, criteria_1_statement, criteria_
             response.raise_for_status()
             
         except Timeout:
-            print("Timeout occurred.")
+            print("Timeout occurred.", response.content if 'response' in locals() else "")
             remaining_attempts -= 1
             continue
         
@@ -36,7 +36,7 @@ def compute_zero_shot_comparison(item_statement, criteria_1_statement, criteria_
                 print(f"Hit rate limit. Trying again in {sleep_time * 2} seconds...")
                 sleep_time *= 2
             elif 'response' in locals() and response.status_code == 503:  # Service unavailable
-                print("Service unavailable. Trying again...")
+                print("Service unavailable. Trying again...", response.content if 'response' in locals() else "")
             remaining_attempts -= 1
             continue
         
@@ -47,18 +47,17 @@ def compute_zero_shot_comparison(item_statement, criteria_1_statement, criteria_
             return response_json, response_json['labels'][0] == criteria_1_statement
         
         except JSONDecodeError as e:
-            print(f"JSON decode error occurred: {e}")
+            print(f"JSON decode error occurred: {e}", response.content if 'response' in locals() else "")
             remaining_attempts -= 1
             continue
         except Exception as e:
             remaining_attempts -= 1
-            print(f"An unknown error occurred: {e}")
+            print(f"An unknown error occurred: {e}", response.content if 'response' in locals() else "")
             continue
 
     raise ValueError("Coudln't bring choice to a valid value.")
 
         
-
 
 def item_vs_criteria(item, criteria_1, criteria_2, force_recompute=False):
     created_here = False
