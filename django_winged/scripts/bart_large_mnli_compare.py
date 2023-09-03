@@ -34,10 +34,10 @@ def compute_zero_shot_comparison(item_statement, criteria_1_statement, criteria_
         except RequestException as e:
             if 'response' in locals() and response.status_code == 429:  # Rate-limited
                 print(f"Hit rate limit. Trying again in {sleep_time * 2} seconds...")
-                sleep_time *= 2
             elif 'response' in locals() and response.status_code == 503:  # Service unavailable
                 print("Service unavailable. Trying again...", response.content if 'response' in locals() else "")
             remaining_attempts -= 1
+            sleep_time *= 2
             continue
         
         try:
@@ -57,48 +57,32 @@ def compute_zero_shot_comparison(item_statement, criteria_1_statement, criteria_
 
     raise ValueError("Coudln't bring choice to a valid value.")
 
-        
+
 
 def item_vs_criteria(item, criteria_1, criteria_2, force_recompute=False):
-    created_here = False
-
-    try:
-        # Get comparison if already made to avoid re-computing it.
-        comparison = ItemVsTwoCriteriaAIComparison.objects.get(
-            ai_model="bart-large-mnli",
-            criteria_1=criteria_1.statement_version,
-            criteria_2=criteria_2.statement_version,
-            item_compared=item)
-        
-    except ItemVsTwoCriteriaAIComparison.DoesNotExist:
-        # Create comparison if not already made.
-        created_here = True
-        comparison = ItemVsTwoCriteriaAIComparison(
-            ai_model="bart-large-mnli",
-            criteria_1=criteria_1.statement_version,
-            criteria_2=criteria_2.statement_version,
-            item_compared=item
-            )
-
+    
+    comparison, created_here = ItemVsTwoCriteriaAIComparison.objects.get_or_create(
+        ai_model="bart-large-mnli",
+        criteria_1=criteria_1.statement_version,
+        criteria_2=criteria_2.statement_version,
+        item_compared=item
+    )
     
     if not created_here and not force_recompute:
-        # Return already computed choice if comparison already exists and computation is not being forced.
         return comparison.criteria_choice
-    
 
     start_time = time.time()
 
     comparison.response, comparison.criteria_choice,  = compute_zero_shot_comparison(
         item.statement,
-        criteria_1.statement_version.statement, # sent strint
+        criteria_1.statement_version.statement,
         criteria_2.statement_version.statement,
     )
 
     end_time = time.time()
 
-
     if comparison.response:
         comparison.execution_in_seconds = int(end_time - start_time)
         comparison.save()
 
-    return comparison.criteria_choice # boolen representing result -> True = criteria_1
+    return comparison.criteria_choice

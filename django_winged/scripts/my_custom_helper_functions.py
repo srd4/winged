@@ -12,7 +12,7 @@ def reclassify_items(items, criteria_1, criteria_2, comparison_function):
         try:
             result = comparison_function(item, criteria_1, criteria_2)
         except Exception as e: # make sure result is either valid or raise an exception on comparison_function.
-            fail_message = f"{item.pk}|{item.statement[:20]} failed to be processed. {e}"
+            fail_message = f"{item.pk}|'{item.statement.split('')[0:5]}...' failed to be processed. {e}"
             print(fail_message)
             continue
         
