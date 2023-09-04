@@ -214,7 +214,7 @@ class CriteriaStatementVersion(models.Model):
 
 class SystemPrompt(models.Model):
     name = models.CharField(max_length=2**6, unique=True)
-    prompt_text = models.ForeignKey('SystemPromptTextVersion', null=True, on_delete=models.SET_NULL)
+    prompt_text_version = models.ForeignKey('SystemPromptTextVersion', null=True, on_delete=models.SET_NULL)
     ai_model = models.CharField(max_length=2**7)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
@@ -226,7 +226,7 @@ class SystemPrompt(models.Model):
 
 
 class SystemPromptTextVersion(models.Model):
-    prompt_text = models.CharField(max_length=2**10)
+    text = models.CharField(max_length=2**10)
     created_at = models.DateTimeField(auto_now_add=True)
     parent_prompt = models.ForeignKey(SystemPrompt, null=True, on_delete=models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
