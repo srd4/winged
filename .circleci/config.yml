@@ -35,6 +35,8 @@ jobs:
       - run:
           name: Setup and Test Django
           command: |
+            pip install --upgrade pip
+            pip install tiktoken
             pip install -r requirements.txt
             cd django_winged
             python manage.py makemigrations
