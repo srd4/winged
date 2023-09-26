@@ -19,3 +19,4 @@ __pycache__
 node_modules
 db.json
 django_winged/winged/settings.py
+django_winged/api_logs.log

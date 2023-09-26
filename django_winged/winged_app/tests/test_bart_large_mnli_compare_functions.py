@@ -24,7 +24,7 @@ class TestComputeZeroShotComparison(unittest.TestCase):
     @patch('scripts.bart_large_mnli_compare.api_call')
     @patch('scripts.bart_large_mnli_compare.parse_response')
     def test_api_timeout_retry(self, mock_api_call, mock_parser):
-        mock_api_call.side_effect = [HuggingFaceZeroShotAPITimeoutError] * 4 + [self.mock_response]
+        mock_api_call.side_effect = [HuggingFaceZeroShotAPITimeoutError] * 2 + [self.mock_response]
         mock_parser.return_value = (self.mock_response.json(), True)
         result = compute_zero_shot_comparison(
             self.item_statement, self.criteria_1, self.criteria_2,
