@@ -3,27 +3,6 @@ from django.conf import settings
 from django.utils import timezone
 from django.shortcuts import get_object_or_404
 
-
-"""
-class ContainerGroup(models.Model):
-    name = models.CharField(max_length=2**6)
-    description = models.TextField(max_length=2**7, null=True)
-    parent_group = models.ForeignKey('self', null=True, on_delete=models.SET_NULL)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    is_collapsed = models.BooleanField(default=True)
-
-    def __str__(self) -> str:
-        return self.name
-
-    def toggle_collapsed(self):
-        self.is_collapsed = not self.is_collapsed
-        self.save()
-
-        return self.is_collapsed
-"""
-
 class Container(models.Model):
     name = models.CharField(max_length=2**6)
     description = models.TextField(max_length=2**10)
@@ -173,7 +152,7 @@ class ItemVsTwoCriteriaAIComparison(models.Model):
         (False, 'Criteria 2'),
     ]
     ai_model = models.CharField(max_length=2**7, db_index=True)
-    system_prompt = models.ForeignKey('SystemPrompt', on_delete=models.SET_NULL, null=True)
+    system_prompt = models.ForeignKey('SystemPromptTextVersion', on_delete=models.SET_NULL, null=True)
     criteria_1 = models.ForeignKey('CriteriaStatementVersion', null=True, related_name='criteria_1', on_delete=models.SET_NULL, db_index=True) #if criterias are statement versions I can have access to parent Criteria on second level reference.
     criteria_2 = models.ForeignKey('CriteriaStatementVersion', null=True, related_name='criteria_2', on_delete=models.SET_NULL, db_index=True)
     item_compared = models.ForeignKey(Item, on_delete=models.CASCADE, db_index=True)
@@ -189,7 +168,7 @@ class ItemVsTwoCriteriaAIComparison(models.Model):
 
 class Criteria(models.Model):
     name = models.CharField(max_length=2**6)
-    statement_version = models.ForeignKey('CriteriaStatementVersion', on_delete=models.SET_NULL, null=True)
+    criteria_statement_version = models.ForeignKey('CriteriaStatementVersion', on_delete=models.SET_NULL, null=True)
     statement_updated_at = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE) # so users can modify even default actiona vs actionable criteria statements.
     
@@ -206,11 +185,17 @@ class CriteriaStatementVersion(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE) # so users can modify even default actiona vs actionable criteria statements.
 
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+
+    def save(self, *args, **kwargs) -> None:
+        super().save(*args, **kwargs)
+        
+        if self.parent_criteria:
+            self.parent_criteria.criteria_statement_version = self
+            self.parent_criteria.save()
 
     def __str__(self):
         return self.statement
-    
+
 
 class SystemPrompt(models.Model):
     name = models.CharField(max_length=2**6, unique=True)
@@ -227,9 +212,17 @@ class SystemPrompt(models.Model):
 
 class SystemPromptTextVersion(models.Model):
     text = models.CharField(max_length=2**10)
-    created_at = models.DateTimeField(auto_now_add=True)
     parent_prompt = models.ForeignKey(SystemPrompt, null=True, on_delete=models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    def save(self, *args, **kwargs) -> None:
+        super().save(*args, **kwargs)
+
+        if self.parent_prompt:
+            self.parent_prompt.prompt_text_version = self
+            self.parent_prompt.save()
 
     def __str__(self):
         return self.prompt_text

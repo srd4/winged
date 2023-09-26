@@ -13,17 +13,24 @@
                 <option v-if="container_spectrums" v-for="spectrum in container_spectrums" :value="spectrum.id">{{spectrum.name}}</option>
             </select>
 
-            <button v-on:click="gptCurate('ai-model');">AI-Curate</button>
-
-            <button v-on:click="gptCurate('user_input');">User-Curate</button>
-
-
             <input v-model="searchQuery" placeholder="Search...">
 
             <button v-on:click="filterItems();updateContainer(container);getContainerItems()">filter</button>
-
             
             <a @click="logout">Logout</a>
+            <div>
+                <button v-on:click="gptCurate('user_input');">User-Curate</button>
+            </div>
+
+            <div v-if="!showAiCurationConfirmation">
+                <button  v-on:click="fetchComputedAiCurationCost()">AI-Curate</button>
+            </div>
+
+            <div v-if="showAiCurationConfirmation">
+                <p>Estimated Cost: ${{ computedAiCurationCost }} USD</p>
+                <button>Confirm AI-Curation</button>
+                <button v-on:click="showAiCurationConfirmation = !showAiCurationConfirmation">Cancel</button>
+            </div>
     </div>
 
     <div class="actions">
@@ -182,6 +189,8 @@ export default {
             containers: [],
             firstContainerId: null,
             secondContainerId: null,
+            showAiCurationConfirmation: false,
+            computedAiCurationCost: null,
         }
     },
     watch: {
@@ -531,9 +540,21 @@ export default {
                 .catch(error => {
                     console.error('Error initiating reclassification:', error);
                 });
+        },
+        fetchComputedAiCurationCost(){
+            let link = `/containers/${String(this.container.id)}/spectrumtypes/${String(this.spectrumId)}/items-vs-spectrum-comparison-cost/`
+
+            axiosInstance.get(link)
+                .then(response =>{
+                    this.computedAiCurationCost = Math.round(response.data.cost * 100) /100
+                    this.showAiCurationConfirmation = !this.showAiCurationConfirmation
+                    console.log(response.data.cost)
+                })
+                .catch(error => {
+                    console.error('Error fetching cumputed ai curation cost:', error);
+                });
         }
     },
-
 }
 </script>
 

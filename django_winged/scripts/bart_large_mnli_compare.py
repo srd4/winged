@@ -1,88 +1,120 @@
 import time
 import requests
 import os
+import logging
 
 from requests.exceptions import Timeout, RequestException
 from json.decoder import JSONDecodeError
 
 from winged_app.models import ItemVsTwoCriteriaAIComparison
 
-
-
 HUGGINGFACE_API_KEY = os.getenv("HUGGINGFACE_API_KEY")
 API_URL = "https://api-inference.huggingface.co/models/facebook/bart-large-mnli"
+class HuggingFaceZeroShotAPIError(Exception):
+    pass
+
+class HuggingFaceZeroShotAPITimeoutError(HuggingFaceZeroShotAPIError):
+    pass
+
+class HuggingFaceZeroShotAPIInvalidResponse(HuggingFaceZeroShotAPIError):
+    pass
+
+logging.basicConfig(filename='api_logs.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 
-def compute_zero_shot_comparison(item_statement, criteria_1_statement, criteria_2_statement):
-    remaining_attempts = 5
+def api_call(url, headers, data):
+    try:
+        response = requests.post(url, headers=headers, json=data, timeout=10)
+        response.raise_for_status()
+        logging.info(f"API response: {response.status_code}, {response.text}")
+        return response
+    except Timeout as e:
+        logging.error(f"Timeout error: {e}")
+        if response:
+            logging.info(f"API response: {response.status_code}, {response.text}")
+        raise HuggingFaceZeroShotAPITimeoutError()
+    except RequestException as e:
+        logging.error(f"Request exception: {e}")
+        if response:
+            logging.info(f"API response: {response.status_code}, {response.text}")
+        raise HuggingFaceZeroShotAPIError()
+
+
+def parse_response(response, criteria_1_statement):
+    json_response = response.json()
+    if 'labels' not in json_response:
+        logging.error("Invalid response: 'labels' missing")
+        raise HuggingFaceZeroShotAPIInvalidResponse("Invalid response: 'labels' missing") from None
+    return json_response, json_response['labels'][0] == criteria_1_statement
+
+
+def compute_zero_shot_comparison(item_statement, criteria_1_statement, criteria_2_statement, api_key=HUGGINGFACE_API_KEY, api_url=API_URL, post_function=api_call, parser_function=parse_response):
+    remaining_attempts = 3
     sleep_time = 5
 
-    headers = {"Authorization": f"Bearer {HUGGINGFACE_API_KEY}"}
+    headers = {"Authorization": f"Bearer {api_key}"}
     data = {"inputs": item_statement, "parameters": {"candidate_labels": [criteria_1_statement, criteria_2_statement]}}
 
     while remaining_attempts > 0:
         try:
             time.sleep(sleep_time)
-            response = requests.post(API_URL, headers=headers, json=data, timeout=10)
-            response.raise_for_status()
+            response = post_function(api_url, headers, data)
+            result = parser_function(response, criteria_1_statement)
+            return result
             
-        except Timeout:
-            print("Timeout occurred.", response.content if 'response' in locals() else "")
+        except HuggingFaceZeroShotAPITimeoutError:
+            logging.warning("Timeout occurred, retrying...")
             remaining_attempts -= 1
             continue
         
-        except RequestException as e:
-            if 'response' in locals() and response.status_code == 429:  # Rate-limited
-                print(f"Hit rate limit. Trying again in {sleep_time * 2} seconds...")
-            elif 'response' in locals() and response.status_code == 503:  # Service unavailable
-                print("Service unavailable. Trying again...", response.content if 'response' in locals() else "")
+        except HuggingFaceZeroShotAPIError:
+            logging.warning("API error occurred, retrying with increased sleep time...")
             remaining_attempts -= 1
             sleep_time *= 2
             continue
         
-        try:
-            response_json = response.json()
-            if 'labels' not in response_json:
-                raise ValueError("Invalid response: 'labels' missing") from None
-            return response_json, response_json['labels'][0] == criteria_1_statement
-        
-        except JSONDecodeError as e:
-            print(f"JSON decode error occurred: {e}", response.content if 'response' in locals() else "")
-            remaining_attempts -= 1
-            continue
-        except Exception as e:
-            remaining_attempts -= 1
-            print(f"An unknown error occurred: {e}", response.content if 'response' in locals() else "")
-            continue
 
-    raise ValueError("Coudln't bring choice to a valid value.")
-
+    logging.error("Max retries reached without successful API response.")
+    raise HuggingFaceZeroShotAPIError("Max retries reached without successful API response.")
 
 
 def item_vs_criteria(item, criteria_1, criteria_2, force_recompute=False):
-    
-    comparison, created_here = ItemVsTwoCriteriaAIComparison.objects.get_or_create(
-        ai_model="bart-large-mnli",
-        criteria_1=criteria_1.statement_version,
-        criteria_2=criteria_2.statement_version,
-        item_compared=item
-    )
-    
-    if not created_here and not force_recompute:
+    if force_recompute:
+        return compute_and_store_comparison(item, criteria_1, criteria_2)
+
+    try:
+        comparison = ItemVsTwoCriteriaAIComparison.objects.filter(
+            ai_model="bart-large-mnli",
+            criteria_1=criteria_1.criteria_statement_version,
+            criteria_2=criteria_2.criteria_statement_version,
+            item_compared=item
+        ).order_by('created_at').reverse().first()
+        if not comparison:
+            raise ItemVsTwoCriteriaAIComparison.DoesNotExist
         return comparison.criteria_choice
+    except ItemVsTwoCriteriaAIComparison.DoesNotExist:
+        return compute_and_store_comparison(item, criteria_1, criteria_2)
 
+
+def compute_and_store_comparison(item, criteria_1, criteria_2):
     start_time = time.time()
-
-    comparison.response, comparison.criteria_choice,  = compute_zero_shot_comparison(
+    response, criteria_choice = compute_zero_shot_comparison(
         item.statement,
-        criteria_1.statement_version.statement,
-        criteria_2.statement_version.statement,
+        criteria_1.criteria_statement_version.statement,
+        criteria_2.criteria_statement_version.statement,
     )
-
     end_time = time.time()
 
-    if comparison.response:
-        comparison.execution_in_seconds = int(end_time - start_time)
-        comparison.save()
+    if response:
+        comparison = ItemVsTwoCriteriaAIComparison.objects.create(
+            ai_model="bart-large-mnli",
+            criteria_1=criteria_1.criteria_statement_version,
+            criteria_2=criteria_2.criteria_statement_version,
+            item_compared=item,
+            response=response,
+            criteria_choice=criteria_choice,
+            execution_in_seconds=end_time - start_time
+        )
+        return comparison.criteria_choice
 
-    return comparison.criteria_choice
+    raise ValueError("Comparison computation failed.")

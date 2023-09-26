@@ -1,6 +1,11 @@
 from django.urls import path, include
 from rest_framework import routers
-from winged_app.views import ContainerItemListAPIView, ContainerTreeView, ContainerViewSet, ItemViewSet, StatementVersionViewSet, UserViewSet, SpectrumValueViewSet, SpectrumTypeViewSet, RunScriptAPIView, ReEvaluateActionableItemsAPIView
+from winged_app.views import (
+    ContainerItemListAPIView, ContainerTreeView, ContainerViewSet,
+    ItemViewSet, StatementVersionViewSet, UserViewSet, SpectrumValueViewSet,
+    SpectrumTypeViewSet, RunScriptAPIView, ReEvaluateActionableItemsAPIView,
+    ItemsVsSpectrumOpeanAiComparisonCost
+    )
 from django.contrib import admin
 from rest_framework.authtoken.views import obtain_auth_token
 
@@ -25,5 +30,7 @@ urlpatterns = [
 
     path("containers/<int:container_id>/run-script/spectrumtypes/<int:spectrumtype_id>/<str:comparison_mode>/", RunScriptAPIView.as_view(), name="run-script"),
 
-    path('containers/<int:source_container_id>/reclassify-actionable/', ReEvaluateActionableItemsAPIView.as_view(), name='reclassify-actionable-container-items')
+    path('containers/<int:source_container_id>/reclassify-actionable/', ReEvaluateActionableItemsAPIView.as_view(), name='reclassify-actionable-container-items'),
+    
+    path('containers/<int:container_id>/spectrumtypes/<int:spectrumtype_id>/items-vs-spectrum-comparison-cost/', ItemsVsSpectrumOpeanAiComparisonCost.as_view(), name='items-vs-spectrum-comparison-cost')
 ]

@@ -1,5 +1,6 @@
 import threading
 import time
+import math
 
 from random import shuffle
 
@@ -19,16 +20,18 @@ from .serializers import (
     )
 
 import scripts.openai_compare as openai_compare
+import scripts.ai_curation_costs_calc as costs_calc
 from scripts.bart_large_mnli_compare import item_vs_criteria
+
 
 from scripts.my_custom_helper_functions import reclassify_items
 
 from winged_app.models import (
     Container, Item, StatementVersion, SpectrumValue, SpectrumType,
-    Criteria, CriteriaStatementVersion, SystemPrompt, SystemPromptTextVersion
+    Criteria
     )
 
-#reorganized imports by origin and form.
+# reorganized imports by origin and form.
 
 
 class IsOwner(permissions.BasePermission):
@@ -49,6 +52,73 @@ class IsOwner(permissions.BasePermission):
 def user_input_compare(criteria, element1, element2):
     response = input(f"\n1. {element1} \nvs\n2. {element2}\n(Enter 1/2): ")
     return response != "1"
+
+def log_summation(n, k):
+    """
+    Computes the summation of log(i) from n to n+k-1.
+    
+    Parameters:
+    - n: Starting value of the summation.
+    - k: Number of terms to sum.
+    
+    Returns:
+    - The computed summation value.
+    """
+    return sum(math.log(i) for i in range(n, n+k) if i > 0)
+
+
+class ItemsVsSpectrumOpeanAiComparisonCost(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, container_id, spectrumtype_id):
+        try:
+            spectrumtype = SpectrumType.objects.get(id=spectrumtype_id, user=self.request.user)
+            container = Container.objects.get(id=container_id, user=self.request.user)
+        except SpectrumType.DoesNotExist:
+            return Response({"error": "SpectrumType not found"}, status=HTTP_404_NOT_FOUND)
+        except Container.DoesNotExist:
+            return Response({"error": "Container not found"}, status=HTTP_404_NOT_FOUND)
+
+        #all spectrum values for this spectrum type.
+        spectrum_values = SpectrumValue.objects.filter(spectrum_type=spectrumtype, user=self.request.user)
+        #all spectrum values for this spectrum type that are not zero.
+        non_zero_spectrum_values = spectrum_values.exclude(value=0)
+        #all spectrum values for this spectrum type that are zero.
+        zero_spectrum_values = spectrum_values.filter(value=0)
+
+        #all items in this container detail -front end.
+        item_list = Item.objects.filter(actionable=container.is_on_actionables_tab,
+                                    archived=False,
+                                    done=False,
+                                    parent_container=container,
+                                    user=self.request.user
+                                    )
+
+        #all items in this container that have a spectrum value for this spectrum type that is not zero.
+        scored_items_count = item_list.filter(spectrumvalue__in=non_zero_spectrum_values).count()
+        #all items in this container that have a spectrum value for this spectrum type that is zero.
+        zero_items_count = item_list.filter(spectrumvalue__in=zero_spectrum_values).count()
+        #all items in this container that do not have a spectrum value for this spectrum type.
+        new_items_count = item_list.exclude(spectrumvalue__in=spectrum_values).count()
+
+        worst_case_comparisons = log_summation(scored_items_count, zero_items_count + new_items_count)
+
+        tokens_in_worst_case_comparison = costs_calc.count_tokens(
+            openai_compare.system_content
+            + openai_compare.user_content_set_up
+            + openai_compare.assistant_content
+            + openai_compare.user_content
+            )
+        + 42*2 #worst case tokens in two items given db model lenght.
+        + costs_calc.count_tokens(spectrumtype.description)
+
+        average_output_tokens = 80 #worst case tokens in completion -upper limit from gpt4 comparisons registered.
+
+        input_cost = 0.03 * (tokens_in_worst_case_comparison * worst_case_comparisons)
+        output_cost = 0.06 * (average_output_tokens * worst_case_comparisons)
+
+        return Response({"cost": (input_cost + output_cost)/1000})
 
 
 class RunScriptAPIView(APIView):

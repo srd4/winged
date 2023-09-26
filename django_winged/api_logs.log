@@ -1,0 +1,237 @@
+2023-09-22 08:17:59,103 - ERROR - Timeout error: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Read timed out. (read timeout=10)
+2023-09-22 08:17:59,103 - WARNING - Timeout occurred, retrying...
+2023-09-22 08:18:14,396 - ERROR - Timeout error: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Read timed out. (read timeout=10)
+2023-09-22 08:18:14,396 - WARNING - Timeout occurred, retrying...
+2023-09-22 08:18:20,588 - INFO - API response: 200, {"sequence":"cómo así ome daniel","labels":["a thought","an action"],"scores":[0.7982814311981201,0.20171856880187988]}
+2023-09-22 08:18:20,588 - INFO - Model prediction: ({'sequence': 'cómo así ome daniel', 'labels': ['a thought', 'an action'], 'scores': [0.7982814311981201, 0.20171856880187988]}, False)
+2023-09-22 08:18:36,016 - ERROR - Timeout error: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Read timed out. (read timeout=10)
+2023-09-22 08:18:36,016 - WARNING - Timeout occurred, retrying...
+2023-09-22 08:18:51,276 - ERROR - Timeout error: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Read timed out. (read timeout=10)
+2023-09-22 08:18:51,276 - WARNING - Timeout occurred, retrying...
+2023-09-22 08:19:06,553 - ERROR - Timeout error: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Read timed out. (read timeout=10)
+2023-09-22 08:19:06,553 - WARNING - Timeout occurred, retrying...
+2023-09-22 08:19:21,816 - ERROR - Timeout error: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Read timed out. (read timeout=10)
+2023-09-22 08:19:21,816 - WARNING - Timeout occurred, retrying...
+2023-09-22 08:19:27,306 - INFO - API response: 200, {"sequence":"I indeed should draw conclusions from empirical evidence instead of my probably biased by neuroticism hypothesis.","labels":["a thought","an action"],"scores":[0.8217938542366028,0.1782061606645584]}
+2023-09-22 08:19:27,306 - INFO - Model prediction: ({'sequence': 'I indeed should draw conclusions from empirical evidence instead of my probably biased by neuroticism hypothesis.', 'labels': ['a thought', 'an action'], 'scores': [0.8217938542366028, 0.1782061606645584]}, False)
+2023-09-22 08:23:13,005 - INFO - C:\Users\.flac\Documents\GitHub\winged\django_winged\scripts\bart_large_mnli_compare.py changed, reloading.
+2023-09-22 08:26:54,631 - INFO - C:\Users\.flac\Documents\GitHub\winged\django_winged\scripts\bart_large_mnli_compare.py changed, reloading.
+2023-09-22 08:29:10,151 - WARNING - Not Found: /favicon.ico
+2023-09-22 09:06:13,303 - INFO - C:\Users\.flac\Documents\GitHub\winged\django_winged\scripts\bart_large_mnli_compare.py changed, reloading.
+2023-09-22 09:07:27,247 - INFO - C:\Users\.flac\Documents\GitHub\winged\django_winged\scripts\my_custom_helper_functions.py changed, reloading.
+2023-09-22 09:08:09,280 - INFO - C:\Users\.flac\Documents\GitHub\winged\django_winged\scripts\bart_large_mnli_compare.py changed, reloading.
+2023-09-22 09:08:55,683 - INFO - C:\Users\.flac\Documents\GitHub\winged\django_winged\scripts\bart_large_mnli_compare.py changed, reloading.
+2023-09-22 09:09:53,651 - INFO - C:\Users\.flac\Documents\GitHub\winged\django_winged\scripts\bart_large_mnli_compare.py changed, reloading.
+2023-09-22 09:10:26,247 - INFO - C:\Users\.flac\Documents\GitHub\winged\django_winged\scripts\bart_large_mnli_compare.py changed, reloading.
+2023-09-22 09:11:32,271 - INFO - C:\Users\.flac\Documents\GitHub\winged\django_winged\scripts\bart_large_mnli_compare.py changed, reloading.
+2023-09-22 09:12:11,631 - INFO - API response: 200, {"sequence":"do something you don't like for the sake of it sounds stupid, until you get competitive and take pride on doing what other can't","labels":["an action","a thought"],"scores":[0.5850894451141357,0.41491058468818665]}
+2023-09-22 09:12:11,631 - INFO - Model prediction: ({'sequence': "do something you don't like for the sake of it sounds stupid, until you get competitive and take pride on doing what other can't", 'labels': ['an action', 'a thought'], 'scores': [0.5850894451141357, 0.41491058468818665]}, True)
+2023-09-22 09:23:01,361 - ERROR - Request exception: 503 Server Error: Service Unavailable for url: https://api-inference.huggingface.co/models/facebook/bart-large-mnli
+2023-09-22 09:23:01,361 - WARNING - API error occurred, retrying with increased sleep time...
+2023-09-22 09:23:11,761 - ERROR - Request exception: 503 Server Error: Service Unavailable for url: https://api-inference.huggingface.co/models/facebook/bart-large-mnli
+2023-09-22 09:23:11,761 - WARNING - API error occurred, retrying with increased sleep time...
+2023-09-22 09:23:32,401 - INFO - API response: 200, {"sequence":"at the moment I'm full, lunch didn't burn and everything tasted great.","labels":["an action","a thought"],"scores":[0.5267804265022278,0.473219633102417]}
+2023-09-22 09:23:32,411 - INFO - Model prediction: ({'sequence': "at the moment I'm full, lunch didn't burn and everything tasted great.", 'labels': ['an action', 'a thought'], 'scores': [0.5267804265022278, 0.473219633102417]}, True)
+2023-09-22 09:23:38,036 - INFO - API response: 200, {"sequence":"not only do I have Winged working and use it, but I'm back after a super low epoch at improving on it.","labels":["a thought","an action"],"scores":[0.5113988518714905,0.4886011779308319]}
+2023-09-22 09:23:38,036 - INFO - Model prediction: ({'sequence': "not only do I have Winged working and use it, but I'm back after a super low epoch at improving on it.", 'labels': ['a thought', 'an action'], 'scores': [0.5113988518714905, 0.4886011779308319]}, False)
+2023-09-22 09:23:43,634 - INFO - API response: 200, {"sequence":"I fit the skillset described on my linkedin profile.","labels":["a thought","an action"],"scores":[0.5731539130210876,0.4268460273742676]}
+2023-09-22 09:23:43,634 - INFO - Model prediction: ({'sequence': 'I fit the skillset described on my linkedin profile.', 'labels': ['a thought', 'an action'], 'scores': [0.5731539130210876, 0.4268460273742676]}, False)
+2023-09-22 09:23:49,251 - INFO - API response: 200, {"sequence":"my phisical health is alright.","labels":["a thought","an action"],"scores":[0.5741232633590698,0.4258766770362854]}
+2023-09-22 09:23:49,251 - INFO - Model prediction: ({'sequence': 'my phisical health is alright.', 'labels': ['a thought', 'an action'], 'scores': [0.5741232633590698, 0.4258766770362854]}, False)
+2023-09-22 09:23:54,861 - INFO - API response: 200, {"sequence":"back home I don't have to bare the unsuferable Cali heat.","labels":["an action","a thought"],"scores":[0.5623312592506409,0.43766871094703674]}
+2023-09-22 09:23:54,861 - INFO - Model prediction: ({'sequence': "back home I don't have to bare the unsuferable Cali heat.", 'labels': ['an action', 'a thought'], 'scores': [0.5623312592506409, 0.43766871094703674]}, True)
+2023-09-22 09:24:00,576 - INFO - API response: 200, {"sequence":"I don't ever have to commute to berlitz again.","labels":["an action","a thought"],"scores":[0.5909807682037354,0.40901926159858704]}
+2023-09-22 09:24:00,576 - INFO - Model prediction: ({'sequence': "I don't ever have to commute to berlitz again.", 'labels': ['an action', 'a thought'], 'scores': [0.5909807682037354, 0.40901926159858704]}, True)
+2023-09-22 09:24:06,408 - INFO - API response: 200, {"sequence":"I don't feel deprived back home living with my mother.","labels":["a thought","an action"],"scores":[0.6525644659996033,0.34743550419807434]}
+2023-09-22 09:24:06,408 - INFO - Model prediction: ({'sequence': "I don't feel deprived back home living with my mother.", 'labels': ['a thought', 'an action'], 'scores': [0.6525644659996033, 0.34743550419807434]}, False)
+2023-09-22 09:24:11,981 - INFO - API response: 200, {"sequence":"I implemented spectrums feature to satisfaction on my notetaking app, and added AI that helps me sort items on top of that.","labels":["a thought","an action"],"scores":[0.7371521592140198,0.262847900390625]}
+2023-09-22 09:24:11,981 - INFO - Model prediction: ({'sequence': 'I implemented spectrums feature to satisfaction on my notetaking app, and added AI that helps me sort items on top of that.', 'labels': ['a thought', 'an action'], 'scores': [0.7371521592140198, 0.262847900390625]}, False)
+2023-09-22 09:24:12,585 - INFO - C:\Users\.flac\Documents\GitHub\winged\django_winged\scripts\bart_large_mnli_compare.py changed, reloading.
+2023-09-22 09:24:23,540 - INFO - C:\Users\.flac\Documents\GitHub\winged\django_winged\scripts\bart_large_mnli_compare.py changed, reloading.
+2023-09-22 09:24:37,921 - INFO - API response: 200, {"sequence":"I have established systems for improving on every aspect of my life.","labels":["a thought","an action"],"scores":[0.5008233785629272,0.49917659163475037]}
+2023-09-22 09:24:37,921 - INFO - Model prediction: ({'sequence': 'I have established systems for improving on every aspect of my life.', 'labels': ['a thought', 'an action'], 'scores': [0.5008233785629272, 0.49917659163475037]}, False)
+2023-09-22 09:24:43,651 - INFO - API response: 200, {"sequence":"I'm exercising being grateful while most of the world's population is working a full time job.","labels":["an action","a thought"],"scores":[0.8452291488647461,0.1547708660364151]}
+2023-09-22 09:24:43,651 - INFO - Model prediction: ({'sequence': "I'm exercising being grateful while most of the world's population is working a full time job.", 'labels': ['an action', 'a thought'], 'scores': [0.8452291488647461, 0.1547708660364151]}, True)
+2023-09-22 09:24:49,261 - INFO - API response: 200, {"sequence":"Castro is a great friend.","labels":["a thought","an action"],"scores":[0.7361474633216858,0.2638525366783142]}
+2023-09-22 09:24:49,261 - INFO - Model prediction: ({'sequence': 'Castro is a great friend.', 'labels': ['a thought', 'an action'], 'scores': [0.7361474633216858, 0.2638525366783142]}, False)
+2023-09-22 09:25:04,521 - ERROR - Timeout error: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Read timed out. (read timeout=10)
+2023-09-22 09:25:04,521 - WARNING - Timeout occurred, retrying...
+2023-09-22 09:25:10,291 - INFO - API response: 200, {"sequence":"Dairon is hella friend. and he is here, not far away in Spain.","labels":["a thought","an action"],"scores":[0.6579320430755615,0.34206801652908325]}
+2023-09-22 09:25:10,291 - INFO - Model prediction: ({'sequence': 'Dairon is hella friend. and he is here, not far away in Spain.', 'labels': ['a thought', 'an action'], 'scores': [0.6579320430755615, 0.34206801652908325]}, False)
+2023-09-22 09:25:15,901 - INFO - API response: 200, {"sequence":"I've learned the consequence of neglecting the most important things, and corrected.","labels":["an action","a thought"],"scores":[0.5209103226661682,0.4790897071361542]}
+2023-09-22 09:25:15,901 - INFO - Model prediction: ({'sequence': "I've learned the consequence of neglecting the most important things, and corrected.", 'labels': ['an action', 'a thought'], 'scores': [0.5209103226661682, 0.4790897071361542]}, True)
+2023-09-22 09:25:22,247 - INFO - API response: 200, {"sequence":"I understand the ins and outs of the way I feel at particular moments in life.","labels":["a thought","an action"],"scores":[0.8285796642303467,0.17142035067081451]}
+2023-09-22 09:25:22,247 - INFO - Model prediction: ({'sequence': 'I understand the ins and outs of the way I feel at particular moments in life.', 'labels': ['a thought', 'an action'], 'scores': [0.8285796642303467, 0.17142035067081451]}, False)
+2023-09-22 09:25:27,881 - INFO - API response: 200, {"sequence":"I was feeling suicidal and blamed not taking care of myself, there I knew I had to be conscientiouss or I was going to die.","labels":["an action","a thought"],"scores":[0.5555558800697327,0.44444406032562256]}
+2023-09-22 09:25:27,881 - INFO - Model prediction: ({'sequence': 'I was feeling suicidal and blamed not taking care of myself, there I knew I had to be conscientiouss or I was going to die.', 'labels': ['an action', 'a thought'], 'scores': [0.5555558800697327, 0.44444406032562256]}, True)
+2023-09-22 09:25:33,491 - INFO - API response: 200, {"sequence":"I might be over-prepared for the jobs I'm looking for.","labels":["a thought","an action"],"scores":[0.904984176158905,0.09501582384109497]}
+2023-09-22 09:25:33,491 - INFO - Model prediction: ({'sequence': "I might be over-prepared for the jobs I'm looking for.", 'labels': ['a thought', 'an action'], 'scores': [0.904984176158905, 0.09501582384109497]}, False)
+2023-09-22 09:25:39,101 - INFO - API response: 200, {"sequence":"I don't have a lazyness problem with minor housechores anymore.","labels":["an action","a thought"],"scores":[0.6350612640380859,0.36493879556655884]}
+2023-09-22 09:25:39,101 - INFO - Model prediction: ({'sequence': "I don't have a lazyness problem with minor housechores anymore.", 'labels': ['an action', 'a thought'], 'scores': [0.6350612640380859, 0.36493879556655884]}, True)
+2023-09-22 09:25:44,761 - INFO - API response: 200, {"sequence":"I'm finally able to keep up with the amount of ideas my brain generates.","labels":["a thought","an action"],"scores":[0.9513273239135742,0.04867266118526459]}
+2023-09-22 09:25:44,761 - INFO - Model prediction: ({'sequence': "I'm finally able to keep up with the amount of ideas my brain generates.", 'labels': ['a thought', 'an action'], 'scores': [0.9513273239135742, 0.04867266118526459]}, False)
+2023-09-22 09:25:51,701 - INFO - API response: 200, {"sequence":"winged (my note-taking app) and todoist are going to help me organize myself to reach my full potential.","labels":["a thought","an action"],"scores":[0.6915473341941833,0.30845263600349426]}
+2023-09-22 09:25:51,701 - INFO - Model prediction: ({'sequence': 'winged (my note-taking app) and todoist are going to help me organize myself to reach my full potential.', 'labels': ['a thought', 'an action'], 'scores': [0.6915473341941833, 0.30845263600349426]}, False)
+2023-09-22 09:25:57,341 - INFO - API response: 200, {"sequence":"doña elcy gifted me two pillows I cleaned and sewed myself.","labels":["an action","a thought"],"scores":[0.787541925907135,0.2124580591917038]}
+2023-09-22 09:25:57,341 - INFO - Model prediction: ({'sequence': 'doña elcy gifted me two pillows I cleaned and sewed myself.', 'labels': ['an action', 'a thought'], 'scores': [0.787541925907135, 0.2124580591917038]}, True)
+2023-09-22 09:26:03,000 - INFO - API response: 200, {"sequence":"I didn't have a proper desk and chair set up in melendez, now I do.","labels":["an action","a thought"],"scores":[0.765165388584137,0.23483456671237946]}
+2023-09-22 09:26:03,000 - INFO - Model prediction: ({'sequence': "I didn't have a proper desk and chair set up in melendez, now I do.", 'labels': ['an action', 'a thought'], 'scores': [0.765165388584137, 0.23483456671237946]}, True)
+2023-09-22 09:26:08,591 - INFO - API response: 200, {"sequence":"I've made crazy use of the computer the company assigned to me, to learn and to prepare myself.","labels":["an action","a thought"],"scores":[0.8736334443092346,0.12636658549308777]}
+2023-09-22 09:26:08,591 - INFO - Model prediction: ({'sequence': "I've made crazy use of the computer the company assigned to me, to learn and to prepare myself.", 'labels': ['an action', 'a thought'], 'scores': [0.8736334443092346, 0.12636658549308777]}, True)
+2023-09-22 09:26:17,735 - INFO - API response: 200, {"sequence":"I'm improving a little bit everyday, which compounds exponentially.","labels":["a thought","an action"],"scores":[0.587929368019104,0.4120706617832184]}
+2023-09-22 09:26:17,735 - INFO - Model prediction: ({'sequence': "I'm improving a little bit everyday, which compounds exponentially.", 'labels': ['a thought', 'an action'], 'scores': [0.587929368019104, 0.4120706617832184]}, False)
+2023-09-22 09:26:23,351 - INFO - API response: 200, {"sequence":"I payed for the bws bike's damages after it crashing onto me and resolved that conflict with owners.","labels":["an action","a thought"],"scores":[0.8502480387687683,0.1497519314289093]}
+2023-09-22 09:26:23,361 - INFO - Model prediction: ({'sequence': "I payed for the bws bike's damages after it crashing onto me and resolved that conflict with owners.", 'labels': ['an action', 'a thought'], 'scores': [0.8502480387687683, 0.1497519314289093]}, True)
+2023-09-22 09:26:28,346 - INFO - C:\Users\.flac\Documents\GitHub\winged\django_winged\scripts\bart_large_mnli_compare.py changed, reloading.
+2023-09-22 09:26:50,087 - INFO - C:\Users\.flac\Documents\GitHub\winged\django_winged\scripts\bart_large_mnli_compare.py changed, reloading.
+2023-09-22 09:27:10,681 - ERROR - Timeout error: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Read timed out. (read timeout=10)
+2023-09-22 09:27:16,361 - INFO - API response: 200, {"sequence":"my soul is not being crushed by missing or mourning anybody.","labels":["a thought","an action"],"scores":[0.5115311145782471,0.48846888542175293]}
+2023-09-22 09:27:22,008 - INFO - API response: 200, {"sequence":"I keep discovering novel ideas, generating connections and understanding, like I've always loved doing.","labels":["a thought","an action"],"scores":[0.8754798769950867,0.12452012300491333]}
+2023-09-22 09:27:27,701 - INFO - API response: 200, {"sequence":"I have way more willpower now than in the past.","labels":["a thought","an action"],"scores":[0.7087132930755615,0.2912866771221161]}
+2023-09-22 09:27:33,991 - INFO - API response: 200, {"sequence":"I excel at providing engaging face to face classes at berlitz.","labels":["a thought","an action"],"scores":[0.6102071404457092,0.3897927701473236]}
+2023-09-22 09:27:39,861 - INFO - API response: 200, {"sequence":"I survived a heavy motorcycle crash with no injuries (and a few others small crashes, falls, and accidents).","labels":["an action","a thought"],"scores":[0.8174214959144592,0.18257850408554077]}
+2023-09-22 09:27:45,741 - INFO - API response: 200, {"sequence":"I have my mom alive and close to me.","labels":["a thought","an action"],"scores":[0.5429365038871765,0.4570634961128235]}
+2023-09-22 09:28:01,037 - ERROR - Timeout error: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Read timed out. (read timeout=10)
+2023-09-22 09:28:16,301 - ERROR - Timeout error: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Read timed out. (read timeout=10)
+2023-09-22 09:28:26,530 - INFO - API response: 200, {"sequence":"I have this thankfulness system that quickly makes me realize what I'm either missing on or taking for granted.","labels":["a thought","an action"],"scores":[0.8003384470939636,0.1996615082025528]}
+2023-09-22 09:28:32,126 - INFO - API response: 200, {"sequence":"my mother has again a place in sevilla I can call home to comfortably stay in.","labels":["an action","a thought"],"scores":[0.5708091259002686,0.4291909337043762]}
+2023-09-22 09:28:38,141 - INFO - API response: 200, {"sequence":"what's my algorithm to review this system (and get its benefit) every time?","labels":["a thought","an action"],"scores":[0.9287735819816589,0.07122644037008286]}
+2023-09-22 09:28:43,941 - INFO - API response: 200, {"sequence":"ero il tipo di persona a cui non piace leggere.","labels":["a thought","an action"],"scores":[0.830795168876648,0.16920489072799683]}
+2023-09-22 09:28:49,541 - INFO - API response: 200, {"sequence":"how can I go about collecting that music I go spiritual with?","labels":["a thought","an action"],"scores":[0.7826048731803894,0.2173951268196106]}
+2023-09-22 09:33:09,681 - INFO - C:\Users\.flac\Documents\GitHub\winged\django_winged\scripts\bart_large_mnli_compare.py changed, reloading.
+2023-09-22 09:33:26,071 - INFO - API response: 200, {"sequence":"music in moments like today. that I coincidentally find something that matches the mood.","labels":["a thought","an action"],"scores":[0.9024860858917236,0.09751392155885696]}
+2023-09-22 09:33:31,581 - INFO - API response: 200, {"sequence":"I learned django and vue.js by myself with online resources.","labels":["a thought","an action"],"scores":[0.7222070097923279,0.2777930200099945]}
+2023-09-22 09:33:36,976 - INFO - API response: 200, {"sequence":"what else can I add to my cookie jar?","labels":["a thought","an action"],"scores":[0.8748795390129089,0.12512043118476868]}
+2023-09-22 09:33:42,662 - INFO - API response: 200, {"sequence":"I am alive still, and out in the world to be surprissed by opportunities.","labels":["a thought","an action"],"scores":[0.5835584402084351,0.41644158959388733]}
+2023-09-22 09:33:48,541 - INFO - API response: 200, {"sequence":"can see youtube without ads on brave phone browser.","labels":["an action","a thought"],"scores":[0.5506742596626282,0.44932571053504944]}
+2023-09-22 09:34:03,806 - ERROR - Timeout error: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Read timed out. (read timeout=10)
+2023-09-22 09:34:13,685 - INFO - API response: 200, {"sequence":"I have access to state of the art science on how to learn anything.","labels":["a thought","an action"],"scores":[0.59954833984375,0.40045166015625]}
+2023-09-22 09:34:19,311 - INFO - API response: 200, {"sequence":"I read David Goggins' \"can't hurt me\" to completion and learned backstops from it.","labels":["a thought","an action"],"scores":[0.7938889861106873,0.20611101388931274]}
+2023-09-22 09:34:24,691 - ERROR - Request exception: 503 Server Error: Service Unavailable for url: https://api-inference.huggingface.co/models/facebook/bart-large-mnli
+2023-09-22 09:34:24,691 - WARNING - API error occurred, retrying with increased sleep time...
+2023-09-22 09:34:35,176 - ERROR - Request exception: 503 Server Error: Service Unavailable for url: https://api-inference.huggingface.co/models/facebook/bart-large-mnli
+2023-09-22 09:34:35,176 - WARNING - API error occurred, retrying with increased sleep time...
+2023-09-22 09:35:05,412 - ERROR - Timeout error: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Read timed out. (read timeout=10)
+2023-09-22 09:35:13,043 - INFO - API response: 200, {"sequence":"all favorite musical artists that exist (kanye west, kendrick lamar and tyler the creator), and the fact I can listen to them.","labels":["a thought","an action"],"scores":[0.786238968372345,0.21376098692417145]}
+2023-09-22 09:35:18,581 - INFO - API response: 200, {"sequence":"passed year performance evaluation at berlitz.","labels":["an action","a thought"],"scores":[0.6758992075920105,0.3241007626056671]}
+2023-09-22 09:35:24,247 - INFO - API response: 200, {"sequence":"I don't hate having to give berlitz classes anymore.","labels":["a thought","an action"],"scores":[0.5739440321922302,0.4260558784008026]}
+2023-09-22 09:35:31,521 - INFO - API response: 200, {"sequence":"I understand how the nuerochemistry of drive works to continue to deliver work.","labels":["a thought","an action"],"scores":[0.6014910340309143,0.3985089957714081]}
+2023-09-22 09:35:37,355 - INFO - API response: 200, {"sequence":"I have state of the art AI organizing my notes for me and better than I would be able to.","labels":["a thought","an action"],"scores":[0.6565794348716736,0.3434205949306488]}
+2023-09-22 09:35:42,978 - INFO - API response: 200, {"sequence":"berlitz job has gotten easier.","labels":["a thought","an action"],"scores":[0.7075645923614502,0.2924354076385498]}
+2023-09-22 09:35:50,970 - INFO - API response: 200, {"sequence":"we didn't struggle with my health during covid.","labels":["a thought","an action"],"scores":[0.5347615480422974,0.46523842215538025]}
+2023-09-22 09:35:56,581 - INFO - API response: 200, {"sequence":"I'm finally juggling different interests around with David goggin's \"backstops\".","labels":["a thought","an action"],"scores":[0.7346111536026001,0.2653888463973999]}
+2023-09-22 09:36:02,441 - INFO - API response: 200, {"sequence":"I have a reading/listening list that satisfies me immensely.","labels":["a thought","an action"],"scores":[0.5014245510101318,0.49857544898986816]}
+2023-09-22 09:36:17,711 - ERROR - Timeout error: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Read timed out. (read timeout=10)
+2023-09-22 09:36:23,371 - INFO - API response: 200, {"sequence":"can turn phone screen off on yt and keep listening with brave phone browseer.","labels":["an action","a thought"],"scores":[0.5383349061012268,0.4616650640964508]}
+2023-09-22 09:36:34,261 - INFO - API response: 200, {"sequence":"me mother takes care of my meals and nutrition while I live with her.","labels":["an action","a thought"],"scores":[0.6794743537902832,0.3205256760120392]}
+2023-09-22 09:36:40,001 - INFO - API response: 200, {"sequence":"most recent low is to deeply ingrain that lack of conscientiousness is my absolute demise.","labels":["a thought","an action"],"scores":[0.635733962059021,0.3642660081386566]}
+2023-09-22 09:36:45,591 - INFO - API response: 200, {"sequence":"still have in hands the computer the company assigned to me.","labels":["an action","a thought"],"scores":[0.8898292779922485,0.11017076671123505]}
+2023-09-22 09:36:51,270 - INFO - API response: 200, {"sequence":"students at berlitz have complemented me on my classes and found them very much of help.","labels":["a thought","an action"],"scores":[0.7862402200698853,0.21375976502895355]}
+2023-09-22 09:36:56,934 - INFO - API response: 200, {"sequence":"I know my way back to the willpower, diligence, industriousness, and drive I once had.","labels":["a thought","an action"],"scores":[0.7725718021392822,0.22742818295955658]}
+2023-09-22 09:37:02,531 - INFO - API response: 200, {"sequence":"I was no victim of any crime while I lived in Cali and commuted berlitz almost everyday.","labels":["an action","a thought"],"scores":[0.5122091770172119,0.4877908229827881]}
+2023-09-22 09:37:09,071 - INFO - API response: 200, {"sequence":"this full list of good things in life that I can actually sit down, read and slowly appreciate.","labels":["a thought","an action"],"scores":[0.8077287077903748,0.19227127730846405]}
+2023-09-22 09:37:10,893 - INFO - C:\Users\.flac\Documents\GitHub\winged\django_winged\winged\settings.py changed, reloading.
+2023-09-22 09:45:42,691 - INFO - API response: 200, {"sequence":"what can a mentor offer to me (and in what aspecto of my life)?","labels":["a thought","an action"],"scores":[0.9502308964729309,0.04976911097764969]}
+2023-09-22 09:45:48,261 - INFO - API response: 200, {"sequence":"how could I seriously go about returning and finishing university?","labels":["a thought","an action"],"scores":[0.6033189296722412,0.3966810405254364]}
+2023-09-22 09:45:53,631 - INFO - API response: 200, {"sequence":"feeling good about myself makes it more likely for me to trust my impulses.","labels":["a thought","an action"],"scores":[0.7087374329566956,0.29126256704330444]}
+2023-09-22 09:45:59,021 - INFO - API response: 200, {"sequence":"\"some people's positions reminds them permanently of their virtue\" gotta be careful with the lifestyle inflation thing.","labels":["a thought","an action"],"scores":[0.9251804351806641,0.07481959462165833]}
+2023-09-22 09:46:04,411 - INFO - API response: 200, {"sequence":"self indulgence is not a reward for virtue, the reward should be virtue itself.","labels":["a thought","an action"],"scores":[0.7420164942741394,0.2579834759235382]}
+2023-09-22 09:46:09,821 - INFO - API response: 200, {"sequence":"do something you don't like for the sake of it sounds stupid, until you get competitive and take pride on doing what other can't","labels":["an action","a thought"],"scores":[0.5850894451141357,0.41491058468818665]}
+2023-09-22 09:50:57,459 - WARNING - Not Found: /containers/37/
+2023-09-22 09:50:58,645 - WARNING - Not Found: /items/143/
+2023-09-22 09:50:59,819 - WARNING - Not Found: /spectrum_type/21/
+2023-09-22 09:51:01,016 - WARNING - Not Found: /spectrum_value/14/
+2023-09-22 09:51:02,200 - WARNING - Not Found: /statement_versions/15/
+2023-09-22 09:51:25,372 - WARNING - Not Found: /containers/83/
+2023-09-22 09:51:30,981 - WARNING - Not Found: /containers/104/
+2023-09-22 09:51:33,315 - WARNING - Unauthorized: /containerTrees/
+2023-09-22 09:59:21,121 - ERROR - Request exception: 503 Server Error: Service Unavailable for url: https://api-inference.huggingface.co/models/facebook/bart-large-mnli
+2023-09-22 09:59:21,131 - WARNING - API error occurred, retrying with increased sleep time...
+2023-09-22 09:59:31,521 - ERROR - Request exception: 503 Server Error: Service Unavailable for url: https://api-inference.huggingface.co/models/facebook/bart-large-mnli
+2023-09-22 09:59:31,521 - WARNING - API error occurred, retrying with increased sleep time...
+2023-09-22 09:59:52,192 - INFO - API response: 200, {"sequence":"Test item","labels":["Criteria 2","Criteria 1"],"scores":[0.5042734146118164,0.4957265853881836]}
+2023-09-22 10:01:01,981 - INFO - API response: 200, {"sequence":"Test item","labels":["Criteria 2","Criteria 1"],"scores":[0.5042734146118164,0.4957265853881836]}
+2023-09-22 10:08:31,341 - INFO - API response: 200, {"sequence":"Test item","labels":["Criteria 2","Criteria 1"],"scores":[0.5042734146118164,0.4957265853881836]}
+2023-09-22 10:09:26,661 - INFO - API response: 200, {"sequence":"Test item","labels":["Criteria 2","Criteria 1"],"scores":[0.5042734146118164,0.4957265853881836]}
+2023-09-22 10:10:22,041 - INFO - API response: 200, {"sequence":"Test item","labels":["Criteria 2","Criteria 1"],"scores":[0.5042734146118164,0.4957265853881836]}
+2023-09-22 10:16:14,250 - INFO - API response: 200, {"sequence":"Test item","labels":["Criteria 2","Criteria 1"],"scores":[0.5042734146118164,0.4957265853881836]}
+2023-09-22 10:16:41,063 - INFO - API response: 200, {"sequence":"Test item","labels":["Criteria 2","Criteria 1"],"scores":[0.5042734146118164,0.4957265853881836]}
+2023-09-22 10:17:29,487 - INFO - API response: 200, {"sequence":"Test item","labels":["Criteria 2","Criteria 1"],"scores":[0.5042734146118164,0.4957265853881836]}
+2023-09-22 10:18:37,050 - INFO - API response: 200, {"sequence":"Test item","labels":["Criteria 2","Criteria 1"],"scores":[0.5042734146118164,0.4957265853881836]}
+2023-09-22 10:19:10,621 - ERROR - Request exception: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/facebook/bart-large-mnli (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x000001E8C8ACFF50>: Failed to resolve 'api-inference.huggingface.co' ([Errno 11001] getaddrinfo failed)"))
+2023-09-22 10:19:28,430 - ERROR - Request exception: HTTPSConnectionPool(host='api-inference.huggingface.co', port=443): Max retries exceeded with url: /models/facebook/bart-large-mnli (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x00000292C36EA3D0>: Failed to resolve 'api-inference.huggingface.co' ([Errno 11001] getaddrinfo failed)"))
+2023-09-22 10:19:45,280 - INFO - API response: 200, {"sequence":"Test item","labels":["Criteria 2","Criteria 1"],"scores":[0.5042734146118164,0.4957265853881836]}
+2023-09-22 10:32:08,199 - WARNING - Timeout occurred, retrying...
+2023-09-22 10:32:13,201 - WARNING - Timeout occurred, retrying...
+2023-09-22 10:32:18,201 - WARNING - Timeout occurred, retrying...
+2023-09-22 10:32:23,202 - WARNING - Timeout occurred, retrying...
+2023-09-22 12:29:30,009 - WARNING - Not Found: /containers/37/
+2023-09-22 12:29:31,384 - WARNING - Not Found: /items/143/
+2023-09-22 12:29:33,518 - WARNING - Not Found: /spectrum_type/21/
+2023-09-22 12:29:35,206 - WARNING - Not Found: /spectrum_value/14/
+2023-09-22 12:29:36,890 - WARNING - Not Found: /statement_versions/15/
+2023-09-22 12:30:02,445 - WARNING - Not Found: /containers/83/
+2023-09-22 12:30:09,286 - WARNING - Not Found: /containers/104/
+2023-09-22 12:30:11,785 - WARNING - Unauthorized: /containerTrees/
+2023-09-22 12:30:18,043 - WARNING - API error occurred, retrying with increased sleep time...
+2023-09-22 12:30:33,053 - WARNING - Timeout occurred, retrying...
+2023-09-22 12:30:38,054 - WARNING - Timeout occurred, retrying...
+2023-09-22 12:30:43,057 - WARNING - Timeout occurred, retrying...
+2023-09-22 12:30:48,065 - WARNING - Timeout occurred, retrying...
+2023-09-22 12:30:58,644 - INFO - API response: 200, {"sequence":"Test item","labels":["Criteria 2","Criteria 1"],"scores":[0.5042734146118164,0.4957265853881836]}
+2023-09-25 19:19:04,947 - WARNING - API error occurred, retrying with increased sleep time...
+2023-09-25 19:19:20,285 - WARNING - Timeout occurred, retrying...
+2023-09-25 19:19:25,286 - WARNING - Timeout occurred, retrying...
+2023-09-25 19:19:30,287 - WARNING - Timeout occurred, retrying...
+2023-09-25 19:19:35,288 - WARNING - Timeout occurred, retrying...
+2023-09-25 19:19:46,365 - ERROR - Request exception: 503 Server Error: Service Unavailable for url: https://api-inference.huggingface.co/models/facebook/bart-large-mnli
+2023-09-25 19:19:46,365 - WARNING - API error occurred, retrying with increased sleep time...
+2023-09-25 19:19:56,808 - ERROR - Request exception: 503 Server Error: Service Unavailable for url: https://api-inference.huggingface.co/models/facebook/bart-large-mnli
+2023-09-25 19:19:56,808 - WARNING - API error occurred, retrying with increased sleep time...
+2023-09-25 19:20:17,258 - ERROR - Request exception: 503 Server Error: Service Unavailable for url: https://api-inference.huggingface.co/models/facebook/bart-large-mnli
+2023-09-25 19:20:17,258 - WARNING - API error occurred, retrying with increased sleep time...
+2023-09-25 19:20:57,836 - ERROR - Request exception: 503 Server Error: Service Unavailable for url: https://api-inference.huggingface.co/models/facebook/bart-large-mnli
+2023-09-25 19:20:57,836 - WARNING - API error occurred, retrying with increased sleep time...
+2023-09-25 19:22:52,231 - WARNING - Timeout occurred, retrying...
+2023-09-25 19:22:57,232 - WARNING - Timeout occurred, retrying...
+2023-09-25 19:23:02,233 - WARNING - Timeout occurred, retrying...
+2023-09-25 19:23:07,233 - WARNING - Timeout occurred, retrying...
+2023-09-25 19:23:27,386 - WARNING - API error occurred, retrying with increased sleep time...
+2023-09-25 19:23:58,002 - INFO - API response: 200, {"sequence":"Test item","labels":["Criteria 2","Criteria 1"],"scores":[0.5042734146118164,0.4957265853881836]}
+2023-09-25 19:26:16,322 - WARNING - API error occurred, retrying with increased sleep time...
+2023-09-25 19:29:59,300 - WARNING - API error occurred, retrying with increased sleep time...
+2023-09-25 19:30:09,301 - WARNING - API error occurred, retrying with increased sleep time...
+2023-09-25 19:30:29,301 - WARNING - API error occurred, retrying with increased sleep time...
+2023-09-25 19:31:09,302 - WARNING - API error occurred, retrying with increased sleep time...
+2023-09-25 19:31:35,341 - WARNING - API error occurred, retrying with increased sleep time...
+2023-09-25 19:31:45,342 - WARNING - API error occurred, retrying with increased sleep time...
+2023-09-25 19:32:05,343 - WARNING - API error occurred, retrying with increased sleep time...
+2023-09-25 19:32:45,344 - WARNING - API error occurred, retrying with increased sleep time...
+2023-09-25 19:34:12,812 - WARNING - API error occurred, retrying with increased sleep time...
+2023-09-25 19:34:22,813 - WARNING - API error occurred, retrying with increased sleep time...
+2023-09-25 19:34:42,814 - WARNING - API error occurred, retrying with increased sleep time...
+2023-09-25 19:35:22,815 - WARNING - API error occurred, retrying with increased sleep time...
+2023-09-25 19:36:42,816 - WARNING - API error occurred, retrying with increased sleep time...
+2023-09-25 19:36:42,816 - ERROR - Max retries reached without successful API response.
+2023-09-25 19:38:05,396 - WARNING - API error occurred, retrying with increased sleep time...
+2023-09-25 19:38:16,135 - WARNING - API error occurred, retrying with increased sleep time...
+2023-09-25 19:38:36,141 - WARNING - API error occurred, retrying with increased sleep time...
+2023-09-25 19:39:16,880 - WARNING - API error occurred, retrying with increased sleep time...
+2023-09-25 19:39:31,884 - WARNING - Timeout occurred, retrying...
+2023-09-25 19:39:36,885 - WARNING - Timeout occurred, retrying...
+2023-09-25 19:39:41,885 - WARNING - Timeout occurred, retrying...
+2023-09-25 19:39:41,885 - ERROR - Max retries reached without successful API response.
+2023-09-25 19:39:46,890 - WARNING - API error occurred, retrying with increased sleep time...
+2023-09-25 19:39:56,891 - WARNING - API error occurred, retrying with increased sleep time...
+2023-09-25 19:40:23,817 - WARNING - API error occurred, retrying with increased sleep time...
+2023-09-25 19:40:38,821 - WARNING - Timeout occurred, retrying...
+2023-09-25 19:40:43,822 - WARNING - Timeout occurred, retrying...
+2023-09-25 19:41:27,260 - WARNING - API error occurred, retrying with increased sleep time...
+2023-09-25 19:41:42,271 - WARNING - Timeout occurred, retrying...
+2023-09-25 19:41:47,272 - WARNING - Timeout occurred, retrying...
+2023-09-25 19:41:52,273 - WARNING - Timeout occurred, retrying...
+2023-09-25 19:41:52,273 - ERROR - Max retries reached without successful API response.
+2023-09-25 19:41:57,277 - WARNING - API error occurred, retrying with increased sleep time...
+2023-09-25 19:42:07,278 - WARNING - API error occurred, retrying with increased sleep time...
+2023-09-25 19:42:27,279 - WARNING - API error occurred, retrying with increased sleep time...
+2023-09-25 19:42:27,279 - ERROR - Max retries reached without successful API response.
