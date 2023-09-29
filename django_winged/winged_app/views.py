@@ -4,14 +4,19 @@ import math
 
 from random import shuffle
 
-from rest_framework import permissions, viewsets
+from rest_framework import permissions, viewsets, status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.status import HTTP_202_ACCEPTED, HTTP_404_NOT_FOUND
-from django.contrib.auth.models import User
+from rest_framework.status import HTTP_202_ACCEPTED, HTTP_404_NOT_FOUND, HTTP_500_INTERNAL_SERVER_ERROR, HTTP_400_BAD_REQUEST
 from django.shortcuts import get_object_or_404, get_list_or_404
+from django.contrib.auth.models import User
+from django.db import transaction
+
+
+
+
 
 from .serializers import (
     ContainerSerializer, ContainerChildrenListSerializer, ItemSerializer,
@@ -24,7 +29,7 @@ import scripts.ai_curation_costs_calc as costs_calc
 from scripts.bart_large_mnli_compare import item_vs_criteria
 
 
-from scripts.my_custom_helper_functions import reclassify_items
+from scripts.my_custom_helper_functions import reclassify_items, create_user_comparison_record
 
 from winged_app.models import (
     Container, Item, StatementVersion, SpectrumValue, SpectrumType,
@@ -32,7 +37,6 @@ from winged_app.models import (
     )
 
 # reorganized imports by origin and form.
-
 
 class IsOwner(permissions.BasePermission):
     """
@@ -325,7 +329,6 @@ class ContainerViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return self.queryset.filter(user=self.request.user)
-    
 
 class ItemViewSet(viewsets.ModelViewSet):
     queryset = Item.objects.all()
@@ -335,7 +338,18 @@ class ItemViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return self.queryset.filter(user=self.request.user)
-        
+
+    def update(self, request, *args, **kwargs):
+        with transaction.atomic():
+            instance = self.get_object()
+            if 'actionable' in request.data:
+                try:
+                    create_user_comparison_record(request, instance, request.data['actionable'])
+                except Exception as e:
+                    transaction.set_rollback(True)
+                    return Response({"error": f"An unexpected error occurred: {e}."}, status=HTTP_500_INTERNAL_SERVER_ERROR)
+            return super().update(request, *args, **kwargs)
+
 
 class StatementVersionViewSet(viewsets.ModelViewSet):
     queryset = StatementVersion.objects.all()

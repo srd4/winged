@@ -151,7 +151,8 @@ class ItemVsTwoCriteriaAIComparison(models.Model):
         (True, 'Criteria 1'),
         (False, 'Criteria 2'),
     ]
-    ai_model = models.CharField(max_length=2**7, db_index=True)
+    ai_model = models.CharField(max_length=2**7, null=True, db_index=True, default=None)
+    user_choice = models.BooleanField(null=False, default=False)
     system_prompt = models.ForeignKey('SystemPromptTextVersion', on_delete=models.SET_NULL, null=True)
     criteria_1 = models.ForeignKey('CriteriaStatementVersion', null=True, related_name='criteria_1', on_delete=models.SET_NULL, db_index=True) #if criterias are statement versions I can have access to parent Criteria on second level reference.
     criteria_2 = models.ForeignKey('CriteriaStatementVersion', null=True, related_name='criteria_2', on_delete=models.SET_NULL, db_index=True)

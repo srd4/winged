@@ -78,9 +78,23 @@ def compute_zero_shot_comparison(item_statement, criteria_1_statement, criteria_
     raise HuggingFaceZeroShotAPIError("Max retries reached without successful API response.")
 
 
+def check_for_user_made_comparison(item, criteria_1, criteria_2):
+    comparison = ItemVsTwoCriteriaAIComparison.objects.filter(
+        user_choice=True,
+        criteria_1=criteria_1.criteria_statement_version,
+        criteria_2=criteria_2.criteria_statement_version,
+        item_compared=item,
+    )
+
+    return comparison.order_by('created_at').reverse().first() if comparison.exists() else False
+
 def item_vs_criteria(item, criteria_1, criteria_2, force_recompute=False):
     if force_recompute:
         return compute_and_store_comparison(item, criteria_1, criteria_2)
+    
+    user_made_comparison = check_for_user_made_comparison(item, criteria_1, criteria_2)
+    if user_made_comparison:
+        return user_made_comparison.criteria_choice
 
     try:
         comparison = ItemVsTwoCriteriaAIComparison.objects.filter(

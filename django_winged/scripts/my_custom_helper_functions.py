@@ -1,5 +1,20 @@
-from winged_app.models import Item, Criteria
+from django.shortcuts import get_object_or_404
+from winged_app.models import Item, Criteria, ItemVsTwoCriteriaAIComparison
 from scripts.bart_large_mnli_compare import item_vs_criteria
+
+
+def create_user_comparison_record(request, item, actionable):
+    actionable_criteria = get_object_or_404(Criteria, name="actionable", user=request.user)
+    non_actionable_criteria = get_object_or_404(Criteria, name="non-actionable", user=request.user)
+
+    comparison = ItemVsTwoCriteriaAIComparison.objects.create(
+            user_choice=True,
+            criteria_1=actionable_criteria.criteria_statement_version,
+            criteria_2=non_actionable_criteria.criteria_statement_version,
+            item_compared=item,
+            criteria_choice=actionable,
+        )
+    return comparison
 
 
 def reclassify_items(items, criteria_1, criteria_2, comparison_function):
@@ -8,7 +23,6 @@ def reclassify_items(items, criteria_1, criteria_2, comparison_function):
     
     for item in items:
         count += 1
-
         try:
             result = comparison_function(item, criteria_1, criteria_2)
         except Exception as e: # make sure result is either valid or raise an exception on comparison_function.
