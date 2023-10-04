@@ -230,13 +230,18 @@ class RunScriptAPIView(APIView):
 
             sorted_items = [i for i in scored_items.distinct()]
             sorted_items.sort(key=lambda x: x.spectrumvalue_set.get(spectrum_type=spectrumtype).value, reverse=True)
+            
+            functions = {
+                "paraphrase-mpnet-base-v2": None,
+                "all-mpnet-base-v2":None,
+                "bart_large_mnli":None,
+                "gpt-4":openai_compare.gpt_compare,
+                "user_curation":user_input_compare,
+                }
 
-            if comparison_mode == "ai-model":
-                comparison_function = openai_compare.gpt_compare
-            else:
-                comparison_function = user_input_compare
+            comparison_function = functions[comparison_mode]
 
-            result = binary_insert_sort(spectrumtype.description,
+            binary_insert_sort(spectrumtype.description,
                                [i for i in non_sorted_items.distinct()],
                                comparison_function,
                                sorted_list=sorted_items)
@@ -247,7 +252,7 @@ class RunScriptAPIView(APIView):
         thread = threading.Thread(target=run_script)
         thread.start()
 
-        return Response({"message": "Script execution started on items in container {} with spectrum type {}.".format(container_id, spectrumtype_id)})
+        return Response({"message": f"Script started for items on {container} on {spectrumtype} with {comparison_mode}."})
 
 
 class ReEvaluateActionableItemsAPIView(APIView):
