@@ -112,7 +112,7 @@ class ItemStatementVersion(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     
     def __str__(self) -> str:
-        return self.statement if self.statement else self.parent_item.statement
+        return self.statement if self.statement else self.parent_item
 
 class SpectrumType(models.Model):
     name = models.CharField(max_length=2**6)
@@ -162,7 +162,7 @@ class ItemVsTwoCriteriaAIComparison(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.item_compared if self.item_compared else None} - {self.ai_model}"
+        return f"{self.item_compared_statement_version.statement if self.item_compared_statement_version.statement else None} - {self.ai_model}"
 
 
 class Criteria(models.Model):
@@ -253,7 +253,7 @@ class SystemPrompt(models.Model):
         return super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.name} - {self.ai_model}"
+        return f"{self.name} - {self.ai_model if self.ai_model else 'user'}"
 
 
 class SystemPromptTextVersion(models.Model):
