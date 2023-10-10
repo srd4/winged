@@ -1,4 +1,4 @@
-from django.db import models
+from django.db import models, transaction
 from django.conf import settings
 from django.utils import timezone
 from django.shortcuts import get_object_or_404
@@ -34,6 +34,7 @@ class Item(models.Model):
     actionable = models.BooleanField(default=False, null=False)
     done = models.BooleanField(default=False, null=False)
     statement = models.TextField(max_length=2**7)
+    current_statement_version = models.ForeignKey('ItemStatementVersion', null=True, on_delete=models.SET_NULL)
     statement_updated_at = models.DateTimeField(auto_now_add=True)
     parent_container = models.ForeignKey(Container, null=True, on_delete=models.CASCADE)
     parent_item = models.ForeignKey('self', null=True, on_delete=models.SET_NULL)
@@ -48,27 +49,23 @@ class Item(models.Model):
 
     def save(self, *args, **kwargs):
         """
-        Creates StatementVersion object before saving
+        Custom save method to manage current_statement_version and ItemStatementVersion.
+
         """
-
-        # If the Item object already exists on db...
-        if self.pk is not None:
-            current_statement = Item.objects.get(pk=self.pk).statement
-            # ...check if the statement field has been changed.
-            if current_statement != self.statement:
-                # If the statement field has been changed, create a StatementVersion object with
-                # the statement on db.
-                StatementVersion.objects.get_or_create(
-                    statement=current_statement, 
-                    defaults={
-                        "created_at": self.statement_updated_at,
-                        "parent_item": self,
-                        "user": self.user
-                        }
-                )
-
-                # Set statement_updated_at attribute to the current time.
-                self.statement_updated_at = timezone.now()
+        with transaction.atomic(): # Make sure creations and saves are done in one db transaction.
+            if not self.current_statement_version: # Creating instance.
+                super().save(*args, **kwargs)
+                self.current_statement_version = ItemStatementVersion.objects.create(statement=None, parent_item=self, user=self.user)
+                return self.save()
+            else: # Updating Instance.
+                # Fetch self.statement as it was previous to change we are about to save.
+                current_statement = Item.objects.get(pk=self.pk).statement
+                if current_statement != self.statement: # Check if the statement string has been changed.
+                    # Assign statement on db to current current_statement_version field.
+                    self.current_statement_version.statement = current_statement
+                    self.statement_updated_at = timezone.now()
+                    # Drop previous current_statement_version for a new one.
+                    self.current_statement_version = ItemStatementVersion.objects.create(statement=None, parent_item=self, user=self.user)
 
         return super().save(*args, **kwargs)
 
@@ -91,7 +88,7 @@ class Item(models.Model):
         return get_object_or_404(Item, pk=self.parent_item.pk, user=self.user)
 
     def get_versions(self):
-        return StatementVersion.objects.filter(parent_item=self, user=self.user)
+        return ItemStatementVersion.objects.filter(parent_item=self, user=self.user)
 
     def toggle_done(self):
         """
@@ -105,18 +102,17 @@ class Item(models.Model):
 
 
 
-class StatementVersion(models.Model):
+class ItemStatementVersion(models.Model):
     """
     Statements that an element has had.
     """
-    statement = models.TextField(max_length=140)
+    statement = models.TextField(max_length=140, null=True, default=None)
     created_at = models.DateTimeField(auto_now_add=True)
     parent_item = models.ForeignKey(Item, null=True, on_delete=models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return self.statement
-
+    
+    def __str__(self) -> str:
+        return self.statement if self.statement else self.parent_item.statement
 
 class SpectrumType(models.Model):
     name = models.CharField(max_length=2**6)
@@ -153,10 +149,12 @@ class ItemVsTwoCriteriaAIComparison(models.Model):
     ]
     ai_model = models.CharField(max_length=2**7, null=True, db_index=True, default=None)
     user_choice = models.BooleanField(null=False, default=False)
-    system_prompt = models.ForeignKey('SystemPromptTextVersion', on_delete=models.SET_NULL, null=True)
-    criteria_1 = models.ForeignKey('CriteriaStatementVersion', null=True, related_name='criteria_1', on_delete=models.SET_NULL, db_index=True) #if criterias are statement versions I can have access to parent Criteria on second level reference.
-    criteria_2 = models.ForeignKey('CriteriaStatementVersion', null=True, related_name='criteria_2', on_delete=models.SET_NULL, db_index=True)
-    item_compared = models.ForeignKey(Item, on_delete=models.CASCADE, db_index=True)
+    system_prompt_text_version = models.ForeignKey('SystemPromptTextVersion', on_delete=models.SET_NULL, null=True)
+    criteria_statement_version_1 = models.ForeignKey('CriteriaStatementVersion', null=True, related_name='criteria_1', on_delete=models.SET_NULL, db_index=True) #if criterias are statement versions I can have access to parent Criteria on second level reference.
+    criteria_statement_version_2 = models.ForeignKey('CriteriaStatementVersion', null=True, related_name='criteria_2', on_delete=models.SET_NULL, db_index=True)
+
+    item_compared_statement_version = models.ForeignKey(ItemStatementVersion, on_delete=models.CASCADE, db_index=True, null=True)
+    
     criteria_choice = models.BooleanField(choices=CHOICES, null=False, default=False, db_index=True)
     response = models.JSONField(null=True, default=None)
     execution_in_seconds = models.DecimalField(max_digits=10, decimal_places=2, null=True, default=None)
@@ -164,35 +162,56 @@ class ItemVsTwoCriteriaAIComparison(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.item_compared.statement} - {self.ai_model}"
+        return f"{self.item_compared if self.item_compared else None} - {self.ai_model}"
 
 
 class Criteria(models.Model):
     name = models.CharField(max_length=2**6)
-    criteria_statement_version = models.ForeignKey('CriteriaStatementVersion', on_delete=models.SET_NULL, null=True)
+
+    statement = models.CharField(max_length=2**10, null=True)
+    current_criteria_statement_version = models.ForeignKey('CriteriaStatementVersion', on_delete=models.SET_NULL, null=True)
+
     statement_updated_at = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE) # so users can modify even default actiona vs actionable criteria statements.
     
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def save(self, *args, **kwargs):
+        """
+        Custom save method to manage current_criteria_statement_version and CriteriaStatementVersion.
+
+        """
+        with transaction.atomic(): # Make sure creations and saves are done in one db transaction.
+            if not self.current_criteria_statement_version: # Creating instance.
+                super().save(*args, **kwargs) # Need to save created parent_criteria first to save CriteriaStatementVersion second.
+                self.current_criteria_statement_version = CriteriaStatementVersion.objects.create(statement=None, parent_criteria=self, user=self.user)
+                return self.save() # save above change on current_criteria_statement_version again.
+            else: # Updating Instance.
+                # Fetch self.statement as it was previous to change we are about to save.
+                current_statement = Criteria.objects.get(pk=self.pk).statement
+                if current_statement != self.statement: # Check if the statement string has been changed.
+                    # Assign statement on db to current_criteria_statement_version field.
+                    self.current_criteria_statement_version.statement = current_statement
+                    self.statement_updated_at = timezone.now()
+                    # Drop previous current_criteria_statement_version for a new one.
+                    self.current_criteria_statement_version = CriteriaStatementVersion.objects.create(statement=None, parent_criteria=self, user=self.user)
+
+        return super().save(*args, **kwargs)
+
     def __str__(self):
         return self.name
 
 
 class CriteriaStatementVersion(models.Model):
-    statement = models.CharField(max_length=2**10)
+    statement = models.CharField(max_length=2**10, null=True)
     parent_criteria = models.ForeignKey(Criteria, null=True, on_delete=models.SET_NULL)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE) # so users can modify even default actiona vs actionable criteria statements.
 
     created_at = models.DateTimeField(auto_now_add=True)
 
-    def save(self, *args, **kwargs) -> None:
-        super().save(*args, **kwargs)
-        
-        if self.parent_criteria:
-            self.parent_criteria.criteria_statement_version = self
-            self.parent_criteria.save()
+    def computed_statement(self):
+        return self.statement if self.statement else self.parent_criteria.statement
 
     def __str__(self):
         return self.statement
@@ -200,30 +219,49 @@ class CriteriaStatementVersion(models.Model):
 
 class SystemPrompt(models.Model):
     name = models.CharField(max_length=2**6, unique=True)
-    prompt_text_version = models.ForeignKey('SystemPromptTextVersion', null=True, on_delete=models.SET_NULL)
+
+    text = models.CharField(max_length=2**10, null=True)
+    current_prompt_text_version = models.ForeignKey('SystemPromptTextVersion', null=True, on_delete=models.SET_NULL)
+    prompt_text_updated_at = models.DateTimeField(auto_now_add=True)
+
     ai_model = models.CharField(max_length=2**7)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def save(self, *args, **kwargs):
+        """
+        Custom save method to manage current_prompt_text_version and SystemPromptTextVersion.
+
+        """
+        with transaction.atomic(): # Make sure creations and saves are done in one db transaction.
+            if not self.current_prompt_text_version: # Creating instance.
+                super().save(*args, **kwargs) # Need to save created parent_criteria first to save SystemPromptTextVersion second.
+                self.current_prompt_text_version = SystemPromptTextVersion.objects.create(text=None, parent_prompt=self, user=self.user)
+                return self.save() # save above change on current_prompt_text_version again.
+            else: # Updating Instance.
+                # Fetch self.text as it was previous to change we are about to save.
+                current_text = SystemPrompt.objects.get(pk=self.pk).text
+                if current_text != self.text: # Check if the text string has been changed.
+                    # Assign text on db to current_prompt_text_version field.
+                    self.current_prompt_text_version.text = current_text
+                    self.prompt_text_updated_at = timezone.now()
+                    # Drop previous current_prompt_text_version for a new one.
+                    self.current_prompt_text_version = SystemPromptTextVersion.objects.create(text=None, parent_prompt=self, user=self.user)
+
+        return super().save(*args, **kwargs)
+
     def __str__(self):
         return f"{self.name} - {self.ai_model}"
 
 
 class SystemPromptTextVersion(models.Model):
-    text = models.CharField(max_length=2**10)
+    text = models.CharField(max_length=2**10, null=True)
     parent_prompt = models.ForeignKey(SystemPrompt, null=True, on_delete=models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     created_at = models.DateTimeField(auto_now_add=True)
-    
-    def save(self, *args, **kwargs) -> None:
-        super().save(*args, **kwargs)
-
-        if self.parent_prompt:
-            self.parent_prompt.prompt_text_version = self
-            self.parent_prompt.save()
 
     def __str__(self):
         return self.prompt_text

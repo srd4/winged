@@ -1,6 +1,6 @@
 from rest_framework.test import APIClient
 from django.test import TestCase, tag
-from ..models import Container, Item, StatementVersion, SpectrumType, SpectrumValue
+from ..models import Container, Item, ItemStatementVersion, SpectrumType, SpectrumValue
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 from django.urls import reverse

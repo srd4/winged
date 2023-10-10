@@ -11,7 +11,7 @@ def create_user_comparison_record(request, item, actionable):
             user_choice=True,
             criteria_1=actionable_criteria.criteria_statement_version,
             criteria_2=non_actionable_criteria.criteria_statement_version,
-            item_compared=item,
+            item_compared_statement_version=item.current_statement_version,
             criteria_choice=actionable,
         )
     return comparison

@@ -20,7 +20,7 @@ from django.db import transaction
 
 from .serializers import (
     ContainerSerializer, ContainerChildrenListSerializer, ItemSerializer,
-    StatementVersionSerializer, UserSerializer, SpectrumTypeSerializer, 
+    ItemStatementVersionSerializer, UserSerializer, SpectrumTypeSerializer, 
     SpectrumValueSerializer
     )
 
@@ -32,7 +32,7 @@ from scripts.bart_large_mnli_compare import item_vs_criteria
 from scripts.my_custom_helper_functions import reclassify_items, create_user_comparison_record
 
 from winged_app.models import (
-    Container, Item, StatementVersion, SpectrumValue, SpectrumType,
+    Container, Item, ItemStatementVersion, SpectrumValue, SpectrumType,
     Criteria
     )
 
@@ -356,9 +356,9 @@ class ItemViewSet(viewsets.ModelViewSet):
             return super().update(request, *args, **kwargs)
 
 
-class StatementVersionViewSet(viewsets.ModelViewSet):
-    queryset = StatementVersion.objects.all()
-    serializer_class = StatementVersionSerializer
+class ItemStatementVersionViewSet(viewsets.ModelViewSet):
+    queryset = ItemStatementVersion.objects.all()
+    serializer_class = ItemStatementVersionSerializer
     permission_classes = [permissions.IsAuthenticated, IsOwner]
     authentication_classes = [TokenAuthentication]
 
