@@ -2,7 +2,7 @@ from django.urls import path, include
 from rest_framework import routers
 from winged_app.views import (
     ContainerItemListAPIView, ContainerTreeView, ContainerViewSet,
-    ItemViewSet, StatementVersionViewSet, UserViewSet, SpectrumValueViewSet,
+    ItemViewSet, ItemStatementVersionViewSet, UserViewSet, SpectrumValueViewSet,
     SpectrumTypeViewSet, RunScriptAPIView, ReEvaluateActionableItemsAPIView,
     ItemsVsSpectrumOpeanAiComparisonCost
     )
@@ -14,7 +14,7 @@ router = routers.DefaultRouter()
 router.register(r'containerTrees', ContainerTreeView, basename='containerTrees')
 router.register(r'containers', ContainerViewSet, basename="containers")
 router.register(r'items', ItemViewSet, basename="items")
-router.register(r'statement_versions', StatementVersionViewSet, basename="statementversions")
+router.register(r'statement_versions', ItemStatementVersionViewSet, basename="statementversions")
 router.register(r'users', UserViewSet)
 router.register(r'spectrum_type', SpectrumTypeViewSet, basename="spectrumtypes")
 router.register(r'spectrum_value', SpectrumValueViewSet, basename="spectrumvalues")
