@@ -110,7 +110,7 @@ class ItemStatementVersion(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     
     def __str__(self) -> str:
-        return self.statement if self.statement else self.parent_item
+        return self.statement if self.statement else self.parent_item.statement
 
 class SpectrumType(models.Model):
     name = models.CharField(max_length=2**6)
@@ -288,4 +288,4 @@ class SystemPromptTextVersion(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.prompt_text
+        return self.text
