@@ -88,7 +88,7 @@ WSGI_APPLICATION = 'winged.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'development_db',
+        'NAME': 'winged_personal',
         'USER': 'postgres',
         'PASSWORD': 'pepito56',
         'HOST': 'localhost',
