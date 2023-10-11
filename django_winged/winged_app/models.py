@@ -53,10 +53,14 @@ class Item(models.Model):
 
         """
         with transaction.atomic(): # Make sure creations and saves are done in one db transaction.
-            if not self.current_statement_version: # Creating instance.
+            if not self.pk: # Creating instance.
                 super().save(*args, **kwargs)
                 self.current_statement_version = ItemStatementVersion.objects.create(statement=None, parent_item=self, user=self.user)
-                return self.save()
+                self.save()
+                return 
+            elif not self.current_statement_version:
+                self.current_statement_version = ItemStatementVersion.objects.create(statement=None, parent_item=self, user=self.user)
+                self.save()
             else: # Updating Instance.
                 # Fetch self.statement as it was previous to change we are about to save.
                 current_statement = Item.objects.get(pk=self.pk).statement
@@ -151,13 +155,16 @@ class ItemVsTwoCriteriaAIComparison(models.Model):
     criteria_statement_version_1 = models.ForeignKey('CriteriaStatementVersion', null=True, related_name='criteria_1', on_delete=models.SET_NULL, db_index=True) #if criterias are statement versions I can have access to parent Criteria on second level reference.
     criteria_statement_version_2 = models.ForeignKey('CriteriaStatementVersion', null=True, related_name='criteria_2', on_delete=models.SET_NULL, db_index=True)
 
-    item_compared_statement_version = models.ForeignKey(ItemStatementVersion, on_delete=models.CASCADE, db_index=True, null=True)
+    item_compared_statement_version = models.ForeignKey(ItemStatementVersion, on_delete=models.CASCADE, db_index=True)
     
     criteria_choice = models.BooleanField(choices=CHOICES, null=False, default=False, db_index=True)
     response = models.JSONField(null=True, default=None)
     execution_in_seconds = models.DecimalField(max_digits=10, decimal_places=2, null=True, default=None)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self) -> str:
+        return self.item_compared_statement_version.parent_item.statement
 
 """class CriterionVsItemsAIComparison(models.Model):
     CHOICES = [
@@ -206,7 +213,12 @@ class Criteria(models.Model):
             if not self.current_criteria_statement_version: # Creating instance.
                 super().save(*args, **kwargs) # Need to save created parent_criteria first to save CriteriaStatementVersion second.
                 self.current_criteria_statement_version = CriteriaStatementVersion.objects.create(statement=None, parent_criteria=self, user=self.user)
-                return self.save() # save above change on current_criteria_statement_version again.
+                self.save() # save above change on current_criteria_statement_version again.
+                return
+            elif not self.current_criteria_statement_version:
+                self.current_criteria_statement_version = CriteriaStatementVersion.objects.create(statement=None, parent_criteria=self, user=self.user)
+                self.save() # save above change on current_criteria_statement_version again.
+                return 
             else: # Updating Instance.
                 # Fetch self.statement as it was previous to change we are about to save.
                 current_statement = Criteria.objects.get(pk=self.pk).statement
@@ -260,7 +272,12 @@ class SystemPrompt(models.Model):
             if not self.current_prompt_text_version: # Creating instance.
                 super().save(*args, **kwargs) # Need to save created parent_criteria first to save SystemPromptTextVersion second.
                 self.current_prompt_text_version = SystemPromptTextVersion.objects.create(text=None, parent_prompt=self, user=self.user)
-                return self.save() # save above change on current_prompt_text_version again.
+                self.save() # save above change on current_prompt_text_version again.
+                return
+            elif not self.current_prompt_text_version:
+                self.current_prompt_text_version = SystemPromptTextVersion.objects.create(text=None, parent_prompt=self, user=self.user)
+                self.save() # save above change on current_prompt_text_version again.
+                return
             else: # Updating Instance.
                 # Fetch self.text as it was previous to change we are about to save.
                 current_text = SystemPrompt.objects.get(pk=self.pk).text
