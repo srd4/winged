@@ -162,7 +162,7 @@ class ItemVsTwoCriteriaAIComparison(models.Model):
     def __str__(self):
         return f"{self.item_compared_statement_version.statement if self.item_compared_statement_version else None} - {self.ai_model}"
 
-class CriterionVsItemsAIComparison(models.Model):
+"""class CriterionVsItemsAIComparison(models.Model):
     CHOICES = [
         True, 'Item 1',
         True, 'Item 2'
@@ -185,7 +185,7 @@ class CriterionVsItemsAIComparison(models.Model):
     def __str__(self):
         choice = f"{self.item_compared_1_statement_version.computed_statement if self.item_choice else self.item_compared_2_statement_version.computed_statement}"
         string = f"{self.criterion_statement_version.computed_statement} - {choice}"
-        return string
+        return string"""
 
 
 class Criteria(models.Model):
