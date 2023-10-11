@@ -159,9 +159,6 @@ class ItemVsTwoCriteriaAIComparison(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    def __str__(self):
-        return f"{self.item_compared_statement_version.parent_item.statement if self.item_compared_statement_version.parent_item.statement else None} - {self.ai_model}"
-
 """class CriterionVsItemsAIComparison(models.Model):
     CHOICES = [
         True, 'Item 1',
