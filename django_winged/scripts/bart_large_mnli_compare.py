@@ -107,8 +107,8 @@ def item_vs_criteria(item, criteria_1, criteria_2, force_recompute=False):
     try:
         comparison = ItemVsTwoCriteriaAIComparison.objects.filter(
             ai_model="bart-large-mnli",
-            criteria_1=criteria_1.current_criteria_statement_version,
-            criteria_2=criteria_2.current_criteria_statement_version,
+            criteria_statement_version_1=criteria_1.current_criteria_statement_version,
+            criteria_statement_version_2=criteria_2.current_criteria_statement_version,
             item_compared_statement_version=item.current_statement_version,
         ).order_by('created_at').reverse().first()
         if not comparison:
@@ -130,8 +130,8 @@ def compute_and_store_comparison(item, criteria_1, criteria_2):
     if response:
         comparison = ItemVsTwoCriteriaAIComparison.objects.create(
             ai_model="bart-large-mnli",
-            criteria_1=criteria_1.current_criteria_statement_version,
-            criteria_2=criteria_2.current_criteria_statement_version,
+            criteria_statement_version_1=criteria_1.current_criteria_statement_version,
+            criteria_statement_version_2=criteria_2.current_criteria_statement_version,
             item_compared_statement_version=item.current_statement_version,
             response=response,
             criteria_choice=criteria_choice,

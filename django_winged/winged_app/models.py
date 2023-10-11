@@ -100,8 +100,6 @@ class Item(models.Model):
         self.save()
         return self.done
 
-
-
 class ItemStatementVersion(models.Model):
     """
     Statements that an element has had.
@@ -163,6 +161,31 @@ class ItemVsTwoCriteriaAIComparison(models.Model):
 
     def __str__(self):
         return f"{self.item_compared_statement_version.statement if self.item_compared_statement_version else None} - {self.ai_model}"
+
+class CriterionVsItemsAIComparison(models.Model):
+    CHOICES = [
+        True, 'Item 1',
+        True, 'Item 2'
+    ]
+    ai_model = models.CharField(max_length=2**7, null=True, db_index=True, default=None)
+    user_choice = models.BooleanField(null=False, default=False)
+    system_prompt_text_version = models.ForeignKey('SystemPromptTextVersion', on_delete=models.SET_NULL, null=True)
+
+    criterion_statement_version = models.ForeignKey('CriteriaStatementVersion', null=True, related_name='criteria_2', on_delete=models.SET_NULL, db_index=True)
+    
+    item_compared_1_statement_version = models.ForeignKey(ItemStatementVersion, on_delete=models.CASCADE, null=True)
+    item_compared_2_statement_version = models.ForeignKey(ItemStatementVersion, on_delete=models.CASCADE, null=True)
+
+    item_choice = models.BooleanField(choices=CHOICES, null=False, default=False, db_index=True)
+    response = models.JSONField(null=True, default=None)
+    execution_in_seconds = models.DecimalField(max_digits=10, decimal_places=2, null=True, default=None)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        choice = f"{self.item_compared_1_statement_version.computed_statement if self.item_choice else self.item_compared_2_statement_version.computed_statement}"
+        string = f"{self.criterion_statement_version.computed_statement} - {choice}"
+        return string
 
 
 class Criteria(models.Model):

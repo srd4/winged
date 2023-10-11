@@ -3,14 +3,21 @@ from winged_app.models import Item, Criteria, ItemVsTwoCriteriaAIComparison
 from scripts.bart_large_mnli_compare import item_vs_criteria
 
 
+"""
+            criteria_1=criteria_1.current_criteria_statement_version,
+            criteria_2=criteria_2.current_criteria_statement_version,
+            item_compared_statement_version=item.current_statement_version,
+            """
+
+
 def create_user_comparison_record(request, item, actionable):
     actionable_criteria = get_object_or_404(Criteria, name="actionable", user=request.user)
     non_actionable_criteria = get_object_or_404(Criteria, name="non-actionable", user=request.user)
 
     comparison = ItemVsTwoCriteriaAIComparison.objects.create(
             user_choice=True,
-            criteria_1=actionable_criteria.criteria_statement_version,
-            criteria_2=non_actionable_criteria.criteria_statement_version,
+            criteria_statement_version_1=actionable_criteria.current_criteria_statement_version,
+            criteria_statement_version_2=non_actionable_criteria.current_criteria_statement_version,
             item_compared_statement_version=item.current_statement_version,
             criteria_choice=actionable,
         )
