@@ -244,7 +244,7 @@ class CriteriaStatementVersion(models.Model):
 
     @property
     def computed_statement(self):
-        return self.__str__
+        return self.statement if self.statement else self.parent_criteria.statement
 
     def __str__(self):
         return self.statement if self.statement else self.parent_criteria.statement

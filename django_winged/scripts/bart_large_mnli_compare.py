@@ -49,18 +49,18 @@ def parse_response(response, criteria__version_1_statement):
 
 
 #this function can be generalized to be used with criterion vs two item statements too.
-def compute_zero_shot_comparison(item_statement_version_statement, criteria__version_1_statement, criteria_version_2_statement, api_key=HUGGINGFACE_API_KEY, api_url=API_URL, post_function=api_call, parser_function=parse_response):
+def compute_zero_shot_comparison(item_statement_version_statement, criteria_version_1_statement, criteria_version_2_statement, api_key=HUGGINGFACE_API_KEY, api_url=API_URL, post_function=api_call, parser_function=parse_response):
     remaining_attempts = 3
     sleep_time = 5
 
     headers = {"Authorization": f"Bearer {api_key}"}
-    data = {"inputs": item_statement_version_statement, "parameters": {"candidate_labels": [criteria__version_1_statement, criteria_version_2_statement]}}
+    data = {"inputs": item_statement_version_statement, "parameters": {"candidate_labels": [criteria_version_1_statement, criteria_version_2_statement]}}
 
     while remaining_attempts > 0:
         try:
             time.sleep(sleep_time)
             response = post_function(api_url, headers, data)
-            result = parser_function(response, criteria__version_1_statement)
+            result = parser_function(response, criteria_version_1_statement)
             return result
             
         except HuggingFaceZeroShotAPITimeoutError:
