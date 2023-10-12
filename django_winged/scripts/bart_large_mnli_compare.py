@@ -87,8 +87,8 @@ def check_for_user_made_comparison(item, criteria_1, criteria_2):
     """
     comparison = ItemVsTwoCriteriaAIComparison.objects.filter(
         user_choice=True,
-        criteria_1=criteria_1.current_criteria_statement_version,
-        criteria_2=criteria_2.current_criteria_statement_version,
+        criteria_statement_version_1=criteria_1.current_criteria_statement_version,
+        criteria_statement_version_2=criteria_2.current_criteria_statement_version,
         item_compared_statement_version=item.current_statement_version,
     )
 
