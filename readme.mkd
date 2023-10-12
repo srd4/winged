@@ -1,0 +1,58 @@
+
+# Winged: Optimize Thinking, Action, and Curation of Ideas
+
+Winged is a digital platform that originated from the need to optimize the process of jotting down and organizing a plethora of ideas that constantly stream through the mind. It provides a space to not just jot down ideas (referred to as 'items') but also categorize, prioritize, and curate them efficiently. The ultimate goal is to streamline the thinking process and drive actionable steps through a well-organized, AI-assisted curation system.
+
+## Technologies Used
+
+- Backend: Django, Django REST Framework, Python 3.11.4
+- Frontend: Vue.js, JavaScript
+- Database: PostgreSQL
+- CI/CD: CircleCI
+- Testing: Django’s built-in testing framework
+- Version Control: Git, GitHub
+
+## Installation
+
+Prerequisites:
+- Vue.js
+- NPM
+- PostgreSQL
+- Python 3.11.4
+
+Follow the steps in the `config.yml` file for setting up the project, both backend and frontend. The process includes setting up the PostgreSQL database, installing necessary Python packages from the `requirements.txt` file, and setting up the Vue.js environment.
+
+## Usage
+
+Users interact with Winged via a front-end interface, which can be accessed by running the project locally. Th back end server in Django. The interaction is facilitated through Vue.js, providing a dynamic user experience for CRUD (Create, Read, Update, Delete) operations on items and containers. Users can categorize items into containers, define spectrums for prioritization, and leverage AI models for automated curation and sorting.
+
+### Common Use Cases
+- Organizing book reading lists, project ideas, personal goals, gratitude logs, and much more.
+- Prioritizing and sorting items based on custom or AI-driven criteria.
+- Utilizing AI for semantic comparison to enhance curation and organization.
+
+## Features
+
+- CRUD operations for items and containers.
+- Actionable vs non-actionable item categorization.
+- Spectrum-based sorting and prioritization.
+- AI-assisted curation for automated organization and prioritization.
+- Hierarchical container structuring for nested organization.
+
+## Contribution
+
+While the project is open to community contributions, guidelines are yet to be defined. Interested contributors are encouraged to reach out directly or via GitHub issues.
+
+## Testing
+
+Run `python manage.py test` in the Django project directory to execute the backend tests. For frontend testing, navigate to the Vue.js project directory and execute `npx jest`.
+
+## Support
+
+For support, users can open a GitHub issue on the repository or reach out through the channels provided on the project portfolio website.
+
+## Future Plans
+
+- Enhancing curation features, including AI-driven sorting and semantic comparison for item organization.
+- Expanding front-end user experience for a smoother, faster interaction.
+- Implementing additional AI models and functionalities to further automate and enrich the curation process.
