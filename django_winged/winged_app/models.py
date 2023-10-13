@@ -68,8 +68,11 @@ class Item(models.Model):
                     # Assign statement on db to current current_statement_version field.
                     self.current_statement_version.statement = current_statement
                     self.statement_updated_at = timezone.now()
+                    # Save current_statement_version with old statement before droping new one.
+                    self.current_statement_version.save()
                     # Drop previous current_statement_version for a new one.
                     self.current_statement_version = ItemStatementVersion.objects.create(statement=None, parent_item=self, user=self.user)
+                    
 
         return super().save(*args, **kwargs)
 
@@ -226,6 +229,8 @@ class Criteria(models.Model):
                     # Assign statement on db to current_criteria_statement_version field.
                     self.current_criteria_statement_version.statement = current_statement
                     self.statement_updated_at = timezone.now()
+                    # Save current_criteria_statement_version befored droping it.
+                    self.current_criteria_statement_version.save()
                     # Drop previous current_criteria_statement_version for a new one.
                     self.current_criteria_statement_version = CriteriaStatementVersion.objects.create(statement=None, parent_criteria=self, user=self.user)
 
@@ -285,6 +290,8 @@ class SystemPrompt(models.Model):
                     # Assign text on db to current_prompt_text_version field.
                     self.current_prompt_text_version.text = current_text
                     self.prompt_text_updated_at = timezone.now()
+                    # Save current_prompt_text_version before droping it.
+                    self.current_prompt_text_version.save()
                     # Drop previous current_prompt_text_version for a new one.
                     self.current_prompt_text_version = SystemPromptTextVersion.objects.create(text=None, parent_prompt=self, user=self.user)
 
