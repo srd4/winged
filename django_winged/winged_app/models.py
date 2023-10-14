@@ -155,10 +155,10 @@ class ItemVsTwoCriteriaAIComparison(models.Model):
     ai_model = models.CharField(max_length=2**7, null=True, db_index=True, default=None)
     user_choice = models.BooleanField(null=False, default=False)
     system_prompt_text_version = models.ForeignKey('SystemPromptTextVersion', on_delete=models.SET_NULL, null=True)
-    criteria_statement_version_1 = models.ForeignKey('CriteriaStatementVersion', null=True, related_name='criteria_1', on_delete=models.SET_NULL, db_index=True) #if criterias are statement versions I can have access to parent Criteria on second level reference.
-    criteria_statement_version_2 = models.ForeignKey('CriteriaStatementVersion', null=True, related_name='criteria_2', on_delete=models.SET_NULL, db_index=True)
+    criteria_statement_version_1 = models.ForeignKey('CriteriaStatementVersion', null=True, related_name='first_criteria_one_item_vs_two_criteria_comparisons', on_delete=models.SET_NULL, db_index=True) #if criterias are statement versions I can have access to parent Criteria on second level reference.
+    criteria_statement_version_2 = models.ForeignKey('CriteriaStatementVersion', null=True, related_name='second_criteria_one_item_vs_two_criteria_comparisons', on_delete=models.SET_NULL, db_index=True)
 
-    item_compared_statement_version = models.ForeignKey(ItemStatementVersion, on_delete=models.CASCADE, db_index=True)
+    item_compared_statement_version = models.ForeignKey(ItemStatementVersion, related_name="one_item_vs_two_criteria_comparisons", on_delete=models.CASCADE, db_index=True)
     
     criteria_choice = models.BooleanField(choices=CHOICES, null=False, default=False, db_index=True)
     response = models.JSONField(null=True, default=None)
@@ -169,19 +169,19 @@ class ItemVsTwoCriteriaAIComparison(models.Model):
     def __str__(self) -> str:
         return self.item_compared_statement_version.parent_item.statement
 
-"""class CriterionVsItemsAIComparison(models.Model):
+class CriterionVsItemsAIComparison(models.Model):
     CHOICES = [
-        True, 'Item 1',
-        True, 'Item 2'
+        (True, 'Item 1'),
+        (False, 'Item 2'),
     ]
     ai_model = models.CharField(max_length=2**7, null=True, db_index=True, default=None)
     user_choice = models.BooleanField(null=False, default=False)
     system_prompt_text_version = models.ForeignKey('SystemPromptTextVersion', on_delete=models.SET_NULL, null=True)
 
-    criterion_statement_version = models.ForeignKey('CriteriaStatementVersion', null=True, related_name='criteria_2', on_delete=models.SET_NULL, db_index=True)
+    criterion_statement_version = models.ForeignKey('CriteriaStatementVersion', null=True, related_name='criterion_comparisons', on_delete=models.SET_NULL, db_index=True)
     
-    item_compared_1_statement_version = models.ForeignKey(ItemStatementVersion, on_delete=models.CASCADE, null=True)
-    item_compared_2_statement_version = models.ForeignKey(ItemStatementVersion, on_delete=models.CASCADE, null=True)
+    item_compared_1_statement_version = models.ForeignKey(ItemStatementVersion, on_delete=models.CASCADE, related_name="first_item_statement_version_criterion_comparisons", null=True)
+    item_compared_2_statement_version = models.ForeignKey(ItemStatementVersion, on_delete=models.CASCADE, related_name="second_item_statement_version_criterion_comparisons", null=True)
 
     item_choice = models.BooleanField(choices=CHOICES, null=False, default=False, db_index=True)
     response = models.JSONField(null=True, default=None)
@@ -192,7 +192,7 @@ class ItemVsTwoCriteriaAIComparison(models.Model):
     def __str__(self):
         choice = f"{self.item_compared_1_statement_version.computed_statement if self.item_choice else self.item_compared_2_statement_version.computed_statement}"
         string = f"{self.criterion_statement_version.computed_statement} - {choice}"
-        return string"""
+        return string
 
 
 class Criteria(models.Model):
