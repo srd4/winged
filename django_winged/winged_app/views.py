@@ -14,10 +14,6 @@ from django.shortcuts import get_object_or_404, get_list_or_404
 from django.contrib.auth.models import User
 from django.db import transaction
 
-
-
-
-
 from .serializers import (
     ContainerSerializer, ContainerChildrenListSerializer, ItemSerializer,
     ItemStatementVersionSerializer, UserSerializer, SpectrumTypeSerializer, 
@@ -26,10 +22,10 @@ from .serializers import (
 
 import scripts.openai_compare as openai_compare
 import scripts.ai_curation_costs_calc as costs_calc
+
 from scripts.bart_large_mnli_compare import item_vs_criteria
-
-
 from scripts.my_custom_helper_functions import reclassify_items, create_user_comparison_record
+from scripts.sentence_transformers_compare import all_MiniLM_L6_v2_criterion_vs_items, strings_compute_criterion_embedding_comparison
 
 from winged_app.models import (
     Container, Item, ItemStatementVersion, SpectrumValue, SpectrumType,
@@ -233,7 +229,7 @@ class RunScriptAPIView(APIView):
             
             functions = {
                 "paraphrase-mpnet-base-v2": None,
-                "all-mpnet-base-v2":None,
+                "all-mpnet-base-v2":strings_compute_criterion_embedding_comparison,
                 "bart_large_mnli":None,
                 "gpt-4":openai_compare.gpt_compare,
                 "user_curation":user_input_compare,
@@ -245,7 +241,6 @@ class RunScriptAPIView(APIView):
                                [i for i in non_sorted_items.distinct()],
                                comparison_function,
                                sorted_list=sorted_items)
-            
             print("finished")
         
         # Start a new thread to run the script

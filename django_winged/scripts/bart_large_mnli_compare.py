@@ -118,6 +118,7 @@ def item_vs_criteria(item, criteria_1, criteria_2, force_recompute=False):
         return compute_and_store_comparison(item, criteria_1, criteria_2)
 
 
+
 def compute_and_store_comparison(item, criteria_1, criteria_2):
     start_time = time.time()
     response, criteria_choice = compute_zero_shot_comparison(

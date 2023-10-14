@@ -116,6 +116,10 @@ class ItemStatementVersion(models.Model):
     parent_item = models.ForeignKey(Item, null=True, on_delete=models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     
+    @property
+    def computed_statement(self):
+        return self.statement if self.statement else self.parent_criteria.statement
+    
     def __str__(self) -> str:
         return self.statement if self.statement else self.parent_item.statement
 
