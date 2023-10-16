@@ -1,5 +1,4 @@
 venv
-migrations
 notebook 2.0 data
 *.sqlite3
 dist/
@@ -17,3 +16,8 @@ Thumbs.db
 /node_modules
 __pycache__
 node_modules
+db.json
+django_winged/winged/settings.py
+django_winged/api_logs.log
+*.sql
+*.log

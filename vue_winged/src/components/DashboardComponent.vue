@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-      <div class="containers-container">
+      <div class="containers-container" ref="containerRef">
         <ul style="padding:0;">
         <li v-for="container in container_list" :key="container.id">
           <container v-on:new-active="updateActive"
@@ -10,7 +10,7 @@
         </ul>
       </div>
   
-      <container_detail :container="activeContainer"></container_detail>
+      <container_detail @containersDanger="setContainersDanger" :container="activeContainer"></container_detail>
     </div>
   </template>
   
@@ -35,6 +35,16 @@
     methods: {
       updateActive : function(container){
         this.activeContainer = container;
+      },
+      setContainersDanger(){
+        const containerElement = this.$refs.containerRef;
+        if(containerElement){
+          containerElement.classList.add("danger")
+          setTimeout(() => {
+            containerElement.classList.remove('danger');
+          }, 3000);
+        }
+
       },
       getContainers(){
         axiosInstance.get('/containerTrees/')

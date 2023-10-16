@@ -1,6 +1,11 @@
 from django.urls import path, include
 from rest_framework import routers
-from winged_app.views import ContainerItemListAPIView, ContainerTreeView, ContainerViewSet, ItemViewSet, StatementVersionViewSet, UserViewSet, SpectrumValueViewSet, SpectrumTypeViewSet, RunScriptAPIView
+from winged_app.views import (
+    ContainerItemListAPIView, ContainerTreeView, ContainerViewSet,
+    ItemViewSet, ItemStatementVersionViewSet, UserViewSet, SpectrumValueViewSet,
+    SpectrumTypeViewSet, RunScriptAPIView, ReEvaluateActionableItemsAPIView,
+    ItemsVsSpectrumOpeanAiComparisonCost
+    )
 from django.contrib import admin
 from rest_framework.authtoken.views import obtain_auth_token
 
@@ -9,7 +14,7 @@ router = routers.DefaultRouter()
 router.register(r'containerTrees', ContainerTreeView, basename='containerTrees')
 router.register(r'containers', ContainerViewSet, basename="containers")
 router.register(r'items', ItemViewSet, basename="items")
-router.register(r'statement_versions', StatementVersionViewSet, basename="statementversions")
+router.register(r'item_statement_versions', ItemStatementVersionViewSet, basename="itemstatementversions")
 router.register(r'users', UserViewSet)
 router.register(r'spectrum_type', SpectrumTypeViewSet, basename="spectrumtypes")
 router.register(r'spectrum_value', SpectrumValueViewSet, basename="spectrumvalues")
@@ -23,5 +28,9 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('containers/<int:pk>/items/', ContainerItemListAPIView.as_view(), name='container-items'),
 
-    path("containers/<int:container_id>/run-script/spectrumtypes/<int:spectrumtype_id>/<str:comparison_mode>/", RunScriptAPIView.as_view(), name="run-script")
+    path("containers/<int:container_id>/run-script/spectrumtypes/<int:spectrumtype_id>/<str:comparison_mode>/", RunScriptAPIView.as_view(), name="run-script"),
+
+    path('containers/<int:source_container_id>/reclassify-actionable/', ReEvaluateActionableItemsAPIView.as_view(), name='reclassify-actionable-container-items'),
+    
+    path('containers/<int:container_id>/spectrumtypes/<int:spectrumtype_id>/items-vs-spectrum-comparison-cost/', ItemsVsSpectrumOpeanAiComparisonCost.as_view(), name='items-vs-spectrum-comparison-cost')
 ]

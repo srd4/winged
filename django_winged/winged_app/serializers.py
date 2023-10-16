@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from winged_app.models import Container, Item, StatementVersion, SpectrumValue, SpectrumType
+from winged_app.models import Container, Item, ItemStatementVersion, SpectrumValue, SpectrumType
 from rest_framework import serializers
 
 
@@ -69,9 +69,9 @@ class ContainerSerializer(serializers.ModelSerializer):
         return serializer.data
 
 
-class StatementVersionSerializer(serializers.ModelSerializer):
+class ItemStatementVersionSerializer(serializers.ModelSerializer):
     class Meta:
-        model = StatementVersion
+        model = ItemStatementVersion
         fields = '__all__'
 
 

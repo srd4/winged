@@ -1,17 +1,38 @@
-from django.contrib.auth.models import User
-from winged_app.models import Container, Item, StatementVersion, SpectrumValue, SpectrumType
-from rest_framework import viewsets
-from rest_framework import permissions
-from .serializers import ContainerSerializer, ContainerChildrenListSerializer, ItemSerializer, StatementVersionSerializer, UserSerializer, SpectrumTypeSerializer, SpectrumValueSerializer
-from django.shortcuts import get_object_or_404
-from rest_framework.response import Response
-from rest_framework.generics import ListAPIView
-from rest_framework.views import APIView
 import threading
 import time
-import scripts.openai_compare as openai_compare
+import math
+
 from random import shuffle
+
+from rest_framework import permissions, viewsets, status
 from rest_framework.authentication import TokenAuthentication
+from rest_framework.generics import ListAPIView
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework.status import HTTP_202_ACCEPTED, HTTP_404_NOT_FOUND, HTTP_500_INTERNAL_SERVER_ERROR, HTTP_400_BAD_REQUEST
+from django.shortcuts import get_object_or_404, get_list_or_404
+from django.contrib.auth.models import User
+from django.db import transaction
+
+from .serializers import (
+    ContainerSerializer, ContainerChildrenListSerializer, ItemSerializer,
+    ItemStatementVersionSerializer, UserSerializer, SpectrumTypeSerializer, 
+    SpectrumValueSerializer
+    )
+
+import scripts.openai_compare as openai_compare
+import scripts.ai_curation_costs_calc as costs_calc
+
+from scripts.bart_large_mnli_compare import item_vs_criteria
+from scripts.my_custom_helper_functions import reclassify_items, create_user_comparison_record
+from scripts.sentence_transformers_compare import all_MiniLM_L6_v2_criterion_vs_items, strings_compute_criterion_embedding_comparison
+
+from winged_app.models import (
+    Container, Item, ItemStatementVersion, SpectrumValue, SpectrumType,
+    Criteria
+    )
+
+# reorganized imports by origin and form.
 
 class IsOwner(permissions.BasePermission):
     """
@@ -31,6 +52,73 @@ class IsOwner(permissions.BasePermission):
 def user_input_compare(criteria, element1, element2):
     response = input(f"\n1. {element1} \nvs\n2. {element2}\n(Enter 1/2): ")
     return response != "1"
+
+def log_summation(n, k):
+    """
+    Computes the summation of log(i) from n to n+k-1.
+    
+    Parameters:
+    - n: Starting value of the summation.
+    - k: Number of terms to sum.
+    
+    Returns:
+    - The computed summation value.
+    """
+    return sum(math.log(i) for i in range(n, n+k) if i > 0)
+
+
+class ItemsVsSpectrumOpeanAiComparisonCost(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, container_id, spectrumtype_id):
+        try:
+            spectrumtype = SpectrumType.objects.get(id=spectrumtype_id, user=self.request.user)
+            container = Container.objects.get(id=container_id, user=self.request.user)
+        except SpectrumType.DoesNotExist:
+            return Response({"error": "SpectrumType not found"}, status=HTTP_404_NOT_FOUND)
+        except Container.DoesNotExist:
+            return Response({"error": "Container not found"}, status=HTTP_404_NOT_FOUND)
+
+        #all spectrum values for this spectrum type.
+        spectrum_values = SpectrumValue.objects.filter(spectrum_type=spectrumtype, user=self.request.user)
+        #all spectrum values for this spectrum type that are not zero.
+        non_zero_spectrum_values = spectrum_values.exclude(value=0)
+        #all spectrum values for this spectrum type that are zero.
+        zero_spectrum_values = spectrum_values.filter(value=0)
+
+        #all items in this container detail -front end.
+        item_list = Item.objects.filter(actionable=container.is_on_actionables_tab,
+                                    archived=False,
+                                    done=False,
+                                    parent_container=container,
+                                    user=self.request.user
+                                    )
+
+        #all items in this container that have a spectrum value for this spectrum type that is not zero.
+        scored_items_count = item_list.filter(spectrumvalue__in=non_zero_spectrum_values).count()
+        #all items in this container that have a spectrum value for this spectrum type that is zero.
+        zero_items_count = item_list.filter(spectrumvalue__in=zero_spectrum_values).count()
+        #all items in this container that do not have a spectrum value for this spectrum type.
+        new_items_count = item_list.exclude(spectrumvalue__in=spectrum_values).count()
+
+        worst_case_comparisons = log_summation(scored_items_count, zero_items_count + new_items_count)
+
+        tokens_in_worst_case_comparison = costs_calc.count_tokens(
+            openai_compare.system_content
+            + openai_compare.user_content_set_up
+            + openai_compare.assistant_content
+            + openai_compare.user_content
+            )
+        + 42*2 #worst case tokens in two items given db model lenght.
+        + costs_calc.count_tokens(spectrumtype.description)
+
+        average_output_tokens = 80 #worst case tokens in completion -upper limit from gpt4 comparisons registered.
+
+        input_cost = 0.03 * (tokens_in_worst_case_comparison * worst_case_comparisons)
+        output_cost = 0.06 * (average_output_tokens * worst_case_comparisons)
+
+        return Response({"cost": (input_cost + output_cost)/1000})
 
 
 class RunScriptAPIView(APIView):
@@ -138,24 +226,53 @@ class RunScriptAPIView(APIView):
 
             sorted_items = [i for i in scored_items.distinct()]
             sorted_items.sort(key=lambda x: x.spectrumvalue_set.get(spectrum_type=spectrumtype).value, reverse=True)
+            
+            functions = {
+                "paraphrase-mpnet-base-v2": None,
+                "all-mpnet-base-v2":strings_compute_criterion_embedding_comparison,
+                "bart_large_mnli":None,
+                "gpt-4":openai_compare.gpt_compare,
+                "user_curation":user_input_compare,
+                }
 
-            if comparison_mode == "openai":
-                comparison_function = openai_compare.gpt_compare
-            else:
-                comparison_function = user_input_compare
+            comparison_function = functions[comparison_mode]
 
-            result = binary_insert_sort(spectrumtype.description,
+            binary_insert_sort(spectrumtype.description,
                                [i for i in non_sorted_items.distinct()],
                                comparison_function,
                                sorted_list=sorted_items)
-            
             print("finished")
         
         # Start a new thread to run the script
         thread = threading.Thread(target=run_script)
         thread.start()
 
-        return Response({"message": "Script execution started on items in container {} with spectrum type {}.".format(container_id, spectrumtype_id)})
+        return Response({"message": f"Script started for items on {container} on {spectrumtype} with {comparison_mode}."})
+
+
+class ReEvaluateActionableItemsAPIView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, source_container_id, format=None):
+        actionable = get_object_or_404(Criteria, name="actionable", user=self.request.user)
+        non_actionable = get_object_or_404(Criteria, name="non-actionable", user=self.request.user)
+        source_container = get_object_or_404(Container, id=source_container_id, user=self.request.user)
+        
+        items = get_list_or_404(
+                Item, parent_container=source_container,
+                done=False, archived=False, user=self.request.user
+                )
+
+        # Start a new thread to run the script
+        thread = threading.Thread(
+            target=reclassify_items,
+            args=[items, actionable, non_actionable, item_vs_criteria]
+            )
+        
+        thread.start()
+
+        return Response({"message": f"Reclassifying items in {source_container_id}."}, status=HTTP_202_ACCEPTED)
 
 
 
@@ -212,7 +329,6 @@ class ContainerViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return self.queryset.filter(user=self.request.user)
-    
 
 class ItemViewSet(viewsets.ModelViewSet):
     queryset = Item.objects.all()
@@ -222,11 +338,22 @@ class ItemViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return self.queryset.filter(user=self.request.user)
-        
 
-class StatementVersionViewSet(viewsets.ModelViewSet):
-    queryset = StatementVersion.objects.all()
-    serializer_class = StatementVersionSerializer
+    def update(self, request, *args, **kwargs):
+        with transaction.atomic():
+            instance = self.get_object()
+            if 'actionable' in request.data:
+                try:
+                    create_user_comparison_record(request, instance, request.data['actionable'])
+                except Exception as e:
+                    transaction.set_rollback(True)
+                    return Response({"error": f"An unexpected error occurred: {e}."}, status=HTTP_500_INTERNAL_SERVER_ERROR)
+            return super().update(request, *args, **kwargs)
+
+
+class ItemStatementVersionViewSet(viewsets.ModelViewSet):
+    queryset = ItemStatementVersion.objects.all()
+    serializer_class = ItemStatementVersionSerializer
     permission_classes = [permissions.IsAuthenticated, IsOwner]
     authentication_classes = [TokenAuthentication]
 

@@ -7,22 +7,38 @@
             <label for="done">done</label>
             <input v-model="seeDone" type="checkbox" name="done">
 
-            <label for="spectrums">By spectrum</label>
-            <select v-model="spectrumId" id="spectrums" name="spectrumsList">
-                <option :value="null">None</option>
-                <option v-if="container_spectrums" v-for="spectrum in container_spectrums" :value="spectrum.id">{{spectrum.name}}</option>
-            </select>
-
-            <button v-on:click="gptCurate('openai');">GPT-Curate</button>
-
-            <button v-on:click="gptCurate('user_input');">User-Curate</button>
-
+            <div ref="spectrumRef">
+                <label for="spectrums">By spectrum</label>
+                <select v-model="spectrumId" id="spectrums" name="spectrumsList">
+                    <option :value="null">None</option>
+                    <option v-if="container_spectrums" v-for="spectrum in container_spectrums" :value="spectrum.id">{{spectrum.name}}</option>
+                </select>
+            </div>
 
             <input v-model="searchQuery" placeholder="Search...">
 
             <button v-on:click="filterItems();updateContainer(container);getContainerItems()">filter</button>
-
+            
             <a @click="logout">Logout</a>
+
+            <div v-if="!showAiCurationConfirmation" ref="aimodelRef">
+                <select v-model="aiModel" name="aiModels">
+                    <option :value="null" >None</option>
+                    <option>paraphrase-mpnet-base-v2</option>
+                    <option>all-mpnet-base-v2</option>
+                    <option>bart_large_mnli</option>
+                    <option>gpt-4</option>
+                    <option>user_curation</option>
+                </select>
+                <button  v-on:click="promptToConfirmCuration()">Curate</button>
+            </div>
+
+            <div v-if="showAiCurationConfirmation">
+                <p>Sort {{container.is_on_actionables_tab? "actionables":"non actionables"}} from {{container.name}} with {{aiModel}}?</p>
+                <p v-if="aiModel == 'gpt-4'" >Estimated Cost: ${{ computedAiCurationCost }} USD</p>
+                <button v-on:click="runCuration()">Confirm AI-Curation</button>
+                <button v-on:click="cancelCuration()">Cancel</button>
+            </div>
     </div>
 
     <div class="actions">
@@ -38,6 +54,11 @@
         <button v-on:click="addSpectrumToContainerItems(spectrumToAdd)">add spectrum</button>
             
         
+    </div>
+
+    <div>
+        <!--Button to run startReclassify() on this.container.-->
+        <button v-on:click="startReclassifyActionables()">Separate actions</button>
     </div>
 
     <ul class="item-list">            
@@ -174,6 +195,11 @@ export default {
             spectrumToAdd: null,
             containerToMoveTo: null,
             containers: [],
+            firstContainerId: null,
+            secondContainerId: null,
+            aiModel: null,
+            showAiCurationConfirmation: false,
+            computedAiCurationCost: null,
         }
     },
     watch: {
@@ -487,18 +513,101 @@ export default {
                 })
             }
         },
-        gptCurate(comparisonMode){
-            let link = '/containers/' + String(this.container.id) + "/run-script/spectrumtypes/" + String(this.spectrumId) + "/" + comparisonMode + "/";
+        sendContainerDanger() {
+            this.$emit('containersDanger');
+        },
+        setSpectrumIdDanger(){
+            const spectrumdiv = this.$refs.spectrumRef;
+            if(spectrumdiv){
+                spectrumdiv.classList.add("danger");
+                setTimeout(() => {
+                    spectrumdiv.classList.remove("danger");
+                }, 3000);
+            } 
+        },
+        setAiModelDanger(){
+            const aimodeldiv = this.$refs.aimodelRef;
+            if(aimodeldiv){
+                aimodeldiv.classList.add("danger");
+                setTimeout(() => {
+                    aimodeldiv.classList.remove("danger");
+                }, 3000);
+            } 
+        },
+        runCuration(){
+            let link = '/containers/' + String(this.container.id) + "/run-script/spectrumtypes/" + String(this.spectrumId) + "/" + this.aiModel + "/";
             axiosInstance.get(link)
                 .then(response => {
                     console.log(response.data.message);
+                    this.showAiCurationConfirmation = false;
                 })
                 .catch(error => {
                     console.error('Error gpt-curating', error);
                 });
         },
-    },
+        promptToConfirmCuration(){
+            if(this.container == null){
+                this.sendContainerDanger();
+                return;
+            };
+            if(this.spectrumId == null){
+                this.setSpectrumIdDanger();
+                return;
+            };
+            if(this.aiModel == null){
+                this.setAiModelDanger();
+                return;
+            };
 
+            if(this.aiModel == "gpt-4"){
+                this.fetchComputedAiCurationCost();
+            }
+
+            this.showAiCurationConfirmation = true;
+        },
+        cancelCuration(){
+            this.showAiCurationConfirmation = false;
+        },
+        startReclassify() {
+            if (!this.firstContainerId || !this.secondContainerId) {
+                console.error("Both containers must be selected");
+                return;
+            }
+
+            let link = `/containers/${String(this.container.id)}/reclassify/${String(this.firstContainerId)}/${String(this.secondContainerId)}/`;
+
+            axiosInstance.get(link)
+                .then(response => {
+                    console.log(response.data.message); // Handle your response here
+                })
+                .catch(error => {
+                    console.error('Error initiating reclassification:', error);
+                });
+        },
+        startReclassifyActionables() {
+            let link = `/containers/${String(this.container.id)}/reclassify-actionable/`;
+
+            axiosInstance.post(link)
+                .then(response => {
+                    console.log(response.data.message);
+                })
+                .catch(error => {
+                    console.error('Error initiating reclassification:', error);
+                });
+        },
+        fetchComputedAiCurationCost(){
+            let link = `/containers/${String(this.container.id)}/spectrumtypes/${String(this.spectrumId)}/items-vs-spectrum-comparison-cost/`
+
+            axiosInstance.get(link)
+                .then(response =>{
+                    this.computedAiCurationCost = Math.round(response.data.cost * 100) /100
+                    console.log(response.data.cost);
+                })
+                .catch(error => {
+                    console.error('Error fetching cumputed ai curation cost:', error);
+                });
+        }
+    },
 }
 </script>
 
@@ -526,7 +635,7 @@ export default {
 }
 
 .danger {
-    outline: 1px solid red;
+    outline: 2px solid red;
 }
 
 span {
