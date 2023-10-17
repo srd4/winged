@@ -55,3 +55,8 @@ def run():
     non_actionable = Criteria.objects.get(name="non-actionable")
 
     reclassify_items(items, actionable, non_actionable, item_vs_criteria)
+
+
+def user_input_compare_criterion_vs_items(criteria, element1, element2):
+    response = input(f"\n1. {element1} \nvs\n2. {element2}\n(Enter 1/2): ")
+    return response != "1"

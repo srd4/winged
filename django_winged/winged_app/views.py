@@ -24,7 +24,7 @@ import scripts.openai_compare as openai_compare
 import scripts.ai_curation_costs_calc as costs_calc
 
 from scripts.bart_large_mnli_compare import item_vs_criteria
-from scripts.my_custom_helper_functions import reclassify_items, create_user_comparison_record
+from scripts.my_custom_helper_functions import reclassify_items, create_user_comparison_record, user_input_compare_criterion_vs_items
 from scripts.sentence_transformers_compare import all_MiniLM_L6_v2_criterion_vs_items, strings_compute_criterion_embedding_comparison
 
 from winged_app.models import (
@@ -48,10 +48,6 @@ class IsOwner(permissions.BasePermission):
         # Write permissions are only allowed to the owner of the object.
         return obj.user == request.user
 
-
-def user_input_compare(criteria, element1, element2):
-    response = input(f"\n1. {element1} \nvs\n2. {element2}\n(Enter 1/2): ")
-    return response != "1"
 
 def log_summation(n, k):
     """
@@ -232,7 +228,7 @@ class RunScriptAPIView(APIView):
                 "all-mpnet-base-v2":strings_compute_criterion_embedding_comparison,
                 "bart_large_mnli":None,
                 "gpt-4":openai_compare.gpt_compare,
-                "user_curation":user_input_compare,
+                "user_curation":user_input_compare_criterion_vs_items,
                 }
 
             comparison_function = functions[comparison_mode]
