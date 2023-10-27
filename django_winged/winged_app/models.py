@@ -11,7 +11,10 @@ class Container(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     last_opened_at = models.DateTimeField(null=True, default=None)
+
     is_on_actionables_tab = models.BooleanField(default=True)
+    is_on_done_tab = models.BooleanField(default=False)
+    
     is_collapsed = models.BooleanField(default=True)
 
     def __str__(self):

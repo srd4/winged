@@ -1,6 +1,7 @@
 import threading
 import time
 import math
+import logging
 
 from random import shuffle
 
@@ -32,7 +33,7 @@ from winged_app.models import (
     Criteria
     )
 
-# reorganized imports by origin and form.
+logger = logging.getLogger('winged_app.views')
 
 class IsOwner(permissions.BasePermission):
     """
@@ -86,7 +87,7 @@ class ItemsVsSpectrumOpeanAiComparisonCost(APIView):
         #all items in this container detail -front end.
         item_list = Item.objects.filter(actionable=container.is_on_actionables_tab,
                                     archived=False,
-                                    done=False,
+                                    done=container.is_on_done_tab,
                                     parent_container=container,
                                     user=self.request.user
                                     )
@@ -122,12 +123,20 @@ class RunScriptAPIView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request, container_id, spectrumtype_id, comparison_mode, format=None):
-        container = Container.objects.get(id=container_id, user=self.request.user)
-        spectrumtype = SpectrumType.objects.get(id=spectrumtype_id, user=self.request.user)
+        try:
+            container = Container.objects.get(id=container_id, user=self.request.user)
+            spectrumtype = SpectrumType.objects.get(id=spectrumtype_id, user=self.request.user)
+        except Container.DoesNotExist:
+            return Response({"error":f"Couldn't find Container {container_id}"}, status=HTTP_404_NOT_FOUND)
+        except SpectrumType.DoesNotExist:
+            return Response({"error":f"Couldn't find SpectrumType {spectrumtype_id}"}, status=HTTP_404_NOT_FOUND)
 
-        print("container: {}".format(container))
-        print("spectrumtype: {}".format(spectrumtype))
-        print("container.is_on_actionables_tab: {}".format(container.is_on_actionables_tab))
+        #change for logs into a log file, understand log files first.
+        logger.info('This is an info message')
+        logger.info("container: {}".format(container))
+        logger.info("spectrumtype: {}".format(spectrumtype))
+        logger.info("container.is_on_actionables_tab: {}".format(container.is_on_actionables_tab))
+        logger.info("container.is_on_done_tab: {}".format(container.is_on_done_tab))
 
         #all spectrum values for this spectrum type.
         spectrum_values = SpectrumValue.objects.filter(spectrum_type=spectrumtype, user=self.request.user)
@@ -136,16 +145,17 @@ class RunScriptAPIView(APIView):
         #all spectrum values for this spectrum type that are zero.
         zero_spectrum_values = spectrum_values.filter(value=0)
 
-        #all items in this container detail -front end.
-        item_list = Item.objects.filter(actionable=container.is_on_actionables_tab,
-                                    archived=False,
-                                    done=False,
-                                    parent_container=container,
-                                    user=self.request.user
-                                    )
+        #all items in this container's detail.
+        item_list = Item.objects.filter(
+            actionable=container.is_on_actionables_tab,
+            archived=False,# should receive as arg from front end so right list of items is sorted.
+            done=container.is_on_done_tab,# should receive as arg from front end so right list of items is sorted.
+            parent_container=container,
+            user=self.request.user
+            )
 
         #all items in this container that have a spectrum value for this spectrum type that is not zero.
-        scored_items = item_list.filter(spectrumvalue__in=non_zero_spectrum_values)
+        scored_items = item_list.filter(spectrumvalue__in=non_zero_spectrum_values)# should be called non_zero_items instead, or even sorted items.
         #all items in this container that have a spectrum value for this spectrum type that is zero.
         zero_items = item_list.filter(spectrumvalue__in=zero_spectrum_values)
         #all items in this container that do not have a spectrum value for this spectrum type.
@@ -153,7 +163,8 @@ class RunScriptAPIView(APIView):
 
         non_sorted_items = zero_items | new_items
 
-        def run_script():
+        
+        def run_script():# whole function can be placed elsewhere.
             def binary_insert(criteria, sorted_list, key, comparison_function):
                 left, right = 0, len(sorted_list) - 1
                 
@@ -162,17 +173,16 @@ class RunScriptAPIView(APIView):
                     
                     while True:
                         try:
-                            if not comparison_function(criteria, sorted_list[mid].statement, key.statement):
+                            if not comparison_function(criteria, sorted_list[mid].statement, key.statement): #why and if not? adjust that
                                 left = mid + 1
-                                print("less than: {}".format(sorted_list[mid].statement))
+                                logger.info("less than: {}".format(sorted_list[mid].statement))
                             else:
-                                print("more than: {}".format(sorted_list[mid].statement))
-                                print()
+                                logger.info("more than: {}".format(sorted_list[mid].statement))
                                 right = mid - 1
-                            break  # Exit the loop if the function call succeeded
+                            break  # do I need to exit the loop if the function call succeeded?
                         except Exception as e:  # Catch all exceptions, replace with the specific exception type if possible
-                            # Wait for some time before retrying the function callz
-                            print("Exception caught, retrying in 3 seconds", str(e))
+                            # Wait for some time before retrying the function call
+                            logger.info("Exception caught, retrying in 3 seconds", str(e))
                             time.sleep(3)
                         
                 sorted_list.insert(left, key)
@@ -180,7 +190,7 @@ class RunScriptAPIView(APIView):
 
             def update_on_db(result):
                 num_items = len(result)
-                t = []
+                t = []#better name would help.
                 for i, item in enumerate(result):
                     value = (num_items - i) * 100 // num_items
 
@@ -190,30 +200,28 @@ class RunScriptAPIView(APIView):
                         parent_item=item,
                         defaults={
                             'value': value,
-                            'user': request.user,
+                            'user': request.user,#can also do item.user
                         }
                     )
 
-                    spectrumvalue.value = value
+                    spectrumvalue.value = value#why do I pass it as default then.
                     spectrumvalue.gpt_curated = True
 
                     t.append(spectrumvalue)
 
-                    #print("{}% - {}".format(spectrumvalue.value, spectrumvalue.parent_item)[:60])
-
                 SpectrumValue.objects.bulk_update(t, ['value', 'gpt_curated'])
 
-            def binary_insert_sort(criteria, items, comparison_function, sorted_list=[]):
+            def binary_insert_sort(criteria, items, comparison_function, sorted_list=[]):#innapropiate function name.
                 total = len(items)
-                j = 1
+                j = 1# could get rid off if for loop below iterated over a range.
                 shuffle(items)
                 for i in items:
-                    print(f"inserting item {j} of {total}")
-                    print(f">> {i}")
+                    logger.info(f"inserting item {j} of {total}")
+                    logger.info(f">> {i}")
 
                     binary_insert(criteria, sorted_list, i, comparison_function)
 
-                    update_on_db(sorted_list)
+                    update_on_db(sorted_list)# saves one at a time to keep progress.
 
                     j += 1
 
@@ -233,17 +241,19 @@ class RunScriptAPIView(APIView):
 
             comparison_function = functions[comparison_mode]
 
-            binary_insert_sort(spectrumtype.description,
-                               [i for i in non_sorted_items.distinct()],
-                               comparison_function,
-                               sorted_list=sorted_items)
-            print("finished")
+            binary_insert_sort(
+                spectrumtype.description,# gotta change spectrumtype model.
+                [i for i in non_sorted_items.distinct()],
+                comparison_function,
+                sorted_list=sorted_items
+                )
+            logger.info("finished")
         
         # Start a new thread to run the script
         thread = threading.Thread(target=run_script)
         thread.start()
 
-        return Response({"message": f"Script started for items on {container} on {spectrumtype} with {comparison_mode}."})
+        return Response({"message": f"Script started for items on {container} on {spectrumtype} with {comparison_mode}."}, status=HTTP_202_ACCEPTED)
 
 
 class ReEvaluateActionableItemsAPIView(APIView):
@@ -257,7 +267,7 @@ class ReEvaluateActionableItemsAPIView(APIView):
         
         items = get_list_or_404(
                 Item, parent_container=source_container,
-                done=False, archived=False, user=self.request.user
+                done=source_container.is_on_done_tab, archived=False, user=self.request.user
                 )
 
         # Start a new thread to run the script

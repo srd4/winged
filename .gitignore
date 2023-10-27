@@ -21,3 +21,5 @@ django_winged/winged/settings.py
 django_winged/api_logs.log
 *.sql
 *.log
+vue_winged/.browserslistrc
+vue_winged/README.md
