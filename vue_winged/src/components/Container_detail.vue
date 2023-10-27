@@ -1,11 +1,11 @@
 <template>
-<div class="items-container">
+<div v-if="container" class="items-container">
     <div class="filters">
             <label for="actionables">actionables</label>
-            <input v-model="seeActionables" type="checkbox" name="actionables">
+            <input v-model="container.is_on_actionables_tab" type="checkbox" name="actionables">
             
             <label for="done">done</label>
-            <input v-model="seeDone" type="checkbox" name="done">
+            <input v-model="container.is_on_done_tab" type="checkbox" name="done">
 
             <div ref="spectrumRef">
                 <label for="spectrums">By spectrum</label>
@@ -17,7 +17,7 @@
 
             <input v-model="searchQuery" placeholder="Search...">
 
-            <button v-on:click="filterItems();updateContainer(container);getContainerItems()">filter</button>
+            <button v-on:click="filterItems();updateContainer();getContainerItems()">filter</button>
             
             <a @click="logout">Logout</a>
 
@@ -179,8 +179,6 @@ export default {
             searchQuery : '',
             //list of items fetched on get request (the container's items on db).
             container_items : [],
-            seeActionables : true,
-            seeDone : false,
             //list of items displayed.
             seeArchived : false,
             item_list: [],
@@ -205,7 +203,6 @@ export default {
     watch: {
         container() {
             this.getContainerItems();
-            this.seeActionables = this.container.is_on_actionables_tab;
             this.container_spectrums = this.container.spectrum_types;
             this.available_spectrums = this.getSpectrumTypes()
             this.filterItems()
@@ -213,7 +210,7 @@ export default {
         },
     },
     computed : {
-        notSeeing(){return this.seeActionables? 'non-actionable':'actionable'},
+        notSeeing(){return this.container.is_on_actionables_tab? 'non-actionable':'actionable'},
     },
     methods : {
         logout(event, item) {
@@ -364,8 +361,8 @@ export default {
         filterItems(){
             this.item_list = this.container_items.filter(item =>{
             return item.statement.toLowerCase().includes(this.searchQuery.toLowerCase()) &&
-            item.actionable == this.seeActionables &&
-            item.done == this.seeDone &&
+            item.actionable == this.container.is_on_actionables_tab &&
+            item.done == this.container.is_on_done_tab &&
             item.archived == this.seeArchived //supposed to be false at all times.
             }
             );
@@ -417,8 +414,8 @@ export default {
             },
         addItem(statement, index) {
             const newItem = {
-                done: this.seeDone,
-                actionable : this.seeActionables,
+                done: this.container.is_on_done_tab,
+                actionable : this.container.is_on_actionables_tab,
                 statement: statement,
                 id: null,
 
@@ -462,7 +459,8 @@ export default {
                 this.createItem(item, {
                     'statement' : item.statement,
                     'parent_container':this.container.id,
-                    'actionable':this.seeActionables,
+                    'actionable':this.container.is_on_actionables_tab,
+                    'done':this.container.is_on_done_tab
                 });
             }
         },
@@ -500,18 +498,15 @@ export default {
             }
         },
         updateContainer(container) {
-            if(this.container.is_on_actionables_tab != this.seeActionables){
-                this.container.is_on_actionables_tab = this.seeActionables;
-                axiosInstance.put('/containers/'+ String(this.container.id)+'/', container, {
-                partial: true
-                })
-                .then(response => {
-                //console.log('Container updated:',  response.data)
-                })
-                .catch(error => {
-                console.error('Error updating container:', error)
-                })
-            }
+            axiosInstance.put('/containers/'+ String(this.container.id)+'/', container, {
+            partial: true
+            })
+            .then(response => {
+            //console.log('Container updated:',  response.data)
+            })
+            .catch(error => {
+            console.error('Error updating container:', error)
+            })
         },
         sendContainerDanger() {
             this.$emit('containersDanger');
