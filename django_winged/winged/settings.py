@@ -187,7 +187,7 @@ LOGGING = {
             'level': 'INFO',
             'class': 'logging.FileHandler',
             'filename': 'views_logs.log',
-            'formatter': 'simple',
+            'formatter': 'verbose',
         },
     },
     'loggers': {
