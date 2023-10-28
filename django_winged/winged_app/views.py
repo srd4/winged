@@ -131,12 +131,14 @@ class RunScriptAPIView(APIView):
         except SpectrumType.DoesNotExist:
             return Response({"error":f"Couldn't find SpectrumType {spectrumtype_id}"}, status=HTTP_404_NOT_FOUND)
 
-        #change for logs into a log file, understand log files first.
-        logger.info('This is an info message')
-        logger.info("container: {}".format(container))
-        logger.info("spectrumtype: {}".format(spectrumtype))
-        logger.info("container.is_on_actionables_tab: {}".format(container.is_on_actionables_tab))
-        logger.info("container.is_on_done_tab: {}".format(container.is_on_done_tab))
+        logger.info(
+            f"""
+            container: {container}\n
+            spectrumtype: {spectrumtype}\n
+            actionables{container.is_on_actionables_tab}\n
+            done: {container.is_on_done_tab}
+            """
+            )
 
         #all spectrum values for this spectrum type.
         spectrum_values = SpectrumValue.objects.filter(spectrum_type=spectrumtype, user=self.request.user)
