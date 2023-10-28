@@ -495,8 +495,8 @@ export default {
                 this.updateItem(item, item);
             }
         },
-        updateContainer(container) {
-            axiosInstance.put('/containers/'+ String(this.container.id)+'/', container, {
+        updateContainer() {
+            axiosInstance.put('/containers/'+ String(this.container.id)+'/', this.container, {
             partial: true
             })
             .then(response => {
