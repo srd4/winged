@@ -20,10 +20,13 @@ class RunScriptAPIViewTest(TestCase):
         with patch('winged_app.views.threading.Thread') as mock_thread:
             response = self.client.get(f"/containers/{self.container.pk}/run-script/spectrumtypes/{self.spectrumtype.pk}/some_mode/")
             # Verify logging
-            mock_logger.info.assert_any_call('This is an info message')
-            mock_logger.info.assert_any_call(f'container: {self.container}')
-            mock_logger.info.assert_any_call(f'spectrumtype: {self.spectrumtype}')
-            mock_logger.info.assert_any_call(f'container.is_on_actionables_tab: {self.container.is_on_actionables_tab}')
-            mock_logger.info.assert_any_call(f'container.is_on_done_tab: {self.container.is_on_done_tab}')
+            mock_logger.info.assert_any_call(
+                f"""
+                container: {self.container}\n
+                spectrumtype: {self.spectrumtype}\n
+                actionables{self.container.is_on_actionables_tab}\n
+                done: {self.container.is_on_done_tab}
+                """
+            )
 
             self.assertEqual(response.status_code, 202)

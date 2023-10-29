@@ -249,6 +249,7 @@ class RunScriptAPIView(APIView):
                 comparison_function,
                 sorted_list=sorted_items
                 )
+            
             logger.info("finished")
         
         # Start a new thread to run the script
