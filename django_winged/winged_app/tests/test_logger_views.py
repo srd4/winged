@@ -19,14 +19,15 @@ class RunScriptAPIViewTest(TestCase):
     def test_run_script_api_view(self, mock_logger):
         with patch('winged_app.views.threading.Thread') as mock_thread:
             response = self.client.get(f"/containers/{self.container.pk}/run-script/spectrumtypes/{self.spectrumtype.pk}/some_mode/")
+
+            sentences_to_log = [
+                f"container: {self.container}",
+                f"spectrumtype: {self.spectrumtype}",
+                f"actionables{self.container.is_on_actionables_tab}",
+                f"done: {self.container.is_on_done_tab}",
+            ]
+
             # Verify logging
-            mock_logger.info.assert_any_call(
-                f"""
-                container: {self.container}\n
-                spectrumtype: {self.spectrumtype}\n
-                actionables{self.container.is_on_actionables_tab}\n
-                done: {self.container.is_on_done_tab}
-                """
-            )
+            mock_logger.info.assert_called_with("\n".join(sentence for sentence in sentences_to_log))
 
             self.assertEqual(response.status_code, 202)
