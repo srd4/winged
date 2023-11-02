@@ -1,5 +1,5 @@
-import axiosInstance from '../../src/axiosInstance';
-import { refreshAxiosToken } from '../../src/axiosInstance';
+import axiosInstance from '../src/axiosInstance';
+import { refreshAxiosToken } from '../src/axiosInstance';
 import MockAdapter from "axios-mock-adapter"
 
 

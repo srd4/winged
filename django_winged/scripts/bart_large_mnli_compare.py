@@ -4,6 +4,7 @@ import os
 import logging
 
 from requests.exceptions import Timeout, RequestException
+from json.decoder import JSONDecodeError
 
 from winged_app.models import ItemVsTwoCriteriaAIComparison
 
@@ -18,31 +19,31 @@ class HuggingFaceZeroShotAPITimeoutError(HuggingFaceZeroShotAPIError):
 class HuggingFaceZeroShotAPIInvalidResponse(HuggingFaceZeroShotAPIError):
     pass
 
-logger = logging.getLogger('scripts.bart_large_mnli_compare')
+logging.basicConfig(filename='api_logs.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
 
 def api_call(url, headers, data):
-    response = None
     try:
         response = requests.post(url, headers=headers, json=data, timeout=10)
         response.raise_for_status()
-        logger.info(f"API response: {response.status_code}, {response.text}")
+        logging.info(f"API response: {response.status_code}, {response.text}")
         return response
     except Timeout as e:
-        logger.error(f"Timeout error: {e}")
+        logging.error(f"Timeout error: {e}")
         if response:
-            logger.info(f"API response: {response.status_code}, {response.text}")
+            logging.info(f"API response: {response.status_code}, {response.text}")
         raise HuggingFaceZeroShotAPITimeoutError()
     except RequestException as e:
-        logger.error(f"Request exception: {e}")
+        logging.error(f"Request exception: {e}")
         if response:
-            logger.info(f"API response: {response.status_code}, {response.text}")
+            logging.info(f"API response: {response.status_code}, {response.text}")
         raise HuggingFaceZeroShotAPIError()
 
 
 def parse_response(response, criteria__version_1_statement):
     json_response = response.json()
     if 'labels' not in json_response:
-        logger.error("Invalid response: 'labels' missing")
+        logging.error("Invalid response: 'labels' missing")
         raise HuggingFaceZeroShotAPIInvalidResponse("Invalid response: 'labels' missing") from None
     return json_response, json_response['labels'][0] == criteria__version_1_statement
 
@@ -63,18 +64,18 @@ def compute_zero_shot_comparison(item_statement_version_statement, criteria_vers
             return result
             
         except HuggingFaceZeroShotAPITimeoutError:
-            logger.warning("Timeout occurred, retrying...")
+            logging.warning("Timeout occurred, retrying...")
             remaining_attempts -= 1
             continue
         
         except HuggingFaceZeroShotAPIError:
-            logger.warning("API error occurred, retrying with increased sleep time...")
+            logging.warning("API error occurred, retrying with increased sleep time...")
             remaining_attempts -= 1
             sleep_time *= 2
             continue
         
 
-    logger.error("Max retries reached without successful API response.")
+    logging.error("Max retries reached without successful API response.")
     raise HuggingFaceZeroShotAPIError("Max retries reached without successful API response.")
 
 

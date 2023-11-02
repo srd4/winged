@@ -2,8 +2,6 @@ from django.shortcuts import get_object_or_404
 from winged_app.models import Item, Criteria, ItemVsTwoCriteriaAIComparison
 from scripts.bart_large_mnli_compare import item_vs_criteria
 
-from math import log2
-
 
 """
             criteria_1=criteria_1.current_criteria_statement_version,
@@ -57,17 +55,3 @@ def run():
     non_actionable = Criteria.objects.get(name="non-actionable")
 
     reclassify_items(items, actionable, non_actionable, item_vs_criteria)
-
-
-def user_input_compare_criterion_vs_items(criteria, element1, element2):
-    response = input(f"\n1. {element1} \nvs\n2. {element2}\n(Enter 1/2): ")
-    return response != "1"
-
-def it_is_best_to_merge_and_then_sort(new_items_count, sorted_list_lenght):
-    n = sorted_list_lenght
-    k = new_items_count
-
-    if n == 0:
-        return True
-
-    return k*n >= (k + n)*log2(k + n)
