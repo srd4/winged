@@ -9,7 +9,7 @@ class ContainerChildrenListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Container
-        fields = ['spectrum_types', 'id', 'name', 'description', 'parent_container', 'children', 'is_collapsed', 'is_on_actionables_tab','is_on_done_tab']
+        fields = ['spectrum_types', 'id', 'name', 'description', 'parent_container', 'children', 'is_collapsed', 'is_on_actionables_tab']
 
     def get_children(self, container):
         children = container.container_set.exclude(parent_container=None)
@@ -57,7 +57,7 @@ class ContainerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Container
-        fields = ['id', 'name', 'is_on_actionables_tab', 'is_on_done_tab', 'is_collapsed', 'parent_container', 'spectrum_types']
+        fields = ['id', 'name', 'is_on_actionables_tab', 'is_collapsed', 'parent_container', 'spectrum_types']
     
     def __init__(self, *args, **kwargs):
         kwargs['partial'] = True
