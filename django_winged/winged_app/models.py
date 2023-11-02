@@ -1,3 +1,4 @@
+from typing import Any
 from django.db import models, transaction
 from django.conf import settings
 from django.utils import timezone
@@ -41,14 +42,39 @@ class Item(models.Model):
     statement_updated_at = models.DateTimeField(auto_now_add=True)
     parent_container = models.ForeignKey(Container, null=True, on_delete=models.CASCADE)
     parent_item = models.ForeignKey('self', null=True, on_delete=models.SET_NULL)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    archived = models.BooleanField(default=False, null=False)
+
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     completed_at = models.DateTimeField(null=True, default=None)
-    archived = models.BooleanField(default=False, null=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ['created_at']
+
+    def context_has_changed(self):
+        """
+        True if fields related to a SpectrumDoublyLinkedList's context have changed.
+        """
+        fields_to_check = [
+            'actionable',
+            'done',
+            'statement',
+            'current_statement_version',
+            'parent_container',
+            'archived',
+        ]
+
+        try:
+            original = self.__class__.objects.get(pk=self.pk)
+        except self.DoesNotExist:
+            return (True, self)
+
+        for field in fields_to_check:
+            if getattr(self, field, None) != getattr(original, field, None):
+                return (True, original)
+            
+        return (False, original)
 
     def save(self, *args, **kwargs):
         """
@@ -60,22 +86,24 @@ class Item(models.Model):
                 super().save(*args, **kwargs)
                 self.current_statement_version = ItemStatementVersion.objects.create(statement=None, parent_item=self, user=self.user)
                 self.save()
-                return 
+                return
             elif not self.current_statement_version:
                 self.current_statement_version = ItemStatementVersion.objects.create(statement=None, parent_item=self, user=self.user)
                 self.save()
             else: # Updating Instance.
-                # Fetch self.statement as it was previous to change we are about to save.
-                current_statement = Item.objects.get(pk=self.pk).statement
-                if current_statement != self.statement: # Check if the statement string has been changed.
-                    # Assign statement on db to current current_statement_version field.
-                    self.current_statement_version.statement = current_statement
-                    self.statement_updated_at = timezone.now()
-                    # Save current_statement_version with old statement before droping new one.
-                    self.current_statement_version.save()
-                    # Drop previous current_statement_version for a new one.
-                    self.current_statement_version = ItemStatementVersion.objects.create(statement=None, parent_item=self, user=self.user)
-                    
+                changed, original = self.context_has_changed()
+                if changed:
+                    for node in SpectrumDoublyLinkedListNode.objects.filter(parent_item=self.pk):
+                        node.delete()
+                    # Fetch self.statement as it was previous to change we are about to save.
+                    if original.statement != self.statement: # Check if the statement string has been changed.
+                        # Assign statement on db to current current_statement_version field.
+                        self.current_statement_version.statement = original.statement
+                        self.statement_updated_at = timezone.now()
+                        # Save current_statement_version with old statement before droping new one.
+                        self.current_statement_version.save()
+                        # Drop previous current_statement_version for a new one.
+                        self.current_statement_version = ItemStatementVersion.objects.create(statement=None, parent_item=self, user=self.user)
 
         return super().save(*args, **kwargs)
 
@@ -317,3 +345,42 @@ class SystemPromptTextVersion(models.Model):
 
     def __str__(self):
         return self.text
+
+
+class SpectrumDoublyLinkedListNode(models.Model):
+    parent_list = models.ForeignKey('SpectrumDoublyLinkedList', null=True, on_delete=models.CASCADE)
+    parent_item = models.ForeignKey(Item, null=True, on_delete=models.CASCADE)
+    data = models.DecimalField(max_digits=20, decimal_places=19)
+    prev = models.OneToOneField('self', related_name="previous_node", null=True, default=None, on_delete=models.SET_NULL)
+    next = models.OneToOneField('self', related_name="next_node", null=True, default=None, on_delete=models.SET_NULL)
+
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def delete(self, *args, **kwargs):
+        head, tail = self.prev, self.next
+        if head:
+            head.next = self.next
+            self.next = None
+            self.save()
+            head.save()
+        if tail:
+            tail.prev = self.prev
+            self.prev = None
+            self.save()
+            tail.save()
+
+
+        return super().delete(*args, **kwargs)
+
+class SpectrumDoublyLinkedList(models.Model):
+    ai_model = models.CharField(max_length=2**7)
+    parent_container = models.ForeignKey(Container, null=True, on_delete=models.CASCADE)
+    parent_criteria = models.ForeignKey(Criteria, null=True, on_delete=models.SET_NULL)
+    head = models.OneToOneField(SpectrumDoublyLinkedListNode, null=False, on_delete=models.CASCADE)
+
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
