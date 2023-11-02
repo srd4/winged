@@ -58,9 +58,9 @@ def compute_and_store_criterion_comparison(criteria, item_1, item_2, model_name)
     if response:
         comparison = CriterionVsItemsAIComparison.objects.create(
             ai_model=model_name,
-            criterion_statement_version=criteria.current_criteria_statement_version.computed_statement,
-            item_compared_1_statement_version=item_1.current_statement_version.statement,
-            item_compared_2_statement_version=item_2.current_statement_version.statement,
+            criterion_statement_version=criteria.current_criteria_statement_version,
+            item_compared_1_statement_version=item_1.current_statement_version,
+            item_compared_2_statement_version=item_2.current_statement_version,
             response=response,
             item_choice=item_choice,
             execution_in_seconds=end_time - start_time

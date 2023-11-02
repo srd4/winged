@@ -161,3 +161,45 @@ REST_FRAMEWORK = {
     ),
     
 }
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'file1': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'api_logs.log',
+            'formatter': 'verbose',
+        },
+        'file2': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'views_logs.log',
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'scripts.bart_large_mnli_compare': {
+            'handlers': ['file1'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+        'winged_app.views': {
+            'handlers': ['file2'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+    },
+}

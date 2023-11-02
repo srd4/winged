@@ -1,7 +1,7 @@
 
 # Winged: Optimize Thinking, Action, and Curation of Ideas
 
-Winged is a digital platform that originated from the need to optimize the process of jotting down and organizing a plethora of ideas that constantly stream through the mind. It provides a space to not just jot down ideas (referred to as 'items') but also categorize, prioritize, and curate them efficiently. The ultimate goal is to streamline the thinking process and drive actionable steps through a well-organized, AI-assisted curation system.
+Winged is a web application that originated from the need to optimize the process of jotting down and organizing a bunch of ideas that constantly stream through the ADHD mind of its creator. It provides a space to not just jot down items (ideas, tasks, questions, thoughts, strings of text) but also categorize, prioritize, and curate them efficiently. The ultimate goal is to streamline the thinking process and drive actionable steps through a well-organized, AI-assisted curation system.
 
 ## Technologies Used
 
@@ -9,7 +9,7 @@ Winged is a digital platform that originated from the need to optimize the proce
 - Frontend: Vue.js, JavaScript
 - Database: PostgreSQL
 - CI/CD: CircleCI
-- Testing: Django’s built-in testing framework
+- Testing: Django’s built-in testing framework, Jest for the front end.
 - Version Control: Git, GitHub
 
 ## Installation
@@ -24,17 +24,17 @@ Follow the steps in the `config.yml` file for setting up the project, both backe
 
 ## Usage
 
-Users interact with Winged via a front-end interface, which can be accessed by running the project locally. Th back end server in Django. The interaction is facilitated through Vue.js, providing a dynamic user experience for CRUD (Create, Read, Update, Delete) operations on items and containers. Users can categorize items into containers, define spectrums for prioritization, and leverage AI models for automated curation and sorting.
+Users interact with Winged via a front-end interface, which can be accessed by running the project locally. The back end server is implemented in Django. The interaction is facilitated through Vue.js, providing a dynamic (although for now functionaly a prototype) user experience for CRUD operations on items and containers. Users can categorize items into containers, define spectrums for prioritization, and leverage Huggingface and OpenAi's AI models for automated curation and sorting.
 
 ### Common Use Cases
 - Organizing book reading lists, project ideas, personal goals, gratitude logs, and much more.
-- Prioritizing and sorting items based on custom or AI-driven criteria.
+- Prioritizing and sorting items based on custom criteria.
 - Utilizing AI for semantic comparison to enhance curation and organization.
 
 ## Features
 
 - CRUD operations for items and containers.
-- Actionable vs non-actionable item categorization.
+- Actionable vs non-actionable item AI assisted categorization.
 - Spectrum-based sorting and prioritization.
 - AI-assisted curation for automated organization and prioritization.
 - Hierarchical container structuring for nested organization.

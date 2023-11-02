@@ -1,6 +1,6 @@
 import axios from "axios";
 import MockAdapter from 'axios-mock-adapter'
-import auth from '../src/axiosAuthentication'
+import auth from '../../src/axiosAuthentication'
 
 // Define a mock for localStorage
 global.localStorage = {
