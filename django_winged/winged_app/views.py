@@ -13,7 +13,7 @@ from rest_framework.views import APIView
 from rest_framework.status import HTTP_202_ACCEPTED, HTTP_404_NOT_FOUND, HTTP_500_INTERNAL_SERVER_ERROR, HTTP_400_BAD_REQUEST
 from django.shortcuts import get_object_or_404, get_list_or_404
 from django.contrib.auth.models import User
-from django.db import transaction
+from django.db import transaction, connection
 
 from .serializers import (
     ContainerSerializer, ContainerChildrenListSerializer, ItemSerializer,
@@ -30,7 +30,7 @@ from scripts.sentence_transformers_compare import all_MiniLM_L6_v2_criterion_vs_
 
 from winged_app.models import (
     Container, Item, ItemStatementVersion, SpectrumValue, SpectrumType,
-    Criteria
+    Criteria, SpectrumDoublyLinkedList, SpectrumDoublyLinkedListNode, CriteriaStatementVersion
     )
 
 logger = logging.getLogger('winged_app.views')
@@ -257,6 +257,45 @@ class RunScriptAPIView(APIView):
         thread.start()
 
         return Response({"message": f"Script started for items on {container} on {spectrumtype} with {comparison_mode}."}, status=HTTP_202_ACCEPTED)
+
+
+class CriterionVsItemsSortingScriptView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+    
+    # def get(self, request, container_id, spectrumtype_id, comparison_mode, format=None):
+    def post(self, request, container_id, criterion_id, ai_model):
+        criterion = get_object_or_404(Criteria, pk=criterion_id, user=self.request.user)
+        criterion_statement_version = criterion.current_criteria_statement_version
+        dll, created = SpectrumDoublyLinkedList.objects.get_or_create(
+            ai_model=ai_model,
+            parent_container=container_id,
+            criterion_statement_version=criterion_statement_version,
+            user=self.request.user,
+        )
+
+        comparators = {
+            "paraphrase-mpnet-base-v2": None,
+            "all-mpnet-base-v2":None,
+            "bart_large_mnli":None,
+            "gpt-4":None,
+            "user_curation":None,
+            }
+
+        def insertion_thread(items):
+            for item in items:
+                try:
+                    dll.insert(item, comparators[ai_model])
+                except Exception as e:
+                    print("Error at SpectrumDoublyLinkedList.insert:", e)
+                finally:
+                    connection.close()
+
+        new_items = dll.get_listed_items_queryset(new=True)
+        thread = threading.Thread(target=insertion_thread, args=(new_items,))
+        thread.start()
+
+        return Response({"message": f"Script started for items on container {container_id} on {criterion} with {ai_model}."}, status=HTTP_202_ACCEPTED)
 
 
 class ReEvaluateActionableItemsAPIView(APIView):

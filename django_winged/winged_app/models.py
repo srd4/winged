@@ -4,6 +4,53 @@ from django.conf import settings
 from django.utils import timezone
 from django.shortcuts import get_object_or_404
 
+
+def binarily_insert_doubly_linked_list_node(node, head, comparator, end=None):
+    """
+    (recursive) Binary insertion of a node into a doubly linked list.
+    """
+    if not head:
+        return node
+    
+    middle = get_doubly_linked_list_middle_node(head, end)
+
+    if head == middle: # If head and middle are the same, the segment has only one or two nodes
+        if comparator(middle, node):
+            if middle.next: middle.next.prev = node
+            node.next = middle.next
+            middle.next = node
+            node.prev = middle
+            return head
+        else:
+            if middle.prev:middle.prev.next = node
+            node.prev = middle.prev
+            middle.prev = node
+            node.next = middle
+            return node
+        
+    # If head and middle differ, recursively insert the node in the appropriate segment.
+    if comparator(middle, node):
+        middle.next = binarily_insert_doubly_linked_list_node(node, middle.next, comparator, end)
+        middle.next.prev = middle
+    else:
+        head = binarily_insert_doubly_linked_list_node(node, head, comparator, middle.prev)
+    
+    return head
+
+
+def get_doubly_linked_list_middle_node(head=None, end=None):
+    if head == end:
+        return head
+    
+    i, j = head, head
+
+    while j and j.next:
+        i = i.next
+        j = j.next.next
+        if j == end or (j and j.prev == end):
+            break
+
+    return i
 class Container(models.Model):
     name = models.CharField(max_length=2**6)
     description = models.TextField(max_length=2**10)
@@ -387,7 +434,7 @@ class SpectrumDoublyLinkedList(models.Model):
     ]
     
     ai_model = models.CharField(max_length=2**7)
-    evaluative = models.BooleanField(choices=CHOICES, null=False, default=False)
+    evaluative = models.BooleanField(choices=CHOICES, null=False, default=True)
     parent_container = models.ForeignKey(Container, null=True, on_delete=models.CASCADE)
     criterion_statement_version = models.ForeignKey(CriteriaStatementVersion, null=True, on_delete=models.CASCADE)
     head = models.OneToOneField(SpectrumDoublyLinkedListNode, null=False, on_delete=models.CASCADE)
@@ -423,64 +470,17 @@ class SpectrumDoublyLinkedList(models.Model):
     def get_nodes_queryset(self):
         return SpectrumDoublyLinkedListNode.objects.filter(parent_list=self)
 
-
-    def get_middle(self, head=None, end=None):
-        if head == end:
-            return head
-        
-        i, j = head, head
-
-        while j and j.next:
-            i = i.next
-            j = j.next.next
-            if j == end or (j and j.prev == end):
-                break
-
-        return i
-
-    def binarily_insert(self, node, head, comparator, end=None):
-        """
-        (recursive) Binary insertion of a node into a doubly linked list.
-        """
-        if not head:
-            return node
-        
-        middle = self.get_middle(head, end)
-
-        if head == middle: # If head and middle are the same, the segment has only one or two nodes
-            if comparator(middle, node):
-                if middle.next: middle.next.prev = node
-                node.next = middle.next
-                middle.next = node
-                node.prev = middle
-                return head
-            else:
-                if middle.prev:middle.prev.next = node
-                node.prev = middle.prev
-                middle.prev = node
-                node.next = middle
-                return node
-            
-        # If head and middle differ, recursively insert the node in the appropriate segment.
-        if comparator(middle, node):
-            middle.next = self.binarily_insert(node, middle.next, comparator, end)
-            middle.next.prev = middle
-        else:
-            head = self.binarily_insert(node, head, comparator, middle.prev)
-        
-        return head
-
-
     def insert(self, item, comparator=lambda a, b : a.data > b.data, nowait=False):
         try:
             # Select all dllist nodes for update (lock rows)
             with transaction.atomic():
+                item.refresh_from_db()
                 nodes = SpectrumDoublyLinkedListNode.objects.filter(parent_list=self).select_for_update(nowait=nowait)
                 new_node = SpectrumDoublyLinkedListNode.objects.create(parent_list=self, parent_item=item, user=self.user)
 
                 # Lock node rows.
                 nodes.exists()
-                head = self.binarily_insert(new_node, self.head, comparator)
+                head = binarily_insert_doubly_linked_list_node(new_node, self.head, comparator)
                 self.head = head.prev if head.prev else head
                 self.save(update_fields=['head'])
 
@@ -490,9 +490,8 @@ class SpectrumDoublyLinkedList(models.Model):
                     new_node.next.save(update_fields=['prev'])
                 if new_node.prev:
                     new_node.prev.save(update_fields=['next'])
-    
         except Exception as e:
-            print("Error at SpectrumDoublyLinkedList.insert's transaction:", e)
+            raise e
 
 
     def __str__(self):

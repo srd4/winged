@@ -4,14 +4,6 @@ from scripts.bart_large_mnli_compare import item_vs_criteria
 
 from math import log2
 
-
-"""
-            criteria_1=criteria_1.current_criteria_statement_version,
-            criteria_2=criteria_2.current_criteria_statement_version,
-            item_compared_statement_version=item.current_statement_version,
-            """
-
-
 def create_user_comparison_record(request, item, actionable):
     actionable_criteria = get_object_or_404(Criteria, name="actionable", user=request.user)
     non_actionable_criteria = get_object_or_404(Criteria, name="non-actionable", user=request.user)
