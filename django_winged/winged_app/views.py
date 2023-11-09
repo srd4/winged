@@ -284,11 +284,10 @@ class ReEvaluateActionableItemsAPIView(APIView):
         return Response({"message": f"Reclassifying items in {source_container_id}."}, status=HTTP_202_ACCEPTED)
 
 
-
 class ContainerItemListAPIView(ListAPIView):
     serializer_class = ItemSerializer
+    permission_classes = [permissions.IsAuthenticated, IsOwner]
     authentication_classes = [TokenAuthentication]
-    permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         container_id = self.kwargs.get('pk')

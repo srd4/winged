@@ -350,37 +350,159 @@ class SystemPromptTextVersion(models.Model):
 class SpectrumDoublyLinkedListNode(models.Model):
     parent_list = models.ForeignKey('SpectrumDoublyLinkedList', null=True, on_delete=models.CASCADE)
     parent_item = models.ForeignKey(Item, null=True, on_delete=models.CASCADE)
-    data = models.DecimalField(max_digits=20, decimal_places=19)
-    prev = models.OneToOneField('self', related_name="previous_node", null=True, default=None, on_delete=models.SET_NULL)
-    next = models.OneToOneField('self', related_name="next_node", null=True, default=None, on_delete=models.SET_NULL)
+    data = models.DecimalField(max_digits=20, decimal_places=19, null=True)
+    prev = models.ForeignKey('self', related_name="previous_node", null=True, default=None, on_delete=models.SET_NULL)
+    next = models.ForeignKey('self', related_name="next_node", null=True, default=None, on_delete=models.SET_NULL)
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def delete(self, *args, **kwargs):
-        head, tail = self.prev, self.next
-        if head:
-            head.next = self.next
-            self.next = None
-            self.save()
-            head.save()
-        if tail:
-            tail.prev = self.prev
-            self.prev = None
-            self.save()
-            tail.save()
-
-
+        with transaction.atomic():
+            head, tail = self.prev, self.next
+            if head:
+                head.next = self.next
+                self.next = None
+                self.save()
+                head.save()
+            if tail:
+                tail.prev = self.prev
+                self.prev = None
+                self.save()
+                tail.save()
         return super().delete(*args, **kwargs)
+    
+    def __str__(self) -> str:
+        return f"{self.data}"
+    
+    def __repr__(self) -> str:
+        return self.__str__()
+
 
 class SpectrumDoublyLinkedList(models.Model):
+    CHOICES = [
+        (True, 'EVALUATIVE'),
+        (False, 'COMPARATIVE'),
+    ]
+    
     ai_model = models.CharField(max_length=2**7)
+    evaluative = models.BooleanField(choices=CHOICES, null=False, default=False)
     parent_container = models.ForeignKey(Container, null=True, on_delete=models.CASCADE)
-    parent_criteria = models.ForeignKey(Criteria, null=True, on_delete=models.SET_NULL)
+    criterion_statement_version = models.ForeignKey(CriteriaStatementVersion, null=True, on_delete=models.CASCADE)
     head = models.OneToOneField(SpectrumDoublyLinkedListNode, null=False, on_delete=models.CASCADE)
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def get_all_items_in_container_list_context(self):
+        item_list = Item.objects.filter(
+            parent_container=self.parent_container,
+            user=self.user,
+            actionable=self.parent_container.is_on_actionables_tab,
+            done=self.parent_container.is_on_done_tab,
+            archived=False,# should receive as arg from front end so right list of items is sorted.
+            )
+
+        return item_list
+
+
+    def get_listed_items_queryset(self, new=False):
+        """
+        returns context-according queryset of items.
+        """
+        item_list = self.get_all_container_items_in_list_context()
+        
+        if new:
+            return item_list.exclude(spectrumdoublylinkedlistnode__in=self.get_nodes_queryset())
+
+        return item_list.filter(spectrumdoublylinkedlistnode__in=self.get_nodes_queryset())
+
+
+    def get_nodes_queryset(self):
+        return SpectrumDoublyLinkedListNode.objects.filter(parent_list=self)
+
+
+    def get_middle(self, head=None, end=None):
+        if head == end:
+            return head
+        
+        i, j = head, head
+
+        while j and j.next:
+            i = i.next
+            j = j.next.next
+            if j == end or (j and j.prev == end):
+                break
+
+        return i
+
+    def binarily_insert(self, node, head, comparator, end=None):
+        """
+        (recursive) Binary insertion of a node into a doubly linked list.
+        """
+        if not head:
+            return node
+        
+        middle = self.get_middle(head, end)
+
+        if head == middle: # If head and middle are the same, the segment has only one or two nodes
+            if comparator(middle, node):
+                if middle.next: middle.next.prev = node
+                node.next = middle.next
+                middle.next = node
+                node.prev = middle
+                return head
+            else:
+                if middle.prev:middle.prev.next = node
+                node.prev = middle.prev
+                middle.prev = node
+                node.next = middle
+                return node
+            
+        # If head and middle differ, recursively insert the node in the appropriate segment.
+        if comparator(middle, node):
+            middle.next = self.binarily_insert(node, middle.next, comparator, end)
+            middle.next.prev = middle
+        else:
+            head = self.binarily_insert(node, head, comparator, middle.prev)
+        
+        return head
+
+
+    def insert(self, item, comparator=lambda a, b : a.data > b.data, nowait=False):
+        try:
+            # Select all dllist nodes for update (lock rows)
+            with transaction.atomic():
+                nodes = SpectrumDoublyLinkedListNode.objects.filter(parent_list=self).select_for_update(nowait=nowait)
+                new_node = SpectrumDoublyLinkedListNode.objects.create(parent_list=self, parent_item=item, user=self.user)
+
+                # Lock node rows.
+                nodes.exists()
+                head = self.binarily_insert(new_node, self.head, comparator)
+                self.head = head.prev if head.prev else head
+                self.save(update_fields=['head'])
+
+                # Save the new node and its neighbors if they exist
+                new_node.save(update_fields=['prev', 'next'])
+                if new_node.next:
+                    new_node.next.save(update_fields=['prev'])
+                if new_node.prev:
+                    new_node.prev.save(update_fields=['next'])
     
+        except Exception as e:
+            print("Error at SpectrumDoublyLinkedList.insert's transaction:", e)
+
+
+    def __str__(self):
+        strings = [str(self.head)]
+        curr = self.head.next
+        while curr:
+            strings.append("<->")
+            strings.append(str(curr))
+            curr = curr.next
+        return "".join(strings)
+
+    def __repr__(self):
+        return self.__str__()

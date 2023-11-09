@@ -25,3 +25,4 @@ vue_winged/.browserslistrc
 vue_winged/README.md
 django_winged/scripts/linked_list_merge_sort.py
 django_winged/scripts/doubly_linked_list_merge_sort.py
+django_winged/scripts/doubly_linked_list_binary_insert.py

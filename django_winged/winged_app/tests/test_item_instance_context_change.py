@@ -27,7 +27,7 @@ class ItemInstanceContextChangeTest(TestCase):
         self.doubly_linked_list = SpectrumDoublyLinkedList.objects.create(
             ai_model = "all-mpnet-base-v2",
             parent_container = self.container_1,
-            parent_criteria = self.criteria,
+            criterion_statement_version = self.criteria.current_criteria_statement_version,
             user=self.user,
             head=self.head_node
             )

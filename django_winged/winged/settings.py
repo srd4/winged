@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+from django.db.backends.postgresql.psycopg_any import IsolationLevel
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -93,7 +94,10 @@ DATABASES = {
         'PASSWORD': 'pepito56',
         'HOST': 'localhost',
         'PORT': '5432',
-    }
+    },
+    "OPTIONS": {
+        "isolation_level": IsolationLevel.SERIALIZABLE,
+    },
 }
 
 # Password validation
