@@ -30,7 +30,7 @@ from scripts.sentence_transformers_compare import all_MiniLM_L6_v2_criterion_vs_
 
 from winged_app.models import (
     Container, Item, ItemStatementVersion, SpectrumValue, SpectrumType,
-    Criteria, SpectrumDoublyLinkedList, SpectrumDoublyLinkedListNode, CriteriaStatementVersion
+    Criteria, SpectrumDoublyLinkedList
     )
 
 logger = logging.getLogger('winged_app.views')

@@ -2,7 +2,7 @@ from decimal import Decimal
 from django.test import TestCase, tag
 from django.contrib.auth.models import User
 
-from winged_app.models import Item, Container, Criteria, SpectrumDoublyLinkedList, SpectrumDoublyLinkedListNode
+from winged_app.models import Item, Container, Criteria, SpectrumDoublyLinkedList, DoublyLinkedListNode
 
 
 class ItemInstanceContextChangeTest(TestCase):
@@ -18,7 +18,7 @@ class ItemInstanceContextChangeTest(TestCase):
 
         self.criteria = Criteria.objects.create(name="test_criteria", user=self.user)
 
-        self.head_node = SpectrumDoublyLinkedListNode.objects.create(
+        self.head_node = DoublyLinkedListNode.objects.create(
             data=Decimal('0.995833158493042'),
             parent_item=self.item_1,
             user=self.user
@@ -32,7 +32,7 @@ class ItemInstanceContextChangeTest(TestCase):
             head=self.head_node
             )
         
-        self.middle_node = SpectrumDoublyLinkedListNode.objects.create(
+        self.middle_node = DoublyLinkedListNode.objects.create(
             data=Decimal('0.5'),
             parent_list=self.doubly_linked_list,
             parent_item=self.item_2,
@@ -40,7 +40,7 @@ class ItemInstanceContextChangeTest(TestCase):
             prev=self.head_node,
             )
         
-        self.tail_node = SpectrumDoublyLinkedListNode.objects.create(
+        self.tail_node = DoublyLinkedListNode.objects.create(
             data=Decimal('0.1'),
             parent_list=self.doubly_linked_list,
             parent_item=self.item_3,
@@ -59,9 +59,9 @@ class ItemInstanceContextChangeTest(TestCase):
 
     def assert_doubly_linked_list_start(self, dll, head, middle, tail):
         dll = SpectrumDoublyLinkedList.objects.get(pk=dll.pk)
-        head = SpectrumDoublyLinkedListNode.objects.get(pk=head.pk)
-        middle = SpectrumDoublyLinkedListNode.objects.get(pk=middle.pk)
-        tail = SpectrumDoublyLinkedListNode.objects.get(pk=tail.pk)
+        head = DoublyLinkedListNode.objects.get(pk=head.pk)
+        middle = DoublyLinkedListNode.objects.get(pk=middle.pk)
+        tail = DoublyLinkedListNode.objects.get(pk=tail.pk)
 
         self.assertEqual(dll.head, head)
         self.assertEqual(dll.head, middle.prev)
@@ -77,11 +77,11 @@ class ItemInstanceContextChangeTest(TestCase):
 
     def assert_doubly_linked_list_end(self, dll, head, middle, tail):
         dll = SpectrumDoublyLinkedList.objects.get(pk=dll.pk)
-        head = SpectrumDoublyLinkedListNode.objects.get(pk=head.pk)
-        tail = SpectrumDoublyLinkedListNode.objects.get(pk=tail.pk)
+        head = DoublyLinkedListNode.objects.get(pk=head.pk)
+        tail = DoublyLinkedListNode.objects.get(pk=tail.pk)
         
         # Assert middle_node deletion due to item context change.
-        self.assertFalse(SpectrumDoublyLinkedListNode.objects.filter(pk=middle.pk).exists())
+        self.assertFalse(DoublyLinkedListNode.objects.filter(pk=middle.pk).exists())
 
         # Assert SpectrumDoublyLinkedList relinked after middle node deletion.
         # Assert doubly-linked list head

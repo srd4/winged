@@ -140,7 +140,7 @@ class Item(models.Model):
             else: # Updating Instance.
                 changed, original = self.context_has_changed()
                 if changed:
-                    for node in SpectrumDoublyLinkedListNode.objects.filter(parent_item=self.pk):
+                    for node in DoublyLinkedListNode.objects.filter(parent_item=self.pk):
                         node.delete()
                     # Fetch self.statement as it was previous to change we are about to save.
                     if original.statement != self.statement: # Check if the statement string has been changed.
@@ -394,7 +394,7 @@ class SystemPromptTextVersion(models.Model):
         return self.text
 
 
-class SpectrumDoublyLinkedListNode(models.Model):
+class DoublyLinkedListNode(models.Model):
     parent_list = models.ForeignKey('SpectrumDoublyLinkedList', null=True, on_delete=models.CASCADE)
     parent_item = models.ForeignKey(Item, null=True, on_delete=models.CASCADE)
     data = models.DecimalField(max_digits=20, decimal_places=19, null=True)
@@ -437,7 +437,7 @@ class SpectrumDoublyLinkedList(models.Model):
     evaluative = models.BooleanField(choices=CHOICES, null=False, default=True)
     parent_container = models.ForeignKey(Container, null=True, on_delete=models.CASCADE)
     criterion_statement_version = models.ForeignKey(CriteriaStatementVersion, null=True, on_delete=models.CASCADE)
-    head = models.OneToOneField(SpectrumDoublyLinkedListNode, null=False, on_delete=models.CASCADE)
+    head = models.OneToOneField(DoublyLinkedListNode, null=False, on_delete=models.CASCADE)
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -462,21 +462,21 @@ class SpectrumDoublyLinkedList(models.Model):
         item_list = self.get_all_container_items_in_list_context()
         
         if new:
-            return item_list.exclude(spectrumdoublylinkedlistnode__in=self.get_nodes_queryset())
+            return item_list.exclude(doublylinkedlistnode__in=self.get_nodes_queryset())
 
-        return item_list.filter(spectrumdoublylinkedlistnode__in=self.get_nodes_queryset())
+        return item_list.filter(doublylinkedlistnode__in=self.get_nodes_queryset())
 
 
     def get_nodes_queryset(self):
-        return SpectrumDoublyLinkedListNode.objects.filter(parent_list=self)
+        return DoublyLinkedListNode.objects.filter(parent_list=self)
 
     def insert(self, item, comparator=lambda a, b : a.data > b.data, nowait=False):
         try:
             # Select all dllist nodes for update (lock rows)
             with transaction.atomic():
                 item.refresh_from_db()
-                nodes = SpectrumDoublyLinkedListNode.objects.filter(parent_list=self).select_for_update(nowait=nowait)
-                new_node = SpectrumDoublyLinkedListNode.objects.create(parent_list=self, parent_item=item, user=self.user)
+                nodes = DoublyLinkedListNode.objects.filter(parent_list=self).select_for_update(nowait=nowait)
+                new_node = DoublyLinkedListNode.objects.create(parent_list=self, parent_item=item, user=self.user)
 
                 # Lock node rows.
                 nodes.exists()

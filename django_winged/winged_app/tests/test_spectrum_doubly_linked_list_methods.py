@@ -1,8 +1,8 @@
 from django.test import TestCase
 
 from winged_app.models import (
-    Item, Container, Criteria, SpectrumDoublyLinkedListNode,
-    SpectrumDoublyLinkedList, SpectrumDoublyLinkedListNode, binarily_insert_doubly_linked_list_node)
+    Item, Container, Criteria, DoublyLinkedListNode,
+    SpectrumDoublyLinkedList, binarily_insert_doubly_linked_list_node)
 
 from django.contrib.auth.models import User
 
@@ -18,7 +18,7 @@ class InsertMethodTest(TestCase):
         self.criteria = Criteria.objects.create(name="Test Criteria", user=self.user)
         
         item = Item.objects.create(statement="item_number_75", actionable=True, parent_container=self.container, user=self.user)
-        self.head = SpectrumDoublyLinkedListNode.objects.create(parent_item=item, user=self.user)
+        self.head = DoublyLinkedListNode.objects.create(parent_item=item, user=self.user)
 
         self.dllist = SpectrumDoublyLinkedList.objects.create(
             ai_model='TestModel',
@@ -56,7 +56,7 @@ class InsertMethodTest(TestCase):
         new_item = Item.objects.create(statement=f"item_number_{new_element_pos}", actionable=True, parent_container=self.container, user=self.user)
         self.dllist.insert(new_item, comparator=comparator_wrapper)
 
-        n = SpectrumDoublyLinkedListNode.objects.filter(parent_list=self.dllist.pk).count()
+        n = DoublyLinkedListNode.objects.filter(parent_list=self.dllist.pk).count()
         
         self.assertEqual(log2(n), comparator_call_count)
         self.assertEqual(comparator_call_count, expected_comparator_calls)
@@ -175,7 +175,7 @@ class BinarilyInsertTest(TestCase):
         self.criteria = Criteria.objects.create(name="Test Criteria", user=self.user)
         
         item = Item.objects.create(statement="item_number_2", actionable=True, parent_container=self.container, user=self.user)
-        self.node2 = SpectrumDoublyLinkedListNode.objects.create(parent_item=item, user=self.user)
+        self.node2 = DoublyLinkedListNode.objects.create(parent_item=item, user=self.user)
 
         self.dllist = SpectrumDoublyLinkedList.objects.create(
             ai_model='TestModel',
@@ -190,7 +190,7 @@ class BinarilyInsertTest(TestCase):
 
     def test_correctly_inserts_to_the_left(self):
         item = Item.objects.create(statement="item_number_3", actionable=True, parent_container=self.container, user=self.user)
-        node3 = SpectrumDoublyLinkedListNode.objects.create(parent_item=item, user=self.user)
+        node3 = DoublyLinkedListNode.objects.create(parent_item=item, user=self.user)
         binarily_insert_doubly_linked_list_node(node3, self.dllist.head, self.comparator)
 
         self.assertEqual(node3.prev, None)
@@ -203,7 +203,7 @@ class BinarilyInsertTest(TestCase):
     
     def test_correctly_inserts_to_the_right(self):
         item = Item.objects.create(statement="item_number_1", actionable=True, parent_container=self.container, user=self.user)
-        node1 = SpectrumDoublyLinkedListNode.objects.create(parent_item=item, user=self.user)
+        node1 = DoublyLinkedListNode.objects.create(parent_item=item, user=self.user)
         binarily_insert_doubly_linked_list_node(node1, self.node2, self.comparator)
 
         self.assertEqual(self.node2.prev, None)
@@ -216,7 +216,7 @@ class BinarilyInsertTest(TestCase):
 
     def test_correctly_inserts_middle(self):
         item = Item.objects.create(statement="item_number_4", actionable=True, parent_container=self.container, user=self.user)
-        node4 = SpectrumDoublyLinkedListNode.objects.create(parent_item=item, user=self.user)
+        node4 = DoublyLinkedListNode.objects.create(parent_item=item, user=self.user)
         binarily_insert_doubly_linked_list_node(node4, self.node2, self.comparator)
 
         self.assertEqual(node4.prev, None)
@@ -228,7 +228,7 @@ class BinarilyInsertTest(TestCase):
         self.assertEqual(self.node2.next, None)
 
         item = Item.objects.create(statement="item_number_3", actionable=True, parent_container=self.container, user=self.user)
-        node3 = SpectrumDoublyLinkedListNode.objects.create(parent_item=item, user=self.user)
+        node3 = DoublyLinkedListNode.objects.create(parent_item=item, user=self.user)
         binarily_insert_doubly_linked_list_node(node3, node4, self.comparator)
 
         self.assertEqual(node4.prev, None)
