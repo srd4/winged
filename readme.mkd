@@ -35,7 +35,7 @@ Users interact with Winged via a front-end interface, which can be accessed by r
 
 - CRUD operations for items and containers.
 - Actionable vs non-actionable item AI assisted categorization.
-- Spectrum-based sorting and prioritization.
+- Criterion-based sorting and prioritization.
 - AI-assisted curation for automated organization and prioritization.
 - Hierarchical container structuring for nested organization.
 

@@ -1,6 +1,6 @@
 from django.test import TestCase
 from ..models import (
-    Item, SystemPrompt, Criteria, ItemVsTwoCriteriaAIComparison, CriterionVsItemsAIComparison
+    Item, SystemPrompt, Criterion, ItemVsTwoCriteriaAIComparison, CriterionVsItemsAIComparison
     )
 
 from django.contrib.auth.models import User
@@ -9,7 +9,7 @@ from django.contrib.auth.models import User
 class CriterionVsItemsAIComparisonCrudTest(TestCase):
     def setUp(self) -> None:
         self.user = User.objects.create_user('test_user', 'test_user@example.com', 'testpass123')
-        self.criteria = Criteria.objects.create(name="test_criteria_1", user=self.user)
+        self.criterion = Criterion.objects.create(name="test_criterion_1", user=self.user)
 
         self.item_1 = Item.objects.create(statement="test_item_1", user=self.user)
         self.item_2 = Item.objects.create(statement="test_item_2", user=self.user)
@@ -19,7 +19,7 @@ class CriterionVsItemsAIComparisonCrudTest(TestCase):
     def test_create_criterion_vs_items_comparison(self):
         comparison = CriterionVsItemsAIComparison.objects.create(
             ai_model="an_ai_model",
-            criterion_statement_version=self.criteria.current_criteria_statement_version,
+            criterion_statement_version=self.criterion.current_criterion_statement_version,
             item_compared_1_statement_version=self.item_1.current_statement_version,
             item_compared_2_statement_version=self.item_2.current_statement_version,
             item_choice=self.item_choice,
@@ -35,7 +35,7 @@ class CriterionVsItemsAIComparisonCrudTest(TestCase):
         self.assertFalse(updated_comparison.user_choice)
 
         # assert criterion and items.
-        self.assertEqual(updated_comparison.criterion_statement_version, self.criteria.current_criteria_statement_version)
+        self.assertEqual(updated_comparison.criterion_statement_version, self.criterion.current_criterion_statement_version)
         self.assertEqual(updated_comparison.item_compared_1_statement_version, self.item_1.current_statement_version)
         self.assertEqual(updated_comparison.item_compared_2_statement_version, self.item_2.current_statement_version)
 
@@ -52,7 +52,7 @@ class CriterionVsItemsAIComparisonCrudTest(TestCase):
     def test_retrieve_criterion_vs_items_comparison(self):
         comparison = CriterionVsItemsAIComparison.objects.create(
             ai_model="an_ai_model",
-            criterion_statement_version=self.criteria.current_criteria_statement_version,
+            criterion_statement_version=self.criterion.current_criterion_statement_version,
             item_compared_1_statement_version=self.item_1.current_statement_version,
             item_compared_2_statement_version=self.item_2.current_statement_version,
             item_choice=self.item_choice,
@@ -67,7 +67,7 @@ class CriterionVsItemsAIComparisonCrudTest(TestCase):
     def test_update_criterion_vs_items_comparison(self):
         comparison = CriterionVsItemsAIComparison.objects.create(
             ai_model="an_ai_model",
-            criterion_statement_version=self.criteria.current_criteria_statement_version,
+            criterion_statement_version=self.criterion.current_criterion_statement_version,
             item_compared_1_statement_version=self.item_1.current_statement_version,
             item_compared_2_statement_version=self.item_2.current_statement_version,
             item_choice=self.item_choice,
@@ -88,7 +88,7 @@ class CriterionVsItemsAIComparisonCrudTest(TestCase):
     def test_delete_criterion_vs_items_comparison(self):
         comparison = CriterionVsItemsAIComparison.objects.create(
             ai_model="an_ai_model",
-            criterion_statement_version=self.criteria.current_criteria_statement_version,
+            criterion_statement_version=self.criterion.current_criterion_statement_version,
             item_compared_1_statement_version=self.item_1.current_statement_version,
             item_compared_2_statement_version=self.item_2.current_statement_version,
             item_choice=self.item_choice,
@@ -108,20 +108,20 @@ class ItemVsTwoCriteriaAIComparisonCRUDTest(TestCase):
     def setUp(self):
         self.user = User.objects.create_user('test_user', 'test_user@example.com', 'testpass123')
         
-        # Assuming you have default instances of SystemPromptTextVersion, CriteriaStatementVersion, and Item
+        # Assuming you have default instances of SystemPromptTextVersion, CriterionStatementVersion, and Item
         self.system_prompt = SystemPrompt.objects.create(text='TestPrompt', user=self.user)
-        self.criteria_1 = Criteria.objects.create(statement='TestCriteria1', user=self.user)
-        self.criteria_2 = Criteria.objects.create(statement='TestCriteria2', user=self.user)
+        self.criterion_1 = Criterion.objects.create(statement='TestCriterion1', user=self.user)
+        self.criterion_2 = Criterion.objects.create(statement='TestCriterion2', user=self.user)
         self.item = Item.objects.create(statement="Test Item", user=self.user)
 
     def test_create_item_vs_criteria_comparison(self):
         comparison = ItemVsTwoCriteriaAIComparison.objects.create(
             ai_model='TestModel',
             system_prompt_text_version=self.system_prompt.current_prompt_text_version,
-            criteria_statement_version_1=self.criteria_1.current_criteria_statement_version,
-            criteria_statement_version_2=self.criteria_2.current_criteria_statement_version,
+            criterion_statement_version_1=self.criterion_1.current_criterion_statement_version,
+            criterion_statement_version_2=self.criterion_2.current_criterion_statement_version,
             item_compared_statement_version=self.item.current_statement_version,
-            criteria_choice=True
+            criterion_choice=True
         )
         self.assertEqual(ItemVsTwoCriteriaAIComparison.objects.count(), 1)
         self.assertEqual(ItemVsTwoCriteriaAIComparison.objects.last(), comparison)
@@ -130,10 +130,10 @@ class ItemVsTwoCriteriaAIComparisonCRUDTest(TestCase):
         comparison = ItemVsTwoCriteriaAIComparison.objects.create(
             ai_model='TestModel',
             system_prompt_text_version=self.system_prompt.current_prompt_text_version,
-            criteria_statement_version_1=self.criteria_1.current_criteria_statement_version,
-            criteria_statement_version_2=self.criteria_2.current_criteria_statement_version,
+            criterion_statement_version_1=self.criterion_1.current_criterion_statement_version,
+            criterion_statement_version_2=self.criterion_2.current_criterion_statement_version,
             item_compared_statement_version=self.item.current_statement_version,
-            criteria_choice=True
+            criterion_choice=True
         )
         fetched_comparison = ItemVsTwoCriteriaAIComparison.objects.get(id=comparison.id)
         self.assertEqual(fetched_comparison.ai_model, 'TestModel')
@@ -142,10 +142,10 @@ class ItemVsTwoCriteriaAIComparisonCRUDTest(TestCase):
         comparison = ItemVsTwoCriteriaAIComparison.objects.create(
             ai_model='TestModel',
             system_prompt_text_version=self.system_prompt.current_prompt_text_version,
-            criteria_statement_version_1=self.criteria_1.current_criteria_statement_version,
-            criteria_statement_version_2=self.criteria_2.current_criteria_statement_version,
+            criterion_statement_version_1=self.criterion_1.current_criterion_statement_version,
+            criterion_statement_version_2=self.criterion_2.current_criterion_statement_version,
             item_compared_statement_version=self.item.current_statement_version,
-            criteria_choice=True
+            criterion_choice=True
         )
         comparison.ai_model = 'UpdatedModel'
         comparison.save()
@@ -156,10 +156,10 @@ class ItemVsTwoCriteriaAIComparisonCRUDTest(TestCase):
         comparison = ItemVsTwoCriteriaAIComparison.objects.create(
             ai_model='TestModel',
             system_prompt_text_version=self.system_prompt.current_prompt_text_version,
-            criteria_statement_version_1=self.criteria_1.current_criteria_statement_version,
-            criteria_statement_version_2=self.criteria_2.current_criteria_statement_version,
+            criterion_statement_version_1=self.criterion_1.current_criterion_statement_version,
+            criterion_statement_version_2=self.criterion_2.current_criterion_statement_version,
             item_compared_statement_version=self.item.current_statement_version,
-            criteria_choice=True
+            criterion_choice=True
         )
         comparison.delete()
         self.assertEqual(ItemVsTwoCriteriaAIComparison.objects.count(), 0)

@@ -2,7 +2,7 @@ from decimal import Decimal
 from django.test import TestCase, tag
 from django.contrib.auth.models import User
 
-from winged_app.models import Item, Container, Criteria, SpectrumDoublyLinkedList, DoublyLinkedListNode
+from winged_app.models import Item, Container, Criterion, SpectrumDoublyLinkedList, DoublyLinkedListNode
 
 
 class ItemInstanceContextChangeTest(TestCase):
@@ -16,7 +16,7 @@ class ItemInstanceContextChangeTest(TestCase):
         self.item_2 = Item.objects.create(statement=f"test_user_item_2", actionable=True, parent_container=self.container_1, user=self.user)
         self.item_3 = Item.objects.create(statement=f"test_user_item_3", actionable=True, parent_container=self.container_1, user=self.user)
 
-        self.criteria = Criteria.objects.create(name="test_criteria", user=self.user)
+        self.criterion = Criterion.objects.create(name="test_criterion", user=self.user)
 
         self.head_node = DoublyLinkedListNode.objects.create(
             data=Decimal('0.995833158493042'),
@@ -27,7 +27,7 @@ class ItemInstanceContextChangeTest(TestCase):
         self.doubly_linked_list = SpectrumDoublyLinkedList.objects.create(
             ai_model = "all-mpnet-base-v2",
             parent_container = self.container_1,
-            criterion_statement_version = self.criteria.current_criteria_statement_version,
+            criterion_statement_version = self.criterion.current_criterion_statement_version,
             user=self.user,
             head=self.head_node
             )

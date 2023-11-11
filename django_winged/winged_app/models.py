@@ -16,7 +16,7 @@ def binarily_insert_doubly_linked_list_node(node, head, comparator, end=None):
 
     if head == middle: # If head and middle are the same, the segment has only one or two nodes
         if comparator(middle, node):
-            if middle.next: middle.next.prev = node
+            if middle.next:middle.next.prev = node
             node.next = middle.next
             middle.next = node
             node.prev = middle
@@ -196,7 +196,7 @@ class ItemStatementVersion(models.Model):
     
     @property
     def computed_statement(self):
-        return self.statement if self.statement else self.parent_criteria.statement
+        return self.statement if self.statement else self.parent_criterion.statement
     
     def __str__(self) -> str:
         return self.statement if self.statement else self.parent_item.statement
@@ -231,18 +231,18 @@ class SpectrumValue(models.Model):
 
 class ItemVsTwoCriteriaAIComparison(models.Model):
     CHOICES = [
-        (True, 'Criteria 1'),
-        (False, 'Criteria 2'),
+        (True, 'Criterion 1'),
+        (False, 'Criterion 2'),
     ]
     ai_model = models.CharField(max_length=2**7, null=True, db_index=True, default=None)
     user_choice = models.BooleanField(null=False, default=False)
     system_prompt_text_version = models.ForeignKey('SystemPromptTextVersion', on_delete=models.SET_NULL, null=True)
-    criteria_statement_version_1 = models.ForeignKey('CriteriaStatementVersion', null=True, related_name='first_criteria_one_item_vs_two_criteria_comparisons', on_delete=models.SET_NULL, db_index=True) #if criterias are statement versions I can have access to parent Criteria on second level reference.
-    criteria_statement_version_2 = models.ForeignKey('CriteriaStatementVersion', null=True, related_name='second_criteria_one_item_vs_two_criteria_comparisons', on_delete=models.SET_NULL, db_index=True)
+    criterion_statement_version_1 = models.ForeignKey('CriterionStatementVersion', null=True, related_name='first_criterion_one_item_vs_two_criteria_comparisons', on_delete=models.SET_NULL, db_index=True) #if criteria are statement versions I can have access to parent Criterion on second level reference.
+    criterion_statement_version_2 = models.ForeignKey('CriterionStatementVersion', null=True, related_name='second_criterion_one_item_vs_two_criteria_comparisons', on_delete=models.SET_NULL, db_index=True)
 
     item_compared_statement_version = models.ForeignKey(ItemStatementVersion, related_name="one_item_vs_two_criteria_comparisons", on_delete=models.CASCADE, db_index=True)
     
-    criteria_choice = models.BooleanField(choices=CHOICES, null=False, default=False, db_index=True)
+    criterion_choice = models.BooleanField(choices=CHOICES, null=False, default=False, db_index=True)
     response = models.JSONField(null=True, default=None)
     execution_in_seconds = models.DecimalField(max_digits=10, decimal_places=2, null=True, default=None)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -260,7 +260,7 @@ class CriterionVsItemsAIComparison(models.Model):
     user_choice = models.BooleanField(null=False, default=False)
     system_prompt_text_version = models.ForeignKey('SystemPromptTextVersion', on_delete=models.SET_NULL, null=True)
 
-    criterion_statement_version = models.ForeignKey('CriteriaStatementVersion', null=True, related_name='criterion_comparisons', on_delete=models.SET_NULL, db_index=True)
+    criterion_statement_version = models.ForeignKey('CriterionStatementVersion', null=True, related_name='criterion_comparisons', on_delete=models.SET_NULL, db_index=True)
     
     item_compared_1_statement_version = models.ForeignKey(ItemStatementVersion, on_delete=models.CASCADE, related_name="first_item_statement_version_criterion_comparisons", null=True)
     item_compared_2_statement_version = models.ForeignKey(ItemStatementVersion, on_delete=models.CASCADE, related_name="second_item_statement_version_criterion_comparisons", null=True)
@@ -277,44 +277,44 @@ class CriterionVsItemsAIComparison(models.Model):
         return string
 
 
-class Criteria(models.Model):
+class Criterion(models.Model):
     name = models.CharField(max_length=2**6)
 
     statement = models.CharField(max_length=2**10, null=True)
-    current_criteria_statement_version = models.ForeignKey('CriteriaStatementVersion', on_delete=models.SET_NULL, null=True)
+    current_criterion_statement_version = models.ForeignKey('CriterionStatementVersion', on_delete=models.SET_NULL, null=True)
 
     statement_updated_at = models.DateTimeField(auto_now_add=True)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE) # so users can modify even default actiona vs actionable criteria statements.
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE) # so users can modify even default actiona vs actionable criterion statements.
     
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
         """
-        Custom save method to manage current_criteria_statement_version and CriteriaStatementVersion.
+        Custom save method to manage current_criterion_statement_version and CriterionStatementVersion.
 
         """
         with transaction.atomic(): # Make sure creations and saves are done in one db transaction.
-            if not self.current_criteria_statement_version: # Creating instance.
-                super().save(*args, **kwargs) # Need to save created parent_criteria first to save CriteriaStatementVersion second.
-                self.current_criteria_statement_version = CriteriaStatementVersion.objects.create(statement=None, parent_criteria=self, user=self.user)
-                self.save() # save above change on current_criteria_statement_version again.
+            if not self.current_criterion_statement_version: # Creating instance.
+                super().save(*args, **kwargs) # Need to save created parent_criterion first to save CriterionStatementVersion second.
+                self.current_criterion_statement_version = CriterionStatementVersion.objects.create(statement=None, parent_criterion=self, user=self.user)
+                self.save() # save above change on current_criterion_statement_version again.
                 return
-            elif not self.current_criteria_statement_version:
-                self.current_criteria_statement_version = CriteriaStatementVersion.objects.create(statement=None, parent_criteria=self, user=self.user)
-                self.save() # save above change on current_criteria_statement_version again.
+            elif not self.current_criterion_statement_version:
+                self.current_criterion_statement_version = CriterionStatementVersion.objects.create(statement=None, parent_criterion=self, user=self.user)
+                self.save() # save above change on current_criterion_statement_version again.
                 return 
             else: # Updating Instance.
                 # Fetch self.statement as it was previous to change we are about to save.
-                current_statement = Criteria.objects.get(pk=self.pk).statement
+                current_statement = Criterion.objects.get(pk=self.pk).statement
                 if current_statement != self.statement: # Check if the statement string has been changed.
-                    # Assign statement on db to current_criteria_statement_version field.
-                    self.current_criteria_statement_version.statement = current_statement
+                    # Assign statement on db to current_criterion_statement_version field.
+                    self.current_criterion_statement_version.statement = current_statement
                     self.statement_updated_at = timezone.now()
-                    # Save current_criteria_statement_version befored droping it.
-                    self.current_criteria_statement_version.save()
-                    # Drop previous current_criteria_statement_version for a new one.
-                    self.current_criteria_statement_version = CriteriaStatementVersion.objects.create(statement=None, parent_criteria=self, user=self.user)
+                    # Save current_criterion_statement_version befored droping it.
+                    self.current_criterion_statement_version.save()
+                    # Drop previous current_criterion_statement_version for a new one.
+                    self.current_criterion_statement_version = CriterionStatementVersion.objects.create(statement=None, parent_criterion=self, user=self.user)
 
         return super().save(*args, **kwargs)
 
@@ -322,19 +322,19 @@ class Criteria(models.Model):
         return self.name
 
 
-class CriteriaStatementVersion(models.Model):
+class CriterionStatementVersion(models.Model):
     statement = models.CharField(max_length=2**10, null=True)
-    parent_criteria = models.ForeignKey(Criteria, null=True, on_delete=models.SET_NULL)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE) # so users can modify even default actiona vs actionable criteria statements.
+    parent_criterion = models.ForeignKey(Criterion, null=True, on_delete=models.SET_NULL)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE) # so users can modify even default actiona vs actionable criterion statements.
 
     created_at = models.DateTimeField(auto_now_add=True)
 
     @property
     def computed_statement(self):
-        return self.statement if self.statement else self.parent_criteria.statement
+        return self.statement if self.statement else self.parent_criterion.statement
 
     def __str__(self):
-        return self.statement if self.statement else self.parent_criteria.statement
+        return self.statement if self.statement else self.parent_criterion.statement
 
 
 class SystemPrompt(models.Model):
@@ -357,7 +357,7 @@ class SystemPrompt(models.Model):
         """
         with transaction.atomic(): # Make sure creations and saves are done in one db transaction.
             if not self.current_prompt_text_version: # Creating instance.
-                super().save(*args, **kwargs) # Need to save created parent_criteria first to save SystemPromptTextVersion second.
+                super().save(*args, **kwargs) # Need to save created parent_criterion first to save SystemPromptTextVersion second.
                 self.current_prompt_text_version = SystemPromptTextVersion.objects.create(text=None, parent_prompt=self, user=self.user)
                 self.save() # save above change on current_prompt_text_version again.
                 return
@@ -397,7 +397,7 @@ class SystemPromptTextVersion(models.Model):
 class DoublyLinkedListNode(models.Model):
     parent_list = models.ForeignKey('SpectrumDoublyLinkedList', null=True, on_delete=models.CASCADE)
     parent_item = models.ForeignKey(Item, null=True, on_delete=models.CASCADE)
-    data = models.DecimalField(max_digits=20, decimal_places=19, null=True)
+    data = models.DecimalField(max_digits=20, decimal_places=19, null=True, default=None)
     prev = models.ForeignKey('self', related_name="previous_node", null=True, default=None, on_delete=models.SET_NULL)
     next = models.ForeignKey('self', related_name="next_node", null=True, default=None, on_delete=models.SET_NULL)
 
@@ -436,7 +436,7 @@ class SpectrumDoublyLinkedList(models.Model):
     ai_model = models.CharField(max_length=2**7)
     evaluative = models.BooleanField(choices=CHOICES, null=False, default=True)
     parent_container = models.ForeignKey(Container, null=True, on_delete=models.CASCADE)
-    criterion_statement_version = models.ForeignKey(CriteriaStatementVersion, null=True, on_delete=models.CASCADE)
+    criterion_statement_version = models.ForeignKey(CriterionStatementVersion, null=True, on_delete=models.CASCADE)
     head = models.OneToOneField(DoublyLinkedListNode, null=False, on_delete=models.CASCADE)
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -459,7 +459,7 @@ class SpectrumDoublyLinkedList(models.Model):
         """
         returns context-according queryset of items.
         """
-        item_list = self.get_all_container_items_in_list_context()
+        item_list = self.get_all_items_in_container_list_context()
         
         if new:
             return item_list.exclude(doublylinkedlistnode__in=self.get_nodes_queryset())

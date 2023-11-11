@@ -3,7 +3,7 @@ from rest_framework import routers
 from winged_app.views import (
     ContainerItemListAPIView, ContainerTreeView, ContainerViewSet,
     ItemViewSet, ItemStatementVersionViewSet, UserViewSet, SpectrumValueViewSet,
-    SpectrumTypeViewSet, RunScriptAPIView, ReEvaluateActionableItemsAPIView,
+    SpectrumTypeViewSet, ReEvaluateActionableItemsAPIView, CriterionVsItemsSortingScriptView,
     ItemsVsSpectrumOpeanAiComparisonCost
     )
 from django.contrib import admin
@@ -27,8 +27,8 @@ urlpatterns = [
     path('', include(router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('containers/<int:pk>/items/', ContainerItemListAPIView.as_view(), name='container-items'),
-
-    path("containers/<int:container_id>/run-script/spectrumtypes/<int:spectrumtype_id>/<str:comparison_mode>/", RunScriptAPIView.as_view(), name="run-script"),
+    
+    path("containers/<int:container_id>/criterion-vs-items-sort/criterion/<int:criterion_id>/<str:ai_model>/", CriterionVsItemsSortingScriptView.as_view(), name="criterion-vs-items-sort"),
 
     path('containers/<int:source_container_id>/reclassify-actionable/', ReEvaluateActionableItemsAPIView.as_view(), name='reclassify-actionable-container-items'),
     

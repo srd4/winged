@@ -30,7 +30,7 @@ from scripts.sentence_transformers_compare import all_MiniLM_L6_v2_criterion_vs_
 
 from winged_app.models import (
     Container, Item, ItemStatementVersion, SpectrumValue, SpectrumType,
-    Criteria, SpectrumDoublyLinkedList
+    Criterion, SpectrumDoublyLinkedList, DoublyLinkedListNode
     )
 
 logger = logging.getLogger('winged_app.views')
@@ -167,7 +167,7 @@ class RunScriptAPIView(APIView):
 
         
         def run_script():# whole function can be placed elsewhere.
-            def binary_insert(criteria, sorted_list, key, comparison_function):
+            def binary_insert(criterion, sorted_list, key, comparison_function):
                 left, right = 0, len(sorted_list) - 1
                 
                 while left <= right:
@@ -175,7 +175,7 @@ class RunScriptAPIView(APIView):
                     
                     while True:
                         try:
-                            if not comparison_function(criteria, sorted_list[mid].statement, key.statement): #why and if not? adjust that
+                            if not comparison_function(criterion, sorted_list[mid].statement, key.statement): #why and if not? adjust that
                                 left = mid + 1
                                 logger.info("less than: {}".format(sorted_list[mid].statement))
                             else:
@@ -213,7 +213,7 @@ class RunScriptAPIView(APIView):
 
                 SpectrumValue.objects.bulk_update(t, ['value', 'gpt_curated'])
 
-            def binary_insert_sort(criteria, items, comparison_function, sorted_list=[]):#innapropiate function name.
+            def binary_insert_sort(criterion, items, comparison_function, sorted_list=[]):#innapropiate function name.
                 total = len(items)
                 j = 1# could get rid off if for loop below iterated over a range.
                 shuffle(items)
@@ -221,7 +221,7 @@ class RunScriptAPIView(APIView):
                     logger.info(f"inserting item {j} of {total}")
                     logger.info(f">> {i}")
 
-                    binary_insert(criteria, sorted_list, i, comparison_function)
+                    binary_insert(criterion, sorted_list, i, comparison_function)
 
                     update_on_db(sorted_list)# saves one at a time to keep progress.
 
@@ -265,14 +265,38 @@ class CriterionVsItemsSortingScriptView(APIView):
     
     # def get(self, request, container_id, spectrumtype_id, comparison_mode, format=None):
     def post(self, request, container_id, criterion_id, ai_model):
-        criterion = get_object_or_404(Criteria, pk=criterion_id, user=self.request.user)
-        criterion_statement_version = criterion.current_criteria_statement_version
-        dll, created = SpectrumDoublyLinkedList.objects.get_or_create(
-            ai_model=ai_model,
-            parent_container=container_id,
-            criterion_statement_version=criterion_statement_version,
-            user=self.request.user,
-        )
+        criterion = get_object_or_404(Criterion, pk=criterion_id, user=self.request.user)
+        criterion_statement_version = criterion.current_criterion_statement_version
+        container = get_object_or_404(Container, pk=container_id, user=self.request.user)
+
+        try:
+            dll = SpectrumDoublyLinkedList.objects.get(
+                ai_model=ai_model,
+                parent_container=container,
+                criterion_statement_version=criterion_statement_version,
+                user=self.request.user,
+            )
+
+        except SpectrumDoublyLinkedList.DoesNotExist:
+            head_node = DoublyLinkedListNode.objects.create(
+                parent_item=container.item_set.last(),
+                user=self.request.user,
+                )
+
+            dll = SpectrumDoublyLinkedList.objects.create(
+                ai_model=ai_model,
+                parent_container=container,
+                head=head_node,
+                criterion_statement_version=criterion_statement_version,
+                user=self.request.user,
+            )
+
+            head_node.parent_list = dll
+            head_node.save()
+
+        
+        new_items = dll.get_listed_items_queryset(new=True)
+
 
         comparators = {
             "paraphrase-mpnet-base-v2": None,
@@ -281,6 +305,9 @@ class CriterionVsItemsSortingScriptView(APIView):
             "gpt-4":None,
             "user_curation":None,
             }
+
+        if ai_model not in comparators or comparators[ai_model] == None:
+                    return Response({"error": f"ai_model doesn't have a valid comparator function"}, status=HTTP_404_NOT_FOUND)
 
         def insertion_thread(items):
             for item in items:
@@ -291,7 +318,7 @@ class CriterionVsItemsSortingScriptView(APIView):
                 finally:
                     connection.close()
 
-        new_items = dll.get_listed_items_queryset(new=True)
+        
         thread = threading.Thread(target=insertion_thread, args=(new_items,))
         thread.start()
 
@@ -303,8 +330,8 @@ class ReEvaluateActionableItemsAPIView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, source_container_id, format=None):
-        actionable = get_object_or_404(Criteria, name="actionable", user=self.request.user)
-        non_actionable = get_object_or_404(Criteria, name="non-actionable", user=self.request.user)
+        actionable = get_object_or_404(Criterion, name="actionable", user=self.request.user)
+        non_actionable = get_object_or_404(Criterion, name="non-actionable", user=self.request.user)
         source_container = get_object_or_404(Container, id=source_container_id, user=self.request.user)
         
         items = get_list_or_404(

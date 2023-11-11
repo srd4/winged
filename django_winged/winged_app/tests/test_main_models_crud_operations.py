@@ -1,8 +1,8 @@
 from django.test import TestCase, tag
 from ..models import (
     Container, Item, ItemStatementVersion, SpectrumType, SpectrumValue,
-    SystemPromptTextVersion, SystemPrompt, CriteriaStatementVersion,
-    Criteria, ItemVsTwoCriteriaAIComparison
+    SystemPromptTextVersion, SystemPrompt, CriterionStatementVersion,
+    Criterion
     )
 from django.contrib.auth.models import User
 from django.urls import reverse
@@ -120,25 +120,25 @@ class ModelsCreationTest(TestCase):
 
 
 
-    def test_criteria_statement_version_creation_on_criteria_creation(self):
-        parent_criteria = Criteria.objects.create(
-            name="test_criteria",
+    def test_criterion_statement_version_creation_on_criterion_creation(self):
+        parent_criterion = Criterion.objects.create(
+            name="test_criterion",
             user=self.first_user,
         )
 
-        # Assert current_criteria_statement_version's type.
-        self.assertEqual(type(parent_criteria.current_criteria_statement_version), CriteriaStatementVersion)
+        # Assert current_criterion_statement_version's type.
+        self.assertEqual(type(parent_criterion.current_criterion_statement_version), CriterionStatementVersion)
 
-        # Assert Criteria statement is None.
-        self.assertIsNone(parent_criteria.current_criteria_statement_version.statement)
+        # Assert Criterion statement is None.
+        self.assertIsNone(parent_criterion.current_criterion_statement_version.statement)
 
         # Assert user.
-        self.assertEqual(parent_criteria.current_criteria_statement_version.user, self.first_user)
-        self.assertEqual(parent_criteria.user, self.first_user)
+        self.assertEqual(parent_criterion.current_criterion_statement_version.user, self.first_user)
+        self.assertEqual(parent_criterion.user, self.first_user)
 
         # Assert name.
-        self.assertEqual(parent_criteria.name, "test_criteria")
-        self.assertEqual(parent_criteria.name, parent_criteria.current_criteria_statement_version.parent_criteria.name)
+        self.assertEqual(parent_criterion.name, "test_criterion")
+        self.assertEqual(parent_criterion.name, parent_criterion.current_criterion_statement_version.parent_criterion.name)
 
 
     def test_system_prompt_creation(self):
@@ -158,17 +158,17 @@ class ModelsCreationTest(TestCase):
         self.assertEqual(system_prompt.user, self.first_user)
 
 
-    def test_criteria_creation(self):
-        criteria = Criteria.objects.create(
-            name="test_criteria",
+    def test_criterion_creation(self):
+        criterion = Criterion.objects.create(
+            name="test_criterion",
             user=self.first_user,
         )
         
         # Assert name.
-        self.assertEqual(criteria.name,  "test_criteria")
+        self.assertEqual(criterion.name,  "test_criterion")
 
         # Assert user.
-        self.assertEqual(criteria.user, self.first_user)
+        self.assertEqual(criterion.user, self.first_user)
 
 
 
@@ -200,21 +200,21 @@ class ModelsRetrievalTest(TestCase):
         self.assertEqual(SystemPromptTextVersion.objects.filter(user=self.first_user).count(), 2)
         self.assertEqual(SystemPromptTextVersion.objects.filter(user=self.second_user).count(), 0)
 
-    def test_criteria_statement_version_retrieval(self):
-        parent_criteria = Criteria.objects.create(
-            name="test_criteria",
+    def test_criterion_statement_version_retrieval(self):
+        parent_criterion = Criterion.objects.create(
+            name="test_criterion",
             user=self.second_user,
         )
 
-        CriteriaStatementVersion.objects.create(
+        CriterionStatementVersion.objects.create(
             statement="test_statement",
-            parent_criteria=parent_criteria,
+            parent_criterion=parent_criterion,
             user=self.second_user,
         )
 
-        self.assertEqual(CriteriaStatementVersion.objects.filter(user=self.first_user).count(), 0)
-        self.assertEqual(CriteriaStatementVersion.objects.filter(user=self.second_user).count(), 2)
-        self.assertEqual(parent_criteria.current_criteria_statement_version, CriteriaStatementVersion.objects.first())
+        self.assertEqual(CriterionStatementVersion.objects.filter(user=self.first_user).count(), 0)
+        self.assertEqual(CriterionStatementVersion.objects.filter(user=self.second_user).count(), 2)
+        self.assertEqual(parent_criterion.current_criterion_statement_version, CriterionStatementVersion.objects.first())
 
     def test_system_prompt_retrieval(self):
         SystemPrompt.objects.create(
@@ -226,14 +226,14 @@ class ModelsRetrievalTest(TestCase):
         self.assertEqual(SystemPrompt.objects.filter(user=self.first_user).count(), 1)
         self.assertEqual(SystemPrompt.objects.filter(user=self.second_user).count(), 0)
 
-    def test_criteria_retrieval(self):
-        Criteria.objects.create(
-            name="test_criteria",
+    def test_criterion_retrieval(self):
+        Criterion.objects.create(
+            name="test_criterion",
             user=self.second_user,
         )
 
-        self.assertEqual(Criteria.objects.filter(user=self.first_user).count(), 0)
-        self.assertEqual(Criteria.objects.filter(user=self.second_user).count(), 1)
+        self.assertEqual(Criterion.objects.filter(user=self.first_user).count(), 0)
+        self.assertEqual(Criterion.objects.filter(user=self.second_user).count(), 1)
 
     def test_containers_retrieval(self):
         self.assertEqual(Container.objects.filter(user=self.first_user).count(), 1)
@@ -324,53 +324,53 @@ class ModelsUpdateTest(TestCase):
         self.assertNotEqual(initial_current_prompt_text_version, updated_system_prompt.current_prompt_text_version)
 
 
-    def test_criteria_statement_version_update(self):
-        criteria_statement_version = CriteriaStatementVersion.objects.create(
+    def test_criterion_statement_version_update(self):
+        criterion_statement_version = CriterionStatementVersion.objects.create(
             statement="test_statement",
             user=self.second_user,
         )
 
         # Assert initial.
-        self.assertEqual(criteria_statement_version.statement, "test_statement")
+        self.assertEqual(criterion_statement_version.statement, "test_statement")
 
-        criteria_statement_version.statement = "second statement"
+        criterion_statement_version.statement = "second statement"
 
-        criteria_statement_version.save()
+        criterion_statement_version.save()
 
-        updated_current_criteria_statement_version = CriteriaStatementVersion.objects.get(pk=criteria_statement_version.pk)
+        updated_current_criterion_statement_version = CriterionStatementVersion.objects.get(pk=criterion_statement_version.pk)
 
         # Assert change.
-        self.assertEqual(updated_current_criteria_statement_version.statement, "second statement")
+        self.assertEqual(updated_current_criterion_statement_version.statement, "second statement")
 
-    def test_criteria_statement_version_update_on_criteria_update(self):
-        criteria = Criteria.objects.create(
-            name="test_criteria",
+    def test_criterion_statement_version_update_on_criterion_update(self):
+        criterion = Criterion.objects.create(
+            name="test_criterion",
             statement="first statement",
             user=self.first_user,
         )
 
-        initial_current_criteria_statement_version = criteria.current_criteria_statement_version
+        initial_current_criterion_statement_version = criterion.current_criterion_statement_version
 
-        # Assert initial_current_criteria_statement_version is None.
-        self.assertIsNone(initial_current_criteria_statement_version.statement)
+        # Assert initial_current_criterion_statement_version is None.
+        self.assertIsNone(initial_current_criterion_statement_version.statement)
         
         # Assert first statement.
-        self.assertEqual(criteria.statement, "first statement")
+        self.assertEqual(criterion.statement, "first statement")
         # Change statement.
-        criteria.statement = "second statement"
+        criterion.statement = "second statement"
         # Save change to database.
-        criteria.save()
+        criterion.save()
         # Fetch from db
-        updated_criteria = Criteria.objects.get(pk=criteria.pk)
+        updated_criterion = Criterion.objects.get(pk=criterion.pk)
         # Assert change on databse-fetched instance
-        self.assertEqual(updated_criteria.statement, "second statement")
+        self.assertEqual(updated_criterion.statement, "second statement")
 
-        # Assert Criteria instance has a different current_criteria_statement_version
-        self.assertNotEqual(initial_current_criteria_statement_version, updated_criteria.current_criteria_statement_version)
-        # Assert initial_current_criteria_statement_version is not None anymore.
-        self.assertEqual(initial_current_criteria_statement_version.statement, "first statement")
-        # Assert new current_criteria_statement_version's statement is None.
-        self.assertIsNone(updated_criteria.current_criteria_statement_version.statement)
+        # Assert Criterion instance has a different current_criterion_statement_version
+        self.assertNotEqual(initial_current_criterion_statement_version, updated_criterion.current_criterion_statement_version)
+        # Assert initial_current_criterion_statement_version is not None anymore.
+        self.assertEqual(initial_current_criterion_statement_version.statement, "first statement")
+        # Assert new current_criterion_statement_version's statement is None.
+        self.assertIsNone(updated_criterion.current_criterion_statement_version.statement)
 
 
     def test_system_prompt_update(self):
@@ -389,20 +389,20 @@ class ModelsUpdateTest(TestCase):
         # Assert prompt_text_updated_at has changed and is now greater.
         self.assertGreaterEqual(updated_system_prompt.prompt_text_updated_at, initial_time)
 
-    def test_criteria_update(self):
-        criteria = Criteria.objects.create(
-            name="test_criteria",
+    def test_criterion_update(self):
+        criterion = Criterion.objects.create(
+            name="test_criterion",
             user=self.second_user,
         )
-        initial_time = criteria.statement_updated_at
+        initial_time = criterion.statement_updated_at
 
-        self.assertEqual(criteria.name, "test_criteria")# Assert initial.
-        criteria.name = "second test_criteria"
-        criteria.save()
-        self.assertEqual(criteria.name, "second test_criteria")# Assert change.
+        self.assertEqual(criterion.name, "test_criterion")# Assert initial.
+        criterion.name = "second test_criterion"
+        criterion.save()
+        self.assertEqual(criterion.name, "second test_criterion")# Assert change.
 
-        updated_criteria = Criteria.objects.get(pk=criteria.pk)
-        self.assertGreaterEqual(updated_criteria.statement_updated_at, initial_time)
+        updated_criterion = Criterion.objects.get(pk=criterion.pk)
+        self.assertGreaterEqual(updated_criterion.statement_updated_at, initial_time)
 
 
     def test_container_update(self):
@@ -560,32 +560,32 @@ class ModelsDeletionTest(TestCase):
         self.assertTrue(ItemStatementVersion.objects.filter(pk=self.statement_version.pk).exists())
         
 
-    def test_criteria_deletion(self):
-        criteria = Criteria.objects.create(
-            name='TestCriteria',
+    def test_criterion_deletion(self):
+        criterion = Criterion.objects.create(
+            name='TestCriterion',
             user=self.first_user
         )
-        criteria.delete()
-        self.assertEqual(Criteria.objects.count(), 0)
+        criterion.delete()
+        self.assertEqual(Criterion.objects.count(), 0)
 
-    def test_criteria_statement_version_deletion(self):
-        criteria = Criteria.objects.create(
-            name='TestCriteria',
+    def test_criterion_statement_version_deletion(self):
+        criterion = Criterion.objects.create(
+            name='TestCriterion',
             user=self.first_user
         )
-        statement_version = CriteriaStatementVersion.objects.create(
+        statement_version = CriterionStatementVersion.objects.create(
             statement='TestStatement',
-            parent_criteria=criteria,
+            parent_criterion=criterion,
             user=self.first_user
         )
 
-        self.assertEqual(CriteriaStatementVersion.objects.count(), 2)
+        self.assertEqual(CriterionStatementVersion.objects.count(), 2)
 
         statement_version.delete()
-        self.assertEqual(CriteriaStatementVersion.objects.count(), 1)
+        self.assertEqual(CriterionStatementVersion.objects.count(), 1)
 
-        criteria.current_criteria_statement_version.delete()
-        self.assertEqual(CriteriaStatementVersion.objects.count(), 0)
+        criterion.current_criterion_statement_version.delete()
+        self.assertEqual(CriterionStatementVersion.objects.count(), 0)
 
 
     def test_system_prompt_deletion(self):

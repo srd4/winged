@@ -1,13 +1,83 @@
 from django.test import TestCase
 
 from winged_app.models import (
-    Item, Container, Criteria, DoublyLinkedListNode,
+    Item, Container, Criterion, DoublyLinkedListNode,
     SpectrumDoublyLinkedList, binarily_insert_doubly_linked_list_node)
 
 from django.contrib.auth.models import User
 
 from math import log2
 
+class GetQuerysetMethodsTest(TestCase):
+    def setUp(self):
+        # Create a user
+        self.user = User.objects.create_user(
+            username='testuser',
+            password='testpass123'
+        )
+
+        self.container = Container.objects.create(name="Test Container", user=self.user)
+        self.criterion = Criterion.objects.create(name="Test Criterion", user=self.user)
+        self.criterion_statement_version = self.criterion.current_criterion_statement_version
+
+        self.item1 = Item.objects.create(
+            parent_container=self.container,
+            user=self.user,
+            actionable=self.container.is_on_actionables_tab,
+            done=self.container.is_on_done_tab,
+            archived=False
+        )
+        self.item2 = Item.objects.create(
+            parent_container=self.container,
+            user=self.user,
+            actionable=self.container.is_on_actionables_tab,
+            done=self.container.is_on_done_tab,
+            archived=False
+        )
+
+        self.item3 = Item.objects.create(
+            parent_container=self.container,
+            user=self.user,
+            actionable=self.container.is_on_actionables_tab,
+            done=self.container.is_on_done_tab,
+            archived=False
+        )
+
+        self.head = DoublyLinkedListNode.objects.create(parent_item=self.item1, user=self.user)
+        self.node2 = DoublyLinkedListNode.objects.create(parent_item=self.item2, user=self.user)
+
+        self.dllist = SpectrumDoublyLinkedList.objects.create(
+            ai_model='TestModel',
+            parent_container=self.container,
+            criterion_statement_version=self.criterion.current_criterion_statement_version,
+            head=self.head,
+            user=self.user
+        )
+
+        self.head.parent_list = self.dllist
+        self.head.save()
+
+    def test_get_all_items_in_container_list_context(self):
+        item_list = self.dllist.get_all_items_in_container_list_context()
+        self.assertEqual(len(item_list), 3)
+        self.assertIn(self.item1, item_list)
+        self.assertIn(self.item2, item_list)
+        self.assertIn(self.item3, item_list)
+
+    def test_get_listed_items_queryset(self):
+        listed_items = self.dllist.get_listed_items_queryset()
+        self.assertEqual(len(listed_items), 1)
+        self.assertIn(self.item1, listed_items)
+
+        new_listed_items = self.dllist.get_listed_items_queryset(new=True)
+        self.assertEqual(len(new_listed_items), 2)
+        self.assertIn(self.item2, new_listed_items)
+        self.assertIn(self.item3, new_listed_items)
+
+    def test_get_nodes_queryset(self):
+        nodes = self.dllist.get_nodes_queryset()
+        self.assertEqual(len(nodes), 1)
+        self.assertIn(self.head, nodes)
 
 class InsertMethodTest(TestCase):
     def setUp(self):
@@ -15,7 +85,7 @@ class InsertMethodTest(TestCase):
         
         # Create related objects
         self.container = Container.objects.create(name="Test Container", user=self.user)
-        self.criteria = Criteria.objects.create(name="Test Criteria", user=self.user)
+        self.criterion = Criterion.objects.create(name="Test Criterion", user=self.user)
         
         item = Item.objects.create(statement="item_number_75", actionable=True, parent_container=self.container, user=self.user)
         self.head = DoublyLinkedListNode.objects.create(parent_item=item, user=self.user)
@@ -24,7 +94,7 @@ class InsertMethodTest(TestCase):
             ai_model='TestModel',
             evaluative=False,
             parent_container=self.container,
-            criterion_statement_version=self.criteria.current_criteria_statement_version,
+            criterion_statement_version=self.criterion.current_criterion_statement_version,
             head=self.head,
             user=self.user
         )
@@ -172,7 +242,7 @@ class BinarilyInsertTest(TestCase):
         
         # Create related objects
         self.container = Container.objects.create(name="Test Container", user=self.user)
-        self.criteria = Criteria.objects.create(name="Test Criteria", user=self.user)
+        self.criterion = Criterion.objects.create(name="Test Criterion", user=self.user)
         
         item = Item.objects.create(statement="item_number_2", actionable=True, parent_container=self.container, user=self.user)
         self.node2 = DoublyLinkedListNode.objects.create(parent_item=item, user=self.user)
@@ -181,7 +251,7 @@ class BinarilyInsertTest(TestCase):
             ai_model='TestModel',
             evaluative=False,
             parent_container=self.container,
-            criterion_statement_version=self.criteria.current_criteria_statement_version,
+            criterion_statement_version=self.criterion.current_criterion_statement_version,
             head=self.node2,
             user=self.user
         )

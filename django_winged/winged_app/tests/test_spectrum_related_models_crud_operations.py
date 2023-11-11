@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
-from winged_app.models import SpectrumDoublyLinkedList, DoublyLinkedListNode, Container, Criteria
+from winged_app.models import SpectrumDoublyLinkedList, DoublyLinkedListNode, Container, Criterion
 
 from django.contrib.auth.models import User
 
@@ -12,7 +12,7 @@ class SpectrumDoublyLinkedListTestCase(TestCase):
         
         # Create related objects
         self.container = Container.objects.create(name="Test Container", user=self.user)
-        self.criteria = Criteria.objects.create(name="Test Criteria", user=self.user)
+        self.criterion = Criterion.objects.create(name="Test Criterion", user=self.user)
         
         # Create head node
         self.head_node = DoublyLinkedListNode.objects.create(data="1", user=self.user)
@@ -22,7 +22,7 @@ class SpectrumDoublyLinkedListTestCase(TestCase):
             ai_model='TestModel',
             evaluative=False,
             parent_container=self.container,
-            criterion_statement_version=self.criteria.current_criteria_statement_version,
+            criterion_statement_version=self.criterion.current_criterion_statement_version,
             head=self.head_node,
             user=self.user
         )
@@ -35,7 +35,7 @@ class SpectrumDoublyLinkedListTestCase(TestCase):
             ai_model='NewModel',
             evaluative=True,
             parent_container=self.container,
-            criterion_statement_version=self.criteria.current_criteria_statement_version,
+            criterion_statement_version=self.criterion.current_criterion_statement_version,
             head=new_node,
             user=self.user
         )

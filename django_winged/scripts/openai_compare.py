@@ -20,13 +20,13 @@ assistant_content = "what materials are out there for the concept of 'work ethic
 user_content = "1.'{}'.\n2.'{}'.\n\nValues: '{}'"
 
 
-def gpt_compare(criteria, item_1, item_2):
+def gpt_compare(criterion, item_1, item_2):
     time.sleep(1)
     messages=[
             {"role": "system", "content": system_content},
             {"role": "user", "content": user_content_set_up},
             {"role": "assistant", "content": assistant_content},
-            {"role": "user", "content": user_content.format(item_1, item_2, criteria)},
+            {"role": "user", "content": user_content.format(item_1, item_2, criterion)},
         ]
 
     response = openai.ChatCompletion.create(
@@ -42,10 +42,10 @@ def gpt_compare(criteria, item_1, item_2):
     dist2 = Levenshtein.distance(chosen_item, item_2)
 
     if dist1 < dist2:
-        # item_1 is closer to criteria
+        # item_1 is closer to criterion
         return False
     elif dist1 > dist2:
-        # item_2 is closer to criteria
+        # item_2 is closer to criterion
         return True
     else:
         print("Tie, returning item 1.")

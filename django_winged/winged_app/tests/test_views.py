@@ -1,11 +1,14 @@
 from rest_framework.test import APIClient
 from django.test import TestCase, tag
-from ..models import Container, Item, ItemStatementVersion, SpectrumType, SpectrumValue
+from ..models import Container, Item, Criterion, DoublyLinkedListNode, SpectrumDoublyLinkedList
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 from django.urls import reverse
+from rest_framework.status import HTTP_202_ACCEPTED, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND
+from unittest.mock import patch, call
+from threading import Thread
 
-        
+
 class TokenAuthenticationTest(TestCase):
     def setUp(self):
         self.first_user = User.objects.create_user('testuser', 'test@example.com', 'testpass')
@@ -115,6 +118,86 @@ class ContainerTreeViewContainersTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
 
+class MockThread(Thread):
+    def start(self):
+        self.run()
+
+class CriterionVsItemsSortingScriptViewTest(TestCase):
+    def setUp(self):
+        self.client = APIClient()
+
+        self.user = User.objects.create_user(username='user', password='password')
+        self.token = Token.objects.create(user=self.user)
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token.key)
+
+        self.container = Container.objects.create(name="Test Container", user=self.user)
+        self.criterion = Criterion.objects.create(name="Test Criterion", user=self.user)
+        self.criterion_statement_version = self.criterion.current_criterion_statement_version
+
+        self.item1 = Item.objects.create(
+            parent_container=self.container,
+            user=self.user,
+            actionable=self.container.is_on_actionables_tab,
+            done=self.container.is_on_done_tab,
+            archived=False
+        )
+        self.item2 = Item.objects.create(
+            parent_container=self.container,
+            user=self.user,
+            actionable=self.container.is_on_actionables_tab,
+            done=self.container.is_on_done_tab,
+            archived=False
+        )
+
+        self.item3 = Item.objects.create(
+            parent_container=self.container,
+            user=self.user,
+            actionable=self.container.is_on_actionables_tab,
+            done=self.container.is_on_done_tab,
+            archived=False
+        )
+
+        self.ai_model = "bart_large_mnli"
+
+    def test_post(self):
+        url = reverse('criterion-vs-items-sort', kwargs={'container_id': self.container.id, 'criterion_id': self.criterion.id, 'ai_model': self.ai_model})
+
+        response = self.client.post(url)
+        self.assertEqual(response.status_code, HTTP_404_NOT_FOUND)
+        
+    def test_post_with_invalid_container(self):
+        url = reverse('criterion-vs-items-sort', kwargs={'container_id': 9999, 'criterion_id': self.criterion.id, 'ai_model': self.ai_model})
+        
+        response = self.client.post(url)
+        self.assertEqual(response.status_code, HTTP_404_NOT_FOUND)
+
+    def test_post_with_invalid_criterion(self):
+        url = reverse('criterion-vs-items-sort', kwargs={'container_id': self.container.id, 'criterion_id': 9999, 'ai_model': self.ai_model})
+        
+        response = self.client.post(url)
+        self.assertEqual(response.status_code, HTTP_404_NOT_FOUND)
+
+    def test_post_with_invalid_ai_model(self):
+        url = reverse('criterion-vs-items-sort', kwargs={'container_id': self.container.id, 'criterion_id': self.criterion.id, 'ai_model': 'invalid_ai_model'})
+        
+        response = self.client.post(url)
+        self.assertEqual(response.status_code, HTTP_400_BAD_REQUEST)
+
+
+    @patch('threading.Thread', new=MockThread)
+    @patch('winged_app.models.SpectrumDoublyLinkedList.insert')
+    def test_post_with_mocked_insert_and_thread(self, mock_insert):
+        mock_insert.return_value = None  # or whatever you want the mock to return
+
+        url = reverse('criterion-vs-items-sort', kwargs={'container_id': self.container.id, 'criterion_id': self.criterion.id, 'ai_model': self.ai_model})
+        response = self.client.post(url)
+
+        self.assertEqual(response.status_code, HTTP_404_NOT_FOUND)
+        
+        # Will have to change None for the actual callable comparator function.
+        """expected_calls = [call(self.item1, None), call(self.item2, None)]
+        mock_insert.assert_has_calls(expected_calls, any_order=True)"""
+
 class ContainerItemListAPIViewTest(TestCase):
     def setUp(self):
         self.client = APIClient()
@@ -147,5 +230,3 @@ class ContainerItemListAPIViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data), 1)
         self.assertEqual(response.data[0]['id'], self.item1.id)
-
-        # Repeat the test for user2 and container2 if desired

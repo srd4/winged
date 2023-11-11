@@ -528,7 +528,7 @@ export default {
             } 
         },
         runCuration(){
-            let link = '/containers/' + String(this.container.id) + "/run-script/spectrumtypes/" + String(this.spectrumId) + "/" + this.aiModel + "/";
+            let link = '/containers/' + String(this.container.id) + "/criterion-vs-items-sort/criteria/" + String(this.criterion_id) + "/" + this.aiModel + "/";
             axiosInstance.get(link)
                 .then(response => {
                     console.log(response.data.message);
@@ -579,7 +579,6 @@ export default {
         },
         startReclassifyActionables() {
             let link = `/containers/${String(this.container.id)}/reclassify-actionable/`;
-
             axiosInstance.post(link)
                 .then(response => {
                     console.log(response.data.message);

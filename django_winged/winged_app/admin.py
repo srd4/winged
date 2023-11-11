@@ -2,7 +2,7 @@ from django.contrib import admin
 from winged_app.models import (
     Container, Item, ItemStatementVersion, SpectrumValue, SpectrumType,
     ItemVsTwoCriteriaAIComparison, SystemPrompt, SystemPromptTextVersion,
-    Criteria, CriteriaStatementVersion)
+    Criterion, CriterionStatementVersion)
 
 # Register your models here.
 
@@ -14,5 +14,5 @@ admin.site.register(SpectrumType)
 admin.site.register(ItemVsTwoCriteriaAIComparison)
 admin.site.register(SystemPrompt)
 admin.site.register(SystemPromptTextVersion)
-admin.site.register(Criteria)
-admin.site.register(CriteriaStatementVersion)
+admin.site.register(Criterion)
+admin.site.register(CriterionStatementVersion)
